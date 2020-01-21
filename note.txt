@@ -1,0 +1,9 @@
+product view
+shopcart
+filter search left hand site
+navbar -- home og shopcart -- dropdown product categories
+landingpage with popular products
+
+redux --> {
+  store
+}
