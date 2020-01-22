@@ -10,3 +10,12 @@ export async function searchGames({ orderBy }) {
     const { games } = await response.json()
     return games;
 }
+
+export async function getGameById(id) {
+    const response = await fetch(`${API_URL}/search?ids=${id}&client_id=SB1VGnDv7M`, {
+        method: 'GET'
+    });
+    const parsedResponse = await response.json();
+    const game = parsedResponse.games[0];
+    return game;
+}

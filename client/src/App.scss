@@ -1,0 +1,35 @@
+@import './sass/reset';
+@import './sass/variables';
+
+.content-area {
+  margin-top: $nav-height;
+  height: 100vh - $nav-height;
+}
+
+.navbar {
+  height: $nav-height;
+  position: fixed;
+}
+
+.single-view-container {
+  text-align: center;
+}
+
+.spinner {
+  width: 200px;
+  margin: auto; 
+  display: block;
+}
+
+ul {
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+li {
+  list-style-type: none;
+  width: 200px;
+  height: auto;
+  margin: 20px;
+}
