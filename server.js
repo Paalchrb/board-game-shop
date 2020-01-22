@@ -28,8 +28,8 @@ app.get('/games', async (req, res) => {
 
 //Listen to port
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
-    console.log(`Boardgames-shop is running at port: http://localhost:${port}`)
+    console.log(`Boardgames-shop server is running at port: http://localhost:${port}`)
 })
