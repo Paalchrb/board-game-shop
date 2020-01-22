@@ -1,5 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
+const requestP = require('request-promise');
 
 
 const app = express();
@@ -18,14 +20,15 @@ app.use('/api', api);
 
 
 
-app.get('/games', (req, res) => {
-    return res
+
+app.get('/games', async (req, res) => {
+    return res.json()
 } )
 
 
 //Listen to port
 
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
     console.log(`Boardgames-shop is running at port: http://localhost:${port}`)
