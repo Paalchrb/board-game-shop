@@ -44,6 +44,7 @@ class Overview extends React.Component {
         return window.scrollTo({
             top: 0,
             behavior: 'smooth',
+            block: 'center'
         })
    }
 
@@ -104,13 +105,16 @@ class Overview extends React.Component {
         return(
             <div>
                 {games.length ? (
+                    <Fragment>
                     <Grid container spacing={3} className="overviewGridContainer">
-                        <Fab color="secondary" className={showScrollButton} size="small" aria-label="scroll back to top">
-                            <KeyboardArrowUpIcon onClick={this.handleScrollTopClick.bind(this)}  />
-                        </Fab>
                         {gameNames}
                         
                     </Grid>
+                    
+                        <Fab color="secondary" className={showScrollButton} onClick={this.handleScrollTopClick.bind(this)} size="small" aria-label="scroll back to top">
+                        <KeyboardArrowUpIcon />
+                        </Fab>
+                    </Fragment>
                 ) : (
                     <p>No games available games at the moment</p>
                 )

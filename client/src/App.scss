@@ -79,14 +79,32 @@
   }
 }
 
-.hideScrollButton {
-  display: hidden;
+
+
+@keyframes fadein {
+  from { transform: scale(0) }
+  to { transform: scale(1) }
 }
 
 .showScrollButton {
-  position: absolute;
-  bottom: 0;
+ 
+  position: sticky !important;
+  bottom: 5px;
+  left: 49%;
+  animation: fadein .2s;
 }
+
+@keyframes fadeout {
+  from { transform: scale(1) };
+  to { transform: scale(0) };
+}
+
+
+.hideScrollButton {
+  animation: fadeout .2s !important;
+}
+
+
 
 
 // misc
