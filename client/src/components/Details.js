@@ -3,36 +3,28 @@ import { getGameById } from '../services/sessions';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Spinner from './Spinner';
+import { getGameDetails } from '../actions/games';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class Details extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      game: {},
-      loading: false,
-      error: null
-    }
-  }
- 
-  async componentDidMount() {
-    this.setState({ loading: true });
-    await this.fetchGame();
-  }
-
-  async fetchGame() {
+  componentDidMount() {
     const { id } = this.props.match.params;
-    const game = await getGameById(id);
-    this.setState({ 
-      game,
-      loading: false
-    });
-    console.log(game);
+    const { getGameDetails } = this.props;
+    getGameDetails(id);
   }
 
   render() {
+    if(!this.props.game.chosenGame) {
+      return (
+        <Fragment>
+            <h3>Something went wrong!</h3>
+        </Fragment>
+      )
+    }
+
     const {
-      game: {
+      chosenGame: {
         name, 
         year_published, 
         min_players, 
@@ -42,7 +34,7 @@ class Details extends Component {
       },
       loading,
       error
-    } = this.state;
+    } = this.props.game;
 
     if(error) {
       return (
@@ -103,4 +95,17 @@ class Details extends Component {
   }
 }
 
-export default Details;
+Details.propTypes = {
+  game: PropTypes.object.isRequired,
+  getGameDetails: PropTypes.func.isRequired,
+}
+
+const mapStateToProps = state => ({
+  game: state.games
+})
+
+const mapDispatchToProps = {
+  getGameDetails
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Details);

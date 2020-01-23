@@ -17,7 +17,7 @@ const App = () => {
           <Container maxWidth="lg" className='content-area' style={{ marginTop: '8vh', height: '92vh'}}>
             <Switch>
               <Route path='/' exact component={Overview} />
-              <Route path='/details/:id' component={SingleGameView} />
+              <Route path='/details/:id' component={Details} />
             </Switch>
           </Container>
         </HashRouter>
