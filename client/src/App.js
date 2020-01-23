@@ -2,7 +2,7 @@ import React from 'react';
 import './App.scss';
 import { HashRouter, Route, Switch } from 'react-router-dom'
 import Overview from './components/Overview';
-import SingleGameView from './components/SingleGameView';
+import Details from './components/Details';
 import Navbar from './components/Navbar';
 import Container from '@material-ui/core/Container';
 import { Provider } from 'react-redux';

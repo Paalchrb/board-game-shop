@@ -1,25 +1,62 @@
 @import './sass/reset';
 @import './sass/variables';
 
+// Global styles
+
+* {
+  box-sizing: border-box;
+}
+
+// App.js 
+
 .content-area {
   margin-top: $nav-height;
   height: 100vh - $nav-height;
 }
 
-.navbar {
+// Navbar
+
+.navbar-container {
+  flex-grow: 1;
+}
+
+.navbar-main {
   height: $nav-height;
   position: fixed;
 }
 
-.single-view-container {
+.navbar-menu-btn {
+  margin-right: 2rem;
+}
+
+.navbar-title {
+  flex-grow: 1;
   text-align: center;
 }
 
-.spinner {
-  width: 200px;
-  margin: auto; 
+
+// Details view
+
+.details-container {
   display: block;
+  width: 80%;
+  min-width: 410px;
+  margin: 0 auto;
+  margin-top: 8rem;
+  text-align: center;
 }
+
+.details-left-grid {
+  border: 1px solid black;
+  text-align: center;
+}
+
+.details-right-grid {
+  border: 1px solid black;
+}
+
+
+// Game overview
 
 .overviewGridContainer {
   display: flex;
@@ -52,3 +89,10 @@
 }
 
 
+// misc
+
+.spinner {
+  width: 200px;
+  margin: auto; 
+  display: block;
+}
