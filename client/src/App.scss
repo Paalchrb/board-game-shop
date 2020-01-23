@@ -7,6 +7,9 @@
   box-sizing: border-box;
 }
 
+.bold {
+  font-weight: 900;
+}
 // App.js 
 
 .content-area {
@@ -46,13 +49,9 @@
   text-align: center;
 }
 
-.details-left-grid {
+.details-left-grid, .details-right-grid {
   border: 1px solid black;
   text-align: center;
-}
-
-.details-right-grid {
-  border: 1px solid black;
 }
 
 

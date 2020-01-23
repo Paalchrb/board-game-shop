@@ -14,7 +14,7 @@ class Details extends Component {
       error: null
     }
   }
-
+ 
   async componentDidMount() {
     this.setState({ loading: true });
     await this.fetchGame();
@@ -69,22 +69,34 @@ class Details extends Component {
           justify='space-around'
           className='details-margin-grid'
         >
-          <Grid item container spacing={2} xs={12} md={6} className='details-left-grid'> 
+          <Grid 
+            item container spacing={2} xs={12} md={6} className='details-left-grid'> 
             <Grid item xs={12}>
               <img src={image_url} alt='codename game' /> 
             </Grid>
             <Grid item xs={12}>
-            <Typography variant='h6'> Published: {year_published}</Typography>
+             <Typography variant='body1'> 
+                <span className='bold'>Publication year:</span> {year_published}
+              </Typography>
             </Grid>
           </Grid>
-          <Grid item container spacing={2}xs={12} md={6} className='details-right-grid'> 
-           
+          <Grid 
+            item 
+            container 
+            spacing={2}
+            xs={12} 
+            md={6} 
+            className='details-right-grid'
+            direction='column'
+          > 
+           <Typography variant='h5'>Details:</Typography>
+           <Typography variant='body1'> 
+              <span className='bold'>Players</span> {min_players} - {max_players}
+            </Typography>
+           <Typography variant='body1'> 
+              <span className='bold'>Description:</span> {description}
+            </Typography>
           </Grid>
-          
-          <h3>Published: {year_published}</h3>
-          <h4>Minimum players: {min_players}</h4>
-          <h4>Maximum players: {max_players}</h4>
-          <p>{description}</p>
         </Grid>
       </div>
     );
