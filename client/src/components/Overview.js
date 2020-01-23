@@ -16,7 +16,9 @@ class Overview extends React.Component {
         super(props);
 
         this.state = {
-            games: []
+            games: [],
+            isLoading: false,
+            error: null
         }
     }
 
@@ -46,6 +48,7 @@ class Overview extends React.Component {
                             />
                     <img src={game.images.small} />
                     <h2>{game.name}</h2>
+                    <p>{(game.price*9.18).toFixed(0)} NOK</p>
                     </CardActionArea>
                     </Card>
                 </li>
