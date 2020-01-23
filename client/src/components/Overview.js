@@ -1,6 +1,7 @@
-import React from 'react';
-import {searchGames} from '../services/sessions'
+import React, { Fragment } from 'react';
+import { searchGames } from '../services/sessions';
 import { makeStyles } from '@material-ui/core/styles';
+import Spinner from './Spinner';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
@@ -17,30 +18,54 @@ class Overview extends React.Component {
 
         this.state = {
             games: [],
-            isLoading: false,
+            loading: false,
             error: null
         }
     }
 
     componentDidMount = async () => {
+        this.setState({ loading: true })
         await this.populateGames({ orderBy: 'popularity' })
     }
 
     async populateGames(orderBy) {
         const games = await searchGames({ orderBy });
-        this.setState({games})
-        console.log(games.length)
+        this.setState({ 
+            games,
+            loading: false 
+        });
     }
 
-    
+    handleClick(event, id) {
+        const { history } = this.props;
+        history.push(`details/${id}`);
+    }
 
     render() {
-        const { games } = this.state;
+        const { games, error, loading } = this.state;
+
+        if (error) {
+            return (
+                <Fragment>
+                    <h3>Something went wrong!</h3>
+                </Fragment>
+            )
+        }
+
+        if (loading) {
+            return (
+                <Fragment>
+                    <Spinner />
+                </Fragment>
+            )
+        }
 
         const gameNames = games.map(game => {
             return (
                 <li key={game.id}>
-                    <Card>
+                    <Card
+                        onClick={event => this.handleClick(event, game.id)}
+                    >
                         <CardActionArea>
                             <CardMedia
                                 image={game.images.small}
@@ -52,7 +77,7 @@ class Overview extends React.Component {
                     </CardActionArea>
                     </Card>
                 </li>
-            )
+            );
         });
         return(
             <div>
