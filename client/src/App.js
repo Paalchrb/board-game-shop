@@ -2,7 +2,7 @@ import React from 'react';
 import './App.scss';
 import { HashRouter, Route, Switch } from 'react-router-dom'
 import Overview from './components/Overview';
-import SingleGameView from './components/SingleGameView';
+import Details from './components/Details';
 import Navbar from './components/Navbar';
 
 const App = () => {
@@ -10,10 +10,10 @@ const App = () => {
     <div className="App">
       <Navbar />
       <HashRouter>
-        <div className='contentArea'>
+        <div className='content-area'>
           <Switch>
             <Route path='/' exact component={Overview} />
-            <Route path='/details/:id' component={SingleGameView} />
+            <Route path='/details/:id' component={Details} />
           </Switch>
         </div>
       </HashRouter>
