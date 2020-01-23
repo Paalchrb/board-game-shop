@@ -71,9 +71,10 @@ class Overview extends React.Component {
                                 image={game.images.small}
                                 title={game.name}
                             />
-                            <img src={game.images.small} />
-                            <h2>{game.name}</h2>
-                        </CardActionArea>
+                    <img src={game.images.small} />
+                    <h2>{game.name}</h2>
+                    <p>{(game.price*9.18).toFixed(0)} NOK</p>
+                    </CardActionArea>
                     </Card>
                 </li>
             );
