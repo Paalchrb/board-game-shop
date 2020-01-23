@@ -10,7 +10,7 @@ const App = () => {
     <div className="App">
       <Navbar />
       <HashRouter>
-        <div className='contentArea' style={{ marginTop: '8vh', height: '92vh'}}>
+        <div className='contentArea'>
           <Switch>
             <Route path='/' exact component={Overview} />
             <Route path='/details/:id' component={SingleGameView} />
