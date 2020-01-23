@@ -1,0 +1,3 @@
+export const GET_ALL_GAMES = 'GET_ALL_GAMES';
+export const GET_ALL_GAMES_ERROR = 'GET_ALL_GAMES_ERROR';
+export const GET_GAMES_BY_ID = 'GET_GAMES_BY_ID';
