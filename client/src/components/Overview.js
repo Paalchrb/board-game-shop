@@ -9,6 +9,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid'
 
 
 
@@ -34,6 +35,7 @@ class Overview extends React.Component {
             games,
             loading: false 
         });
+        console.log(games.length)
     }
 
     handleClick(event, id) {
@@ -62,29 +64,31 @@ class Overview extends React.Component {
 
         const gameNames = games.map(game => {
             return (
-                <li key={game.id}>
+                <Grid item xs={6} sm={6} md={3} lg={2} className="overviewGrid" key={game.id}>
                     <Card
+                        
                         onClick={event => this.handleClick(event, game.id)}
                     >
-                        <CardActionArea>
+                        <CardActionArea className="gameOverview">
                             <CardMedia
+                                
                                 image={game.images.small}
                                 title={game.name}
                             />
                     <img src={game.images.small} />
-                    <h2>{game.name}</h2>
-                    <p>{(game.price*9.18).toFixed(0)} NOK</p>
+                    <Typography gutterBottom variant="h6" component="h2">{game.name}</Typography>
+                    <Typography variant="body2" component="p" className="price">{(game.price*9.18).toFixed(0)} NOK</Typography>
                     </CardActionArea>
                     </Card>
-                </li>
+                </Grid>
             );
         });
         return(
             <div>
                 {games.length ? (
-                    <ul>
+                    <Grid container spacing={3} className="overviewGridContainer">
                         {gameNames}
-                    </ul>
+                    </Grid>
                 ) : (
                     <p>No games available games at the moment</p>
                 )

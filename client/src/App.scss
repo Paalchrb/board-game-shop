@@ -21,15 +21,25 @@
   display: block;
 }
 
-ul {
+.overviewGridContainer {
   display: flex;
   flex-wrap: wrap;
   text-align: center;
 }
 
-li {
+.overviewGrid {
   list-style-type: none;
   width: 200px;
   height: auto;
   margin: 20px;
+
+  .gameOverview {
+    height: 250px;
+    img {
+      height: 150px;
+      max-width: 165px;
+    }
+  }
 }
+
+
