@@ -1,9 +1,10 @@
 import {
     GET_ALL_GAMES,
-    GET_ALL_GAMES_ERROR
+    GET_ALL_GAMES_ERROR,
+    GET_GAME_DETAILS,
+    GAME_DETAILS_ERROR
 } from './constants';
-import {searchGames} from '../services/sessions'
-
+import { searchGames } from '../services/sessions'
 
 
 export const getAllGames = (orderBy) => async dispatch => {
@@ -20,3 +21,17 @@ export const getAllGames = (orderBy) => async dispatch => {
          })
     }
 } 
+
+export const getGameDetails = (id) => dispatch => {
+    try {
+        dispatch({
+            type: GET_GAME_DETAILS,
+            payload: id
+        });
+    } catch(error) {
+        dispatch({
+            type: GAME_DETAILS_ERROR,
+            payload: error
+        });
+    }
+}

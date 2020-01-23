@@ -3,36 +3,28 @@ import { getGameById } from '../services/sessions';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Spinner from './Spinner';
+import { getGameDetails } from '../actions/games';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 class Details extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      game: {},
-      loading: false,
-      error: null
-    }
-  }
-
-  async componentDidMount() {
-    this.setState({ loading: true });
-    await this.fetchGame();
-  }
-
-  async fetchGame() {
+  componentDidMount() {
     const { id } = this.props.match.params;
-    const game = await getGameById(id);
-    this.setState({ 
-      game,
-      loading: false
-    });
-    console.log(game);
+    const { getGameDetails } = this.props;
+    getGameDetails(id);
   }
 
   render() {
+    if(!this.props.game.chosenGame) {
+      return (
+        <Fragment>
+            <h3>Something went wrong!</h3>
+        </Fragment>
+      )
+    }
+
     const {
-      game: {
+      chosenGame: {
         name, 
         year_published, 
         min_players, 
@@ -42,7 +34,7 @@ class Details extends Component {
       },
       loading,
       error
-    } = this.state;
+    } = this.props.game;
 
     if(error) {
       return (
@@ -69,26 +61,51 @@ class Details extends Component {
           justify='space-around'
           className='details-margin-grid'
         >
-          <Grid item container spacing={2} xs={12} md={6} className='details-left-grid'> 
+          <Grid 
+            item container spacing={2} xs={12} md={6} className='details-left-grid'> 
             <Grid item xs={12}>
               <img src={image_url} alt='codename game' /> 
             </Grid>
             <Grid item xs={12}>
-            <Typography variant='h6'> Published: {year_published}</Typography>
+             <Typography variant='body1'> 
+                <span className='bold'>Publication year:</span> {year_published}
+              </Typography>
             </Grid>
           </Grid>
-          <Grid item container spacing={2}xs={12} md={6} className='details-right-grid'> 
-           
+          <Grid 
+            item 
+            container 
+            spacing={2}
+            xs={12} 
+            md={6} 
+            className='details-right-grid'
+            direction='column'
+          > 
+           <Typography variant='h5'>Details:</Typography>
+           <Typography variant='body1'> 
+              <span className='bold'>Players</span> {min_players} - {max_players}
+            </Typography>
+           <Typography variant='body1'> 
+              <span className='bold'>Description:</span> {description}
+            </Typography>
           </Grid>
-          
-          <h3>Published: {year_published}</h3>
-          <h4>Minimum players: {min_players}</h4>
-          <h4>Maximum players: {max_players}</h4>
-          <p>{description}</p>
         </Grid>
       </div>
     );
   }
 }
 
-export default Details;
+Details.propTypes = {
+  game: PropTypes.object.isRequired,
+  getGameDetails: PropTypes.func.isRequired,
+}
+
+const mapStateToProps = state => ({
+  game: state.games
+})
+
+const mapDispatchToProps = {
+  getGameDetails
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Details);
