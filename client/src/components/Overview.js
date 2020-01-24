@@ -2,8 +2,8 @@ import React, { Fragment } from 'react';
 import { searchGames } from '../services/sessions';
 
 import { makeStyles } from '@material-ui/core/styles';
-import Spinner from './Spinner';
 import Card from '@material-ui/core/Card';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -12,6 +12,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
+import Skeleton from '@material-ui/lab/Skeleton';
 import Zoom from '@material-ui/core/Zoom';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
@@ -60,10 +61,6 @@ class Overview extends React.Component {
        }
    }
 
-  
-
-    
-
     render() {
         const {showScrollButton} = this.state;
         const { games, error, loading } = this.props.games;
@@ -75,52 +72,58 @@ class Overview extends React.Component {
                 </Fragment>
             )
         }
-
-        if (loading) {
+       
+        const gameNames = (loading ? Array.from(new Array(30)) : games).map((game, index) => {
             return (
-                <Fragment>
-                    <Spinner />
-                </Fragment>
-            )
-        }
-
-        const gameNames = games.map(game => {
-            return (
-                <Grid item xs={6} sm={6} md={3} lg={2} className="overviewGrid" key={game.id}>
-                    <Card
-                        onClick={event => this.handleDetailsClick(event, game.id)}
-                    >
-                        <CardActionArea className="gameOverview">
-                            <CardMedia
-                                
-                                image={game.images.small}
-                                title={game.name}
-                            />
-                    <img src={game.images.small} />
-                    <Typography gutterBottom variant="h6" component="h2">{game.name}</Typography>
-                    <Typography variant="body2" component="p" className="price">{currencyFormatter.format((game.price*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'})} NOK</Typography>
-                    </CardActionArea>
-                    </Card>
+                <Grid item xs={6} sm={6} md={3} lg={2} className="overviewGrid" key={index}>
+                    {game ? (
+                        <Card
+                            onClick={event => this.handleDetailsClick(event, game.id)}
+                            className='game-card'
+                        >
+                            <CardActionArea className="gameOverview">
+                                <CardMedia
+                                    image={game.images.small}
+                                    title={game.name}
+                                />
+                                <img src={game.images.small} />
+                                <Typography gutterBottom variant="h6" component="h2">{game.name}</Typography>
+                                <Typography variant="body2" component="p" className="price">{currencyFormatter.format((game.price*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'})} NOK</Typography>
+                            </CardActionArea>
+                            <Button variant="contained" color='primary' className='add-to-cart-btn'>
+                                <ShoppingCartIcon />
+                                Add to cart
+                            </Button>
+                        </Card>
+                    ) : (
+                        <Card className='skeleton-card'>
+                            <Skeleton className='skeleton-image' variant="rect" />   
+                            <Skeleton className='skeleton-text' width='83%' />
+                            <Skeleton className='skeleton-text' width='38%' />
+                            <Skeleton className='skeleton-button' variant='rect' />
+                        </Card>
+                    )}
                 </Grid>
             );
         });
         return(
             <div>
-                {games.length ? (
-                    <Fragment>
+                <Fragment>
                     <Grid container spacing={3} className="overviewGridContainer">
                         {gameNames}
-                        
                     </Grid>
                     
-                        <Fab color="secondary" className={showScrollButton} onClick={this.handleScrollTopClick.bind(this)} size="small" aria-label="scroll back to top">
+                    <Fab 
+                        color="secondary" 
+                        className={showScrollButton} 
+                        onClick={this.handleScrollTopClick.bind(this)} 
+                        size="small" 
+                        aria-label="scroll back to top"
+                    >
                         <KeyboardArrowUpIcon />
-                        </Fab>
-                    </Fragment>
-                ) : (
-                    <p>No games available games at the moment</p>
-                )
-                }
+                    </Fab>
+                </Fragment>
+                <p>No games available games at the moment</p>
             </div>
 
         )

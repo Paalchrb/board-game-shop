@@ -79,6 +79,41 @@
   }
 }
 
+.skeleton-card {
+  padding: 1.5rem 1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  .skeleton-image {
+    display: block;
+    height: 157px;
+    width: 90%;
+    margin: 0 auto;
+  }
+  .skeleton-button {
+    height: 36px;
+    margin: 0.8rem auto;
+    display: block;
+    width: 100%;
+    max-width: 165px;
+  }
+  .skeleton-text {
+    display: block;
+    padding: 0.3rem;
+    margin: 0.2rem auto;
+  }
+}
+
+.game-card {
+  padding: 0rem 1rem 1.5rem 1rem;
+}
+
+.add-to-cart-btn {
+  display: block;
+  margin: 1rem auto;
+  width: 100%;
+  max-width: 165px;
+}
+
 
 
 @keyframes fadein {
