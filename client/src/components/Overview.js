@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react';
-
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
@@ -14,11 +13,12 @@ import Fab from '@material-ui/core/Fab';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Zoom from '@material-ui/core/Zoom';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
+import { addToCart } from '../actions/shopcart';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { getAllGames } from '../actions/games';
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-var currencyFormatter = require('currency-formatter')
+var currencyFormatter = require('currency-formatter');
 
 
 class Overview extends React.Component {
@@ -43,22 +43,28 @@ class Overview extends React.Component {
         history.push(`details/${id}`);
     }
 
-   handleScrollTopClick () {
-        return window.scrollTo({
-            top: 0,
-            behavior: 'smooth',
-            block: 'center'
-        })
-   }
+    handleScrollTopClick () {
+            return window.scrollTo({
+                top: 0,
+                behavior: 'smooth',
+                block: 'center'
+            })
+    }
 
-   handleScroll() {
-       const scroll = window.scrollY;
-       if(scroll>540) {
-           this.setState({showScrollButton: 'showScrollButton'})
-       } else {
-           this.setState({showScrollButton: 'hideScrollButton'})
-       }
-   }
+    handleScroll() {
+        const scroll = window.scrollY;
+        if(scroll>540) {
+            this.setState({showScrollButton: 'showScrollButton'})
+        } else {
+            this.setState({showScrollButton: 'hideScrollButton'})
+        }
+    }
+
+    async handleCartClick(id) {
+        const { addToCart } = this.props;
+        const cartItem = await addToCart(id);
+        console.log(cartItem);
+    }
 
     render() {
         const {showScrollButton} = this.state;
@@ -77,10 +83,12 @@ class Overview extends React.Component {
                 <Grid item xs={6} sm={6} md={3} lg={2} className="overviewGrid" key={index}>
                     {game ? (
                         <Card
-                            onClick={event => this.handleDetailsClick(event, game.id)}
                             className='game-card'
                         >
-                            <CardActionArea className="gameOverview">
+                            <CardActionArea 
+                                className="gameOverview"
+                                onClick={event => this.handleDetailsClick(event, game.id)}
+                             >
                                 <CardMedia
                                     image={game.images.small}
                                     title={game.name}
@@ -89,7 +97,12 @@ class Overview extends React.Component {
                                 <Typography gutterBottom variant="h6" component="h2">{game.name}</Typography>
                                 <Typography variant="body2" component="p" className="price">{currencyFormatter.format((game.price*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'})} NOK</Typography>
                             </CardActionArea>
-                            <Button variant="contained" color='primary' className='add-to-cart-btn'>
+                            <Button 
+                                variant="contained" 
+                                color='primary' 
+                                className='add-to-cart-btn'
+                                onClick={() => this.handleCartClick(game.id)}
+                            >
                                 <ShoppingCartIcon />
                                 Legg i kurv
                             </Button>
@@ -130,7 +143,8 @@ class Overview extends React.Component {
 
 Overview.propTypes = {
     games: PropTypes.object.isRequired,
-    getAllGames: PropTypes.func.isRequired
+    getAllGames: PropTypes.func.isRequired,
+    addToCart: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {
@@ -139,6 +153,9 @@ function mapStateToProps(state) {
     }
 }
 
-const mapDispatchToProps = {getAllGames} 
+const mapDispatchToProps = {
+    getAllGames,
+    addToCart
+} 
 
 export default connect(mapStateToProps, mapDispatchToProps)(Overview);

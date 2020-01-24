@@ -12,7 +12,7 @@ const initialState = {
     loading: true
 }
 
-function findIndex(array, id) {
+function getIndex(array, id) {
     return array.findIndex(game => game.id === id);
 }
 
@@ -33,7 +33,7 @@ export default function(state=initialState, action) {
                 loading: false
             }
         case GET_GAME_DETAILS:
-            let index = findIndex(state.games, payload);
+            let index = getIndex(state.games, payload);
             return {
                 ...state,
                 chosenGame: state.games[index],
