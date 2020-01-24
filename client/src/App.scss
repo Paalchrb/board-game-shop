@@ -26,6 +26,7 @@
 .navbar-main {
   height: $nav-height;
   position: fixed;
+  z-index: 1;
 }
 
 .navbar-menu-btn {
@@ -112,4 +113,9 @@
   width: 200px;
   margin: auto; 
   display: block;
+}
+
+.list {
+  width: 300px;
+  z-index: 0;
 }

@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import { searchGames } from '../services/sessions';
+
 import { makeStyles } from '@material-ui/core/styles';
 import Spinner from './Spinner';
 import Card from '@material-ui/core/Card';
@@ -17,7 +18,7 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { getAllGames } from '../actions/games';
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-
+var currencyFormatter = require('currency-formatter')
 
 
 class Overview extends React.Component {
@@ -28,6 +29,8 @@ class Overview extends React.Component {
             showScrollButton: 'hideScrollButton',
         }
     }
+
+  
 
     componentDidMount = async () => {
         const { getAllGames } = this.props;
@@ -95,7 +98,7 @@ class Overview extends React.Component {
                             />
                     <img src={game.images.small} />
                     <Typography gutterBottom variant="h6" component="h2">{game.name}</Typography>
-                    <Typography variant="body2" component="p" className="price">{(game.price*9.18).toFixed(0)} NOK</Typography>
+                    <Typography variant="body2" component="p" className="price">{currencyFormatter.format((game.price*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'})} NOK</Typography>
                     </CardActionArea>
                     </Card>
                 </Grid>
