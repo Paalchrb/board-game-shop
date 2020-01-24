@@ -1,21 +1,24 @@
 import React, { Component, Fragment } from 'react'
-import { getGameById } from '../services/sessions';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Spinner from './Spinner';
-import { getGameDetails } from '../actions/games';
+import { getGameDetails, getAllGames } from '../actions/games';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 class Details extends Component {
-  componentDidMount() {
+  async componentDidMount() {
+    if (this.props.games.games.length === 0) {
+      const { getAllGames } = this.props
+      await getAllGames({ orderBy: 'popularity' });
+    } 
     const { id } = this.props.match.params;
     const { getGameDetails } = this.props;
     getGameDetails(id);
   }
 
   render() {
-    if(!this.props.game.chosenGame) {
+    if(!this.props.games.chosenGame) {
       return (
         <Fragment>
             <h3>Something went wrong!</h3>
@@ -34,7 +37,7 @@ class Details extends Component {
       },
       loading,
       error
-    } = this.props.game;
+    } = this.props.games;
 
     if(error) {
       return (
@@ -96,16 +99,18 @@ class Details extends Component {
 }
 
 Details.propTypes = {
-  game: PropTypes.object.isRequired,
+  games: PropTypes.object.isRequired,
   getGameDetails: PropTypes.func.isRequired,
+  getAllGames: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = state => ({
-  game: state.games
+  games: state.games
 })
 
 const mapDispatchToProps = {
-  getGameDetails
+  getGameDetails,
+  getAllGames
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Details);
