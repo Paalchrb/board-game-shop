@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react';
-import { searchGames } from '../services/sessions';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -123,7 +122,6 @@ class Overview extends React.Component {
                         <KeyboardArrowUpIcon />
                     </Fab>
                 </Fragment>
-                <p>No games available games at the moment</p>
             </div>
 
         )

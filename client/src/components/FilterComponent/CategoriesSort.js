@@ -1,5 +1,5 @@
 import React from 'react';
-import { getCategories } from '../../services/sessions'
+import { getAllCategories } from '../../actions/categories'
 
 import List from '@material-ui/core/List';
 import ListSubheader from '@material-ui/core/ListSubheader';
@@ -12,25 +12,20 @@ import Checkbox from '@material-ui/core/Checkbox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import PeopleIcon from '@material-ui/icons/People';
+import { connect } from 'react-redux'
+import PropTypes from 'prop-types';
 
 class Category extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      categories: []
-    }
-  }
+  
 
   componentDidMount = async () => {
-    const categories = await getCategories();
-    this.setState({categories: categories})
+    const { getAllCategories } = this.props;
+    await getAllCategories();
     
   }
 
     render() {
-      const { categories } = this.state;
-      console.log(categories)
+      const { categories } = this.props.categories;
       const allCategories = categories.map(category => {
         return (
           <ListItem>
@@ -45,9 +40,6 @@ class Category extends React.Component {
                 />
                 
             </FormGroup>
-            <ListItemIcon >
-                  <PeopleIcon />
-              </ListItemIcon>
           </ListItem>
         )
       })
@@ -64,4 +56,17 @@ class Category extends React.Component {
     }
 }
 
-export default Category;
+Category.propTypes = {
+  categories: PropTypes.object.isRequired,
+  getAllCategories: PropTypes.func.isRequired
+}
+
+function mapStateToProps(state) {
+  return {
+      categories: state.categories,
+  }
+}
+
+const mapDispatchToProps = {getAllCategories}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Category);
