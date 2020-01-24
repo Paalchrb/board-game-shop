@@ -91,7 +91,7 @@ class Overview extends React.Component {
                             </CardActionArea>
                             <Button variant="contained" color='primary' className='add-to-cart-btn'>
                                 <ShoppingCartIcon />
-                                Add to cart
+                                Legg i kurv
                             </Button>
                         </Card>
                     ) : (
