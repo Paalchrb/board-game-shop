@@ -16,6 +16,7 @@ import Zoom from '@material-ui/core/Zoom';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { getAllGames } from '../actions/games';
+import { setLoader, stopLoader } from '../actions/loading'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 var currencyFormatter = require('currency-formatter')
@@ -33,8 +34,10 @@ class Overview extends React.Component {
   
 
     componentDidMount = async () => {
-        const { getAllGames } = this.props;
+        const { getAllGames, setLoader, stopLoader } = this.props;
+        await setLoader()
         await getAllGames({ orderBy: 'popularity' });
+        await stopLoader();
         window.addEventListener('scroll', this.handleScroll.bind(this))
     }
 
@@ -62,7 +65,8 @@ class Overview extends React.Component {
 
     render() {
         const {showScrollButton} = this.state;
-        const { games, error, loading } = this.props.games;
+        const { games, error } = this.props.games;
+        const { loading } = this.props;
 
         if (error) {
             return (
@@ -74,7 +78,7 @@ class Overview extends React.Component {
        
         const gameNames = (loading ? Array.from(new Array(30)) : games).map((game, index) => {
             return (
-                <Grid item xs={6} sm={6} md={3} lg={2} className="overviewGrid" key={index}>
+                <Grid item xs={12} sm={6} md={3} lg={3} className="overviewGrid" key={index}>
                     {game ? (
                         <Card
                             onClick={event => this.handleDetailsClick(event, game.id)}
@@ -130,15 +134,18 @@ class Overview extends React.Component {
 
 Overview.propTypes = {
     games: PropTypes.object.isRequired,
-    getAllGames: PropTypes.func.isRequired
+    getAllGames: PropTypes.func.isRequired,
+    setLoader: PropTypes.func.isRequired,
+    stopLoader: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {
     return {
         games: state.games,
+        loading: state.loading.isLoading
     }
 }
 
-const mapDispatchToProps = {getAllGames} 
+const mapDispatchToProps = {getAllGames, setLoader, stopLoader} 
 
 export default connect(mapStateToProps, mapDispatchToProps)(Overview);
