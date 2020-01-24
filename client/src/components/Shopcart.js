@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { addToCart, removeFromCart } from '../actions/shopcart';
+import { setLoader, stopLoader } from '../actions/loading';
 import PropTypes from 'prop-types';
 
 class Shopcart extends Component {
@@ -11,7 +12,15 @@ class Shopcart extends Component {
     loading: PropTypes.bool.isRequired,
   }
 
+  componentDidMount() {
+    const { setLoader, stopLoader } = this.props;
+    setLoader();
+    //do asyncronous action
+    stopLoader();
+  }
+
   render() {
+    const { loading, shopcart } = this.props;
     return (
       <div>
         <h2>This is the shopcart</h2>
@@ -27,7 +36,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   addToCart,
-  removeFromCart
+  removeFromCart,
+  setLoader,
+  stopLoader
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Shopcart);
