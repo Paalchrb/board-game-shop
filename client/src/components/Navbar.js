@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Sortlist from './Sortlist'
+import Sortlist from './Sortlist';
+import Shopcart from './Shopcart';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -8,6 +9,10 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import Drawer from '@material-ui/core/Drawer';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { toggleShopcart } from '../actions/shopcart';
+
 
 
 class Navbar extends Component {
@@ -19,39 +24,58 @@ class Navbar extends Component {
     }
   }
 
-  toggleDrawer = (open) =>  {
+  static propTypes = {
+    toggleShopcart: PropTypes.func.isRequired,
+    showCart: PropTypes.bool.isRequired,
+  }
+ 
+
+  toggleFilter = (open) =>  {
     this.setState({left: open})
   }
 
+  handleShopcartClick = () => {
+    const { toggleShopcart } = this.props;
+    toggleShopcart(); 
+  }
+
   render() {
-    const { left } = this.state;
+    const { left } = this.state; 
+    const {showCart } = this.props;
     const sidelist = side => {
       return (
       <div
         className="list"
         role="presentation"
-        onClick={this.toggleDrawer.bind(this, side, false)}
-        onKeyDown={this.toggleDrawer.bind(this, side, false)}
+        onClick={this.toggleFilter.bind(this, side, false)}
+        onKeyDown={this.toggleFilter.bind(this, side, false)}
       >
         <Sortlist />
       </div>
-      )
+      );
     }
     return (
       <div className='navbar-container'>
         <AppBar className='navbar-main'>
           <Toolbar>
             <IconButton edge="start" className='navbar-menu-btn' color="inherit" aria-label="menu">
-              <MenuIcon onClick={this.toggleDrawer.bind(this, true)}/>
-              <Drawer anchor="left" open={left} onClose={this.toggleDrawer.bind(this, false)}>
+              <MenuIcon onClick={this.toggleFilter.bind(this, true)}/>
+              <Drawer anchor="left" open={left} onClose={this.toggleFilter.bind(this, false)}>
                 {sidelist('left')}
               </Drawer>  
             </IconButton>
             <Typography variant="h6" className='navbar-title'>
               BoardGames
             </Typography>
-            <Button color="inherit">
+            <Button color="inherit"
+              onClick={this.handleShopcartClick.bind(this)}
+            >
               <ShoppingCartIcon/> 
+              <Drawer anchor="right" open={showCart}>
+                <Typography variant="h2" className='navbar-title'>
+                  <Shopcart />
+                </Typography>
+              </Drawer>
               Handlekurv
             </Button>
           </Toolbar>
@@ -61,4 +85,12 @@ class Navbar extends Component {
   }
 }
 
-export default Navbar;
+const mapStateToProps = state => ({
+  showCart: state.shopcart.showCart 
+});
+
+const mapDispatchToProps = {
+  toggleShopcart
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

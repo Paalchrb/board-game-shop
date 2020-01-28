@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { addToCart, removeFromCart } from '../actions/shopcart';
+import { addToCart, removeFromCart, toggleShopcart } from '../actions/shopcart';
 import { setLoader, stopLoader } from '../actions/loading';
 import PropTypes from 'prop-types';
+import { HighlightOff} from '@material-ui/icons';
 
 class Shopcart extends Component {
   static propTypes = {
@@ -10,6 +11,8 @@ class Shopcart extends Component {
     removeFromCart: PropTypes.func.isRequired,
     shopcart: PropTypes.object.isRequired,
     loading: PropTypes.bool.isRequired,
+    toggleShopcart: PropTypes.func.isRequired,
+
   }
 
   componentDidMount() {
@@ -19,12 +22,41 @@ class Shopcart extends Component {
     stopLoader();
   }
 
+  handleCrossClick = () => {
+    const { toggleShopcart } = this.props;
+    toggleShopcart();
+  }
+
   render() {
-    const { loading, shopcart } = this.props;
+    const { loading, shopcart: { error, cartItems} } = this.props;
+
+    if (error) {
+      return (
+        <Fragment>
+          <h3>Error</h3>
+          <p>Something went wrong</p>
+        </Fragment>
+      );
+    }
+
     return (
-      <div>
-        <h2>This is the shopcart</h2>
-      </div>
+      <Fragment>
+        {
+          !loading ? (
+            <div className='shopcart-container'>
+              <h2>Shopping Cart:</h2>
+              <p>test</p>
+              <p>test</p>
+              <HighlightOff 
+                className='shopcart-close-btn' 
+                onClick={this.handleCrossClick.bind(this)}
+              />
+            </div>
+          ) : (
+             <p>Loading...</p>
+          )
+        }
+      </Fragment>
     )
   }
 }
@@ -38,7 +70,8 @@ const mapDispatchToProps = {
   addToCart,
   removeFromCart,
   setLoader,
-  stopLoader
+  stopLoader,
+  toggleShopcart
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Shopcart);

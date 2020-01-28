@@ -26,9 +26,9 @@ class Category extends React.Component {
 
     render() {
       const { categories } = this.props.categories;
-      const allCategories = categories.map(category => {
+      const allCategories = categories.map((category, index) => {
         return (
-          <ListItem>
+          <ListItem key={index}>
               
             <FormGroup column>
               <FormControlLabel

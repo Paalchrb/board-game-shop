@@ -2,7 +2,8 @@ import {
   ADD_TO_CART,
   ADD_TO_CART_ERROR,
   REMOVE_FROM_CART,
-  REMOVE_FROM_CART_ERROR
+  REMOVE_FROM_CART_ERROR,
+  TOGGLE_SHOW_CART
 } from './constants';
 import { getGameById } from '../services/sessions';
 
@@ -33,4 +34,10 @@ export const addToCart = id => async dispatch => {
 
 export const removeFromCart = id => dispatch => {
 
+}
+
+export const toggleShopcart = () => dispatch => {
+  dispatch({
+    type: TOGGLE_SHOW_CART
+  })
 }
