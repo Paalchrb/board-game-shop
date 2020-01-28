@@ -58,7 +58,7 @@ class Overview extends React.Component {
         const scroll = window.scrollY;
         if(scroll>540) {
             this.setState({showScrollButton: 'showScrollButton'})
-        } else {
+        } else if(scroll <= 539) {
             this.setState({showScrollButton: 'hideScrollButton'})
         }
     }

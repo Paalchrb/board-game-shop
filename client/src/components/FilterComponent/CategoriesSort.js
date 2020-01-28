@@ -12,25 +12,62 @@ import Checkbox from '@material-ui/core/Checkbox';
 import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import PeopleIcon from '@material-ui/icons/People';
+import TextField from '@material-ui/core/TextField';
+import Divider from '@material-ui/core/Divider';
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
+import { Typography, TableRow, TableCell, Table, TableBody, TablePagination, TableContainer } from '@material-ui/core';
 
 class Category extends React.Component {
-  
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      page: 0,
+      setPage: 0,
+      rowsPerPage: 5,
+      setRowsPerPage: 5
+    }
+  }
 
   componentDidMount = async () => {
     const { getAllCategories } = this.props;
     await getAllCategories();
     
   }
+  handleScrollTopClick () {
+    return window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+        block: 'center'
+    })
+}
+
+handleChangePage = () => {
+  const { page } = this.state;
+  this.setState({page: page+1})
+}
+  
+  handleChangeRowsPerPage = event => {
+    this.setState({rowsPerPage: event.target.value, page: 0})
+    this.handleScrollTopClick();
+  }
+
+
+  
 
     render() {
       const { categories } = this.props.categories;
-      const allCategories = categories.map((category, index) => {
+      const { page, setPage, rowsPerPage, setRowsPerPage } = this.state;
+      
+      const rows = []
+      const allCategories = categories.map(category => {
+        rows.push(category)
         return (
-          <ListItem key={index}>
-              
+          <TableRow>
+              <TableCell>
             <FormGroup column>
+
               <FormControlLabel
                 control ={
                   <Checkbox color="primary" value={category.id} />
@@ -40,18 +77,33 @@ class Category extends React.Component {
                 />
                 
             </FormGroup>
-          </ListItem>
+            </TableCell>
+          </TableRow>
         )
       })
+      .slice(page*rowsPerPage, page*rowsPerPage+rowsPerPage)
         return(
-            <List
+          <TableContainer className="table-container">
+            <TableBody
             aria-labelledby="kategori-subheader"
         >
-            <ListSubheader component="div" id="kategori-subheader">
-                Kategori:
-            </ListSubheader>
+            <div component="div" id="kategori-subheader">
+                <TextField id="outlined-basic" margin='dense' label="Kategori:" variant="outlined" />
+            </div>
+            
           {allCategories}
-        </List>
+        </TableBody>
+        <TablePagination
+        id="table-footer"
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={rows.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onChangePage={this.handleChangePage.bind(this)}
+        onChangeRowsPerPage={this.handleChangeRowsPerPage.bind(this)}
+      />
+      </TableContainer>
         )
     }
 }
