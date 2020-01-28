@@ -71,13 +71,13 @@ class Navbar extends Component {
               onClick={this.handleShopcartClick.bind(this)}
             >
               <ShoppingCartIcon/> 
-              <Drawer anchor="right" open={showCart}>
-                <Typography variant="h2" className='navbar-title'>
-                  <Shopcart />
-                </Typography>
-              </Drawer>
               Handlekurv
             </Button>
+            <Drawer anchor="right" open={showCart} className='shopcart-container'>
+              <Typography variant="h2" className='navbar-title'>
+                <Shopcart />  
+              </Typography>
+          </Drawer>
           </Toolbar>
         </AppBar>
       </div>

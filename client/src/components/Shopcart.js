@@ -4,6 +4,8 @@ import { addToCart, removeFromCart, toggleShopcart } from '../actions/shopcart';
 import { setLoader, stopLoader } from '../actions/loading';
 import PropTypes from 'prop-types';
 import { HighlightOff} from '@material-ui/icons';
+import { Typography } from '@material-ui/core';
+import CartItems from './CartItems';
 
 class Shopcart extends Component {
   static propTypes = {
@@ -43,15 +45,16 @@ class Shopcart extends Component {
       <Fragment>
         {
           !loading ? (
-            <div className='shopcart-container'>
-              <h2>Shopping Cart:</h2>
-              <p>test</p>
-              <p>test</p>
+            <Fragment>
               <HighlightOff 
-                className='shopcart-close-btn' 
-                onClick={this.handleCrossClick.bind(this)}
+                  className='shopcart-close-btn'
+                  onClick={this.handleCrossClick.bind(this)}
               />
-            </div>
+              <div className='shopcart-content'>
+                <Typography variant='h3'>Shopping cart:</Typography>
+                <CartItems />
+              </div>
+            </Fragment>
           ) : (
              <p>Loading...</p>
           )
