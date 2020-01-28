@@ -9,6 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import Drawer from '@material-ui/core/Drawer';
+import Badge from '@material-ui/core/Badge';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { toggleShopcart } from '../actions/shopcart';
@@ -41,7 +42,7 @@ class Navbar extends Component {
 
   render() {
     const { left } = this.state; 
-    const {showCart } = this.props;
+    const {shopcart: { showCart, cartItems} } = this.props;
     const sidelist = side => {
       return (
       <div
@@ -70,7 +71,9 @@ class Navbar extends Component {
             <Button color="inherit"
               onClick={this.handleShopcartClick.bind(this)}
             >
-              <ShoppingCartIcon/> 
+              <Badge badgeContent={cartItems.length} color="secondary">
+              <ShoppingCartIcon/>
+              </Badge>
               Handlekurv
             </Button>
             <Drawer anchor="right" open={showCart} className='shopcart-container'>
@@ -86,7 +89,7 @@ class Navbar extends Component {
 }
 
 const mapStateToProps = state => ({
-  showCart: state.shopcart.showCart 
+  shopcart: state.shopcart
 });
 
 const mapDispatchToProps = {

@@ -194,7 +194,11 @@
   font-size: 4rem !important;
   padding: 0.6rem;
   float: left;
-  color: blue;
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(128, 128, 128, 0.428);
+  }
+  
 }
 
 .shopcart-content {

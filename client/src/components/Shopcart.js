@@ -47,6 +47,7 @@ class Shopcart extends Component {
           !loading ? (
             <Fragment>
               <HighlightOff 
+                  color='primary'
                   className='shopcart-close-btn'
                   onClick={this.handleCrossClick.bind(this)}
               />
