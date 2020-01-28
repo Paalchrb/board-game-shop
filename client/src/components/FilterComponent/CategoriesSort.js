@@ -16,7 +16,9 @@ import TextField from '@material-ui/core/TextField';
 import Divider from '@material-ui/core/Divider';
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
-import { Typography, TableRow, TableCell, Table, TableBody, TablePagination, TableContainer } from '@material-ui/core';
+import { Typography, TableRow, TableCell, Table, TableBody, TablePagination, TableContainer, TableFooter } from '@material-ui/core';
+import { FormControl, InputLabel, MenuItem, FormHelperText, Select} from '@material-ui/core'
+import { ArrowBackIos, ArrowForwardIos  } from '@material-ui/icons';
 
 class Category extends React.Component {
   constructor(props) {
@@ -43,9 +45,16 @@ class Category extends React.Component {
     })
 }
 
-handleChangePage = () => {
+handleChangePage = (value, event) => {
+  event.preventDefault()
   const { page } = this.state;
-  this.setState({page: page+1})
+  const newState = page+value;
+  if(newState < 0) {
+    this.setState({page: 0})
+  } else {
+    this.setState({page: page+value})
+  }
+  
 }
   
   handleChangeRowsPerPage = event => {
@@ -93,19 +102,37 @@ handleChangePage = () => {
             
           {allCategories}
         </TableBody>
-        <TablePagination
-        id="table-footer"
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={rows.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onChangePage={this.handleChangePage.bind(this)}
-        onChangeRowsPerPage={this.handleChangeRowsPerPage.bind(this)}
-      />
+
+      <TableFooter id="table-footer">
+      <InputLabel shrink id="demo-simple-select-placeholder-label-label label">
+          Rows pr. Page:
+        </InputLabel>
+        <FormControl id="table-select">
+        
+        <Select
+          labelId="demo-simple-select-placeholder-label-label"
+          id="demo-simple-select-placeholder-label table-select"
+          value={rowsPerPage}
+          onChange={this.handleChangeRowsPerPage.bind(this)}
+          displayEmpty
+        >
+          
+          <MenuItem value={5}>5</MenuItem>
+          <MenuItem value={10}>10</MenuItem>
+          <MenuItem value={15}>15</MenuItem>
+          <MenuItem value={-1}>
+            <em>All</em>
+          </MenuItem>
+        </Select>
+        </FormControl>
+        <div className="table-arrows">
+          <button onClick={this.handleChangePage.bind(this, -1)}><ArrowBackIos /></button>
+          <button onClick={this.handleChangePage.bind(this, 1)}><ArrowForwardIos /></button>
+        </div>
+      
+      </TableFooter>
       </TableContainer>
-        )
-    }
+        )}
 }
 
 Category.propTypes = {

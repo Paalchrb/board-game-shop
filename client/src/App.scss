@@ -157,7 +157,20 @@
   box-shadow: 0 4px 2px -2px gray;
 }
 
-
+#table-footer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  #label{
+    grid-area: 1 / 1;
+  }
+  .table-select {
+    grid-area: 1 / 2;
+  }
+  .table-arrows {
+    display: flex;
+    grid-column-start: 4;
+  }
+}
 
 
 
