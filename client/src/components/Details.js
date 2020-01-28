@@ -66,7 +66,7 @@ class Details extends Component {
         >
           <Grid 
             item container spacing={2} xs={12} md={6} className='details-left-grid'> 
-            <Grid item xs={12}>
+            <Grid item>
               <img src={image_url} alt='codename game' /> 
             </Grid>
             <Grid item xs={12}>
