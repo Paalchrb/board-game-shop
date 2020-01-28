@@ -173,3 +173,18 @@
   width: 300px;
   z-index: 0;
 }
+
+
+//shopcart:
+
+.shopcart-close-btn {
+  font-size: 4rem !important;
+  padding: 0.6rem;
+  float: left;
+  color: blue;
+}
+
+.shopcart-content {
+  display: block;
+  margin-top: $nav-height;
+}
