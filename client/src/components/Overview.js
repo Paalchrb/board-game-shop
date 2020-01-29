@@ -100,7 +100,7 @@ class Overview extends React.Component {
                                 />
                                 <img src={game.images.small} />
                                 <Typography gutterBottom variant="h6" component="h2">{game.name}</Typography>
-                                <Typography variant="body2" component="p" className="price">{currencyFormatter.format((game.price*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'})} NOK</Typography>
+                                <Typography variant="body2" component="p" className="price">{currencyFormatter.format((game.price*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'})}</Typography>
                             </CardActionArea>
                             <Button 
                                 variant="contained" 
