@@ -30,7 +30,7 @@ class Shopcart extends Component {
   }
 
   render() {
-    const { loading, shopcart: { error, cartItems} } = this.props;
+    const { loading, shopcart: { error } } = this.props;
 
     if (error) {
       return (

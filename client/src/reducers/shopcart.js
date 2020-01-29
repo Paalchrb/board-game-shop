@@ -42,7 +42,6 @@ export default function(state=initialState, action) {
           showCart: !state.showCart
         }
       case ADD_TO_CART_ERROR:
-      case REMOVE_FROM_CART_ERROR:
         return {
           ...state,
           error: payload

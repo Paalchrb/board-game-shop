@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Typography } from '@material-ui/core';
 import { HighlightOff} from '@material-ui/icons';
+import { removeFromCart } from '../actions/shopcart';
 
 
 const CartItems = ({
   shopcart: {
     cartItems = []
-  }
+  },
+  removeFromCart
 }) => {
   if(!cartItems.length) {
     return (
@@ -17,11 +19,19 @@ const CartItems = ({
       </Fragment>
     );
   }
+
+  const handleRemoveClick = id => {
+    removeFromCart(id);
+  }
+
   const itemMarkup = cartItems.map((item, index) => (
     <div className='shopcart-item' key={index}>
       <Typography variant='h5'>{item.name}</Typography>
       <Typography variant='body1'>{item.price}</Typography>
-      <HighlightOff className='remove-from-cart-btn' />
+      <HighlightOff 
+        className='remove-from-cart-btn' 
+        onClick={() => handleRemoveClick(item.id)}
+      />
     </div>
   ));
 
@@ -34,10 +44,15 @@ const CartItems = ({
 
 CartItems.propTypes = {
   shopcart: PropTypes.object.isRequired,
+  removeFromCart: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = state => ({
   shopcart: state.shopcart
 });
 
-export default connect(mapStateToProps, null)(CartItems);
+const mapDispatchToProps = {
+  removeFromCart,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CartItems);
