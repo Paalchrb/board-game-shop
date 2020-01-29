@@ -157,7 +157,20 @@
   box-shadow: 0 4px 2px -2px gray;
 }
 
-
+#table-footer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  #label{
+    grid-area: 1 / 1;
+  }
+  .table-select {
+    grid-area: 1 / 2;
+  }
+  .table-arrows {
+    display: flex;
+    grid-column-start: 4;
+  }
+}
 
 
 
@@ -181,10 +194,38 @@
   font-size: 4rem !important;
   padding: 0.6rem;
   float: left;
-  color: blue;
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(128, 128, 128, 0.428);
+  }
+  
 }
 
 .shopcart-content {
   display: block;
   margin-top: $nav-height;
+}
+
+.shopcart-item {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  margin: 20px auto;
+  border-bottom: 0.5px solid lightgray;
+  img {
+    grid-area: 1 / 1;
+    margin-left: 40px;
+  }
+  .shopcart-name {
+    grid-area: 1 / 2;
+    
+  }
+  .shopcart-price {
+    grid-area: 2 / 2;
+    justify-self: end;
+  }
+  .btn {
+    grid-area: 1 / 3;
+    justify-self: end;
+    margin-right: 40px;
+  }
 }

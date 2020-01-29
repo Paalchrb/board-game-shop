@@ -12,6 +12,7 @@ import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Zoom from '@material-ui/core/Zoom';
+import Badge from '@material-ui/core/Badge';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import { addToCart } from '../actions/shopcart';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
@@ -99,7 +100,7 @@ class Overview extends React.Component {
                                 />
                                 <img src={game.images.small} />
                                 <Typography gutterBottom variant="h6" component="h2">{game.name}</Typography>
-                                <Typography variant="body2" component="p" className="price">{currencyFormatter.format((game.price*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'})} NOK</Typography>
+                                <Typography variant="body2" component="p" className="price">{currencyFormatter.format((game.price*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'})}</Typography>
                             </CardActionArea>
                             <Button 
                                 variant="contained" 
@@ -107,7 +108,8 @@ class Overview extends React.Component {
                                 className='add-to-cart-btn'
                                 onClick={() => this.handleCartClick(game.id)}
                             >
-                                <ShoppingCartIcon />
+                                
+                                    <ShoppingCartIcon />
                                 Legg i kurv
                             </Button>
                         </Card>

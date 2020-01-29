@@ -7,6 +7,7 @@ import { HighlightOff} from '@material-ui/icons';
 import { Typography } from '@material-ui/core';
 import CartItems from './CartItems';
 
+
 class Shopcart extends Component {
   static propTypes = {
     addToCart: PropTypes.func.isRequired,
@@ -47,12 +48,14 @@ class Shopcart extends Component {
           !loading ? (
             <Fragment>
               <HighlightOff 
+                  color='primary'
                   className='shopcart-close-btn'
                   onClick={this.handleCrossClick.bind(this)}
               />
               <div className='shopcart-content'>
                 <Typography variant='h3'>Shopping cart:</Typography>
                 <CartItems />
+                
               </div>
             </Fragment>
           ) : (
