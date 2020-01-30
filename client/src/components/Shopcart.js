@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { HighlightOff} from '@material-ui/icons';
 import { Typography } from '@material-ui/core';
 import CartItems from './CartItems';
+import CartSum from './CartSum';
 
 
 class Shopcart extends Component {
@@ -55,6 +56,7 @@ class Shopcart extends Component {
               <div className='shopcart-content'>
                 <Typography variant='h3'>Shopping cart:</Typography>
                 <CartItems />
+                <CartSum />
                 
               </div>
             </Fragment>
