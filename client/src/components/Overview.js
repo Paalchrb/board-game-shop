@@ -17,9 +17,11 @@ import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import { addToCart } from '../actions/shopcart';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { getAllGames } from '../actions/games';
+import { searchGames } from '../services/sessions'
 import { setLoader, stopLoader } from '../actions/loading'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
+import { ArrowBackIos, ArrowForwardIos } from '@material-ui/icons';
 var currencyFormatter = require('currency-formatter');
 
 
@@ -29,18 +31,23 @@ class Overview extends React.Component {
 
         this.state = {
             showScrollButton: 'hideScrollButton',
+            page: 0,
+
         }
     }
 
-  
-
-    componentDidMount = async () => {
+    async componentDidMount () {
         const { getAllGames, setLoader, stopLoader } = this.props;
+        const { page } = this.state;
         await setLoader()
-        await getAllGames({ orderBy: 'popularity' });
+        await getAllGames('popularity', page);
         await stopLoader();
         window.addEventListener('scroll', this.handleScroll.bind(this))
     }
+
+   
+
+   
 
     handleDetailsClick(event, id) {
         const { history } = this.props;
@@ -67,13 +74,36 @@ class Overview extends React.Component {
     async handleCartClick(id) {
         const { addToCart } = this.props;
         const cartItem = await addToCart(id);
-        console.log(cartItem);
     }
 
+    handleChangePage = async (value, event) => {
+        debugger;
+        event.preventDefault()
+        const { page } = this.state;
+        const newState = page+value;
+        if(newState < 0) {
+          this.setState({page: 0})
+        } else {
+          this.setState({page: (page+value)})
+        }
+        const { getAllGames, setLoader, stopLoader } = this.props;
+        await setLoader()
+        await getAllGames('popularity', this.state.page);
+        await stopLoader();
+      }
+
     render() {
-        const {showScrollButton} = this.state;
+        const {showScrollButton, page} = this.state;
         const { games, error } = this.props.games;
         const { loading } = this.props;
+
+        if(!games) {
+            return(
+                <div>
+                 No games found
+                 </div>
+            );
+        }
 
         if (error) {
             return (
@@ -141,6 +171,14 @@ class Overview extends React.Component {
                         <KeyboardArrowUpIcon />
                     </Fab>
                 </Fragment>
+                <div>
+                    <button onClick={this.handleChangePage.bind(this, (-1))}>
+                        <ArrowBackIos />
+                    </button>
+                    <button onClick={this.handleChangePage.bind(this, 1)}>
+                    <ArrowForwardIos  />
+                    </button>
+                </div>
             </div>
 
         )

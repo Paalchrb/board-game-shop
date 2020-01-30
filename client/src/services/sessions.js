@@ -1,8 +1,9 @@
 const API_URL = 'https://www.boardgameatlas.com/api';
 const client_id = 'SB1VGnDv7M'
+const limit = 32
 
-export async function searchGames({ orderBy }) {
-    const response = await fetch(`${API_URL}/search?order_by=${orderBy}&ascending=false&pretty=true&client_id=${client_id}`, {
+export async function searchGames( orderBy, page ) {
+    const response = await fetch(`${API_URL}/search?limit=${limit}&skip=${page*limit}&order_by=${orderBy}&ascending=false&pretty=true&client_id=${client_id}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
