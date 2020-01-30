@@ -73,11 +73,10 @@ class Overview extends React.Component {
 
     async handleCartClick(id) {
         const { addToCart } = this.props;
-        const cartItem = await addToCart(id);
+        await addToCart(id);
     }
 
     handleChangePage = async (value, event) => {
-        debugger;
         event.preventDefault()
         const { page } = this.state;
         const newState = page+value;

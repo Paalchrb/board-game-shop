@@ -42,18 +42,65 @@
 // Details view
 
 .details-container {
-  display: block;
-  width: 80%;
-  min-width: 410px;
-  margin: 0 auto;
-  margin-top: 8rem;
-  text-align: center;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 50px repeat(3, 1fr);
+  column-gap: 20px;
+  row-gap: 20px;
+  //Column 1
+  .title {
+    display: flexbox;
+    flex-direction: column;
+    grid-area: 1 / 1 / 4 / 4;
+    justify-self: center;
+  } 
+  img {
+    display: flexbox;
+    position: relative;
+    flex-direction: column;
+    grid-area: 2 / 1;
+    margin: 0 auto;
+  }
+  .VIPDetails {
+    display: flexbox;
+    flex-direction: column;
+    padding: 20px;
+    grid-area: 3 / 1;
+    li {
+      margin: 10px 0;
+    }
+  }
+  //Column 2
+  .description{
+    grid-area: 2 / 2 / 2 / span 2;
+    padding: 20px;
+    align-self: center;
+    font-size: 1.2rem;
+    line-height: 1.4rem;
+  }
+  .extra-details {
+    grid-area: 3 / 2 / 3 / 3;
+    padding: 20px;
+    li {
+      margin: 10px 0;
+    }
+  }
+  //Column 3
+  .price {
+    grid-area: 3 / 3 / 3 / 3;
+    padding: 20px;
+    align-self: flex-end;
+  }
+  .add-to-cart-btn {
+    grid-area: 3 / 3 / 3 / 3;
+    max-height: 40px;
+    justify-self: end;
+    align-self: flex-end;
+    margin: 20px;
+  }
 }
 
-.details-left-grid, .details-right-grid {
-  border: 1px solid black;
-  text-align: center;
-}
+
 
 
 // Game overview
@@ -233,3 +280,4 @@
     }
   }
 }
+

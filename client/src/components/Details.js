@@ -3,41 +3,75 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Spinner from './Spinner';
 import { getGameDetails, getAllGames } from '../actions/games';
+import { addToCart } from '../actions/shopcart';
+import { getAllCategories } from '../actions/categories';
+import { getGameById } from '../services/sessions'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Button } from '@material-ui/core';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 
 class Details extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      chosenGame: {},
+      error: null
+    }
+  }
   async componentDidMount() {
-    if (this.props.games.games.length === 0) {
-      const { getAllGames } = this.props
-      await getAllGames({ orderBy: 'popularity' });
-    } 
-    const { id } = this.props.match.params;
-    const { getGameDetails } = this.props;
-    getGameDetails(id);
+    try{
+      const { getAllCategories } = this.props;
+      await getAllCategories();
+      const chosenGame = await getGameById(this.props.match.params.id );
+      this.setState({chosenGame})
+      console.log(chosenGame)
+    } catch (error) {
+      this.setState({error})
+    }
+    
   }
 
+  async handleCartClick(id) {
+    const { addToCart } = this.props;
+    const cartItem = await addToCart(id);
+}
+
   render() {
-    if(!this.props.games.chosenGame) {
+    if(!this.state.chosenGame.name) {
       return (
         <Fragment>
             <h3>Something went wrong!</h3>
         </Fragment>
       )
     }
-
+    
     const {
       chosenGame: {
+        id,
         name, 
         year_published, 
         min_players, 
-        max_players, 
-        description,
-        image_url  
+        max_players,
+        min_playtime,
+        max_playtime,
+        min_age,
+        categories, 
+        description_preview,
+        image_url,
+        images: {medium},
+        price,
+        primary_publisher,
+        average_user_rating,
+        rules_url
       },
       loading,
       error
-    } = this.props.games;
+    } = this.state;
+
+    const allCategories = this.props.categories.categories;
+    
 
     if(error) {
       return (
@@ -54,45 +88,40 @@ class Details extends Component {
         </Fragment>
       )
     }
-
+    const categoryNames = categories.map(category => {
+      return allCategories.find(categoryObj => categoryObj.id == category.id);
+    })
+    
+    console.log(categoryNames);
     return (
       <div className='details-container'>
-        <Typography variant='h2'> {name}</Typography>
-        <Grid 
-          container 
-          spacing={2} 
-          justify='space-around'
-          className='details-margin-grid'
+        <Typography variant="h3" className="title">{name}</Typography>
+        <img src={medium} />
+        <ul className="VIPDetails">
+          <li>Players: {min_players} - {max_players}</li>
+          <li> Categories: 
+            {' ' + categoryNames.map(category => category.name).join(', ')}
+          </li>
+          <li>Playtime: {min_playtime} - {max_playtime} min.</li>
+          <li>Minimum age: {min_age}</li>
+        </ul>
+        <Button 
+          variant="contained" 
+          color='primary' 
+          className='add-to-cart-btn'
+          onClick={() => this.handleCartClick(id)}
         >
-          <Grid 
-            item container spacing={2} xs={12} md={6} className='details-left-grid'> 
-            <Grid item>
-              <img src={image_url} alt='codename game' /> 
-            </Grid>
-            <Grid item xs={12}>
-             <Typography variant='body1'> 
-                <span className='bold'>Publication year:</span> {year_published}
-              </Typography>
-            </Grid>
-          </Grid>
-          <Grid 
-            item 
-            container 
-            spacing={2}
-            xs={12} 
-            md={6} 
-            className='details-right-grid'
-            direction='column'
-          > 
-           <Typography variant='h5'>Details:</Typography>
-           <Typography variant='body1'> 
-              <span className='bold'>Players</span> {min_players} - {max_players}
-            </Typography>
-           <Typography variant='body1'> 
-              <span className='bold'>Description:</span> {description}
-            </Typography>
-          </Grid>
-        </Grid>
+          
+          <ShoppingCartIcon />
+          Legg i kurv
+        </Button>
+        <Typography variant="p" className="description">{description_preview}</Typography>
+        <p className="price">Price: {price}</p>
+        <ul className="extra-details">
+          <li>Publisher: {primary_publisher}</li>
+          <li>Rating: {(average_user_rating).toFixed(1)}</li>
+          <li><a href={rules_url} target="blank">Rules</a></li>
+        </ul>
       </div>
     );
   }
@@ -102,15 +131,19 @@ Details.propTypes = {
   games: PropTypes.object.isRequired,
   getGameDetails: PropTypes.func.isRequired,
   getAllGames: PropTypes.func.isRequired,
+  addToCart: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = state => ({
-  games: state.games
+  games: state.games,
+  categories: state.categories
 })
 
 const mapDispatchToProps = {
   getGameDetails,
-  getAllGames
+  getAllGames,
+  getAllCategories,
+  addToCart
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Details);
