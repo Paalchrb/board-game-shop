@@ -7,9 +7,9 @@ import {
 import { searchGames } from '../services/sessions'
 
 
-export const getAllGames = (orderBy) => async dispatch => {
+export const getAllGames = (orderBy, page) => async dispatch => {
     try{
-        const games = await searchGames(orderBy);
+        const games = await searchGames(orderBy, page);
         dispatch({
             type: GET_ALL_GAMES,
             payload: games

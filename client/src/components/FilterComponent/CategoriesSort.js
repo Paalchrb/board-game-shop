@@ -26,9 +26,7 @@ class Category extends React.Component {
 
     this.state = {
       page: 0,
-      setPage: 0,
       rowsPerPage: 5,
-      setRowsPerPage: 5
     }
   }
 
@@ -67,7 +65,7 @@ handleChangePage = (value, event) => {
 
     render() {
       const { categories } = this.props.categories;
-      const { page, setPage, rowsPerPage, setRowsPerPage } = this.state;
+      const { page, rowsPerPage } = this.state;
       
       const rows = []
       const allCategories = categories.map(category => {
