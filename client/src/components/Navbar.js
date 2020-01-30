@@ -7,12 +7,15 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import { ShoppingCart, Search }from '@material-ui/icons';
 import Drawer from '@material-ui/core/Drawer';
 import Badge from '@material-ui/core/Badge';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { setLoader, stopLoader } from '../actions/loading';
 import { toggleShopcart } from '../actions/shopcart';
+import { toggleSearchField, updateSearchWord } from '../actions/search';
+import { getGamesByName } from '../actions/games';
 
 
 
@@ -27,7 +30,21 @@ class Navbar extends Component {
 
   static propTypes = {
     toggleShopcart: PropTypes.func.isRequired,
+    toggleSearchField: PropTypes.func.isRequired,
+    updateSearchWord: PropTypes.func.isRequired,
+    getGamesByName: PropTypes.func.isRequired,
     showCart: PropTypes.bool.isRequired,
+    search: PropTypes.object.isRequired,
+    setLoader: PropTypes.func.isRequired,
+    stopLoader: PropTypes.func.isRequired,
+  }
+
+  componentDidMount() {
+    document.addEventListener('keydown', this.handleEnterPress.bind(this));
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.handleEnterPress.bind(this));
   }
  
 
@@ -40,9 +57,40 @@ class Navbar extends Component {
     toggleShopcart(); 
   }
 
+  handleSeachIconClick = () => {
+    const { toggleSearchField } = this.props;
+    toggleSearchField();
+  }
+
+  handleSearchFieldChange = event => {
+    const searchWord = event.target.value;
+    const { updateSearchWord } = this.props;
+    updateSearchWord(searchWord);
+  }
+
+  async handleEnterPress(event) {
+    if (event.keyCode === 13) {
+      const { search: { searchText } } = this.props;
+      const { getGamesByName, setLoader, stopLoader } = this.props;
+      setLoader();
+      await getGamesByName(searchText);
+      stopLoader();
+    }
+  }
+
   render() {
     const { left } = this.state; 
-    const {shopcart: { showCart, cartItems} } = this.props;
+    const {
+      shopcart: { 
+        showCart, 
+        cartItems
+      }, 
+      search: { 
+        showSearchField, 
+        searchText 
+      } 
+    } = this.props;
+
     const sidelist = side => {
       return (
       <div
@@ -68,11 +116,23 @@ class Navbar extends Component {
             <Typography variant="h6" className='navbar-title'>
               BoardGames
             </Typography>
+            {showSearchField && (
+              <input 
+                type="text" 
+                placeholder='Search!' 
+                className='search-field' 
+                value={searchText}
+                onChange={this.handleSearchFieldChange.bind(this)}
+              />
+            )}
+            <Button onClick={this.handleSeachIconClick.bind(this)}>
+              <Search className='search-icon'/>  
+            </Button>
             <Button color="inherit"
               onClick={this.handleShopcartClick.bind(this)}
             >
               <Badge badgeContent={cartItems.length} color="secondary">
-              <ShoppingCartIcon/>
+                <ShoppingCart />
               </Badge>
               Handlekurv
             </Button>
@@ -89,11 +149,17 @@ class Navbar extends Component {
 }
 
 const mapStateToProps = state => ({
-  shopcart: state.shopcart
+  shopcart: state.shopcart,
+  search: state.search,
 });
 
 const mapDispatchToProps = {
-  toggleShopcart
+  toggleShopcart,
+  toggleSearchField,
+  updateSearchWord,
+  getGamesByName,
+  setLoader,
+  stopLoader
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
