@@ -41,7 +41,6 @@ const CartItems = ({
   return (
     <Fragment>
       {itemMarkup}
-      
     </Fragment>
   )
 }

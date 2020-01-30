@@ -32,3 +32,11 @@ export async function getCategories() {
     const categories = await response.json()
     return categories.categories;
 }
+
+export async function searchGamesByName(text,) {
+    const response = await fetch(`${API_URL}/search?name=${text}&fuzzy_match=true&client_id=${client_id}`, {
+        method: 'GET'
+    });
+    const games = await response.json()
+    return games;
+}

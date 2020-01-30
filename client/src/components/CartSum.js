@@ -11,13 +11,15 @@ const CartSum = ({
 }) => {
   return (
     <Fragment>
-      {cartItems.length && (
+      {cartItems.length ? (
         <div className='sum-container'>
           <Typography variant='h5'>Sum:</Typography>
           <Typography className="shopcart-price" variant='body1'>{currencyFormatter.format((cartItems.reduce((acc, item) => {
             return acc + +item.price;
           }, 0) * 9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'})}</Typography>
         </div>
+      ): (
+        <Fragment></Fragment>
       )}
     </Fragment>
   )

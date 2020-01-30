@@ -35,9 +35,33 @@
 
 .navbar-title {
   flex-grow: 1;
-  text-align: center;
+  text-align: left;
+  padding-left: 1.5rem;
 }
 
+.search-field {
+  background-color: rgb(151, 151, 255);
+  border-radius: 5px;
+  padding: 0.5rem;
+  padding-left: 1.5rem;
+  border: solid 1px rgb(153, 153, 238);
+  width: 200px;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 500;
+  letter-spacing: 0.03rem;
+  animation: fadein 0.7s;
+  &::placeholder {
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 500;
+    letter-spacing: 0.03rem;
+  }
+}
+
+.search-icon {
+  color: white;
+}
 
 // Details view
 
@@ -115,9 +139,13 @@
 
 
 
-@keyframes fadein {
+@keyframes scalein {
   from { transform: scale(0) }
   to { transform: scale(1) }
+}
+@keyframes fadein {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .showScrollButton {
@@ -125,7 +153,7 @@
   position: sticky !important;
   bottom: 5px;
   left: 49%;
-  animation: fadein .2s;
+  animation: scalein .2s;
 }
 
 @keyframes fadeout {
@@ -204,20 +232,19 @@
 .shopcart-content {
   display: block;
   margin-top: $nav-height;
+  max-width: 400px;
 }
 
 .shopcart-item {
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-columns: 50px 1fr 80px;
   margin: 20px auto;
   border-bottom: 0.5px solid lightgray;
   img {
     grid-area: 1 / 1;
-    margin-left: 40px;
   }
   .shopcart-name {
     grid-area: 1 / 2;
-    
   }
   .shopcart-price {
     grid-area: 2 / 2;
@@ -232,4 +259,10 @@
       fill: red;
     }
   }
+}
+
+.sum-container {
+  display: block;
+  float: right;
+  margin-right: 4rem;
 }
