@@ -11,6 +11,7 @@ export const getAllCategories = () => async dispatch => {
             type: GET_CATEGORIES,
             payload: categories
         })
+        return categories
     } catch(error) {
         dispatch({
             type: GET_CATEGORIES_ERROR,

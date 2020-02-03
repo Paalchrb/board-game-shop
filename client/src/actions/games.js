@@ -4,9 +4,11 @@ import {
     GET_GAME_DETAILS,
     GAME_DETAILS_ERROR,
     GET_GAMES_BY_NAME,
-    GET_GAMES_BY_NAME_ERROR
+    GET_GAMES_BY_NAME_ERROR,
+    GET_GAMES_BY_CATEGORIES,
+    GET_GAMES_BY_CATEGORIES_ERROR
 } from './constants';
-import { searchGames, searchGamesByName } from '../services/sessions'
+import { searchGames, searchGamesByName, searchGamesByCategories } from '../services/sessions'
 
 
 export const getAllGames = (orderBy, page) => async dispatch => {
@@ -39,7 +41,6 @@ export const getGameDetails = (id) => dispatch => {
 }
 
 export const getGamesByName = text => async dispatch => {
-    console.log('test');
     try {
         const games = await searchGamesByName(text);
         dispatch({
@@ -49,6 +50,21 @@ export const getGamesByName = text => async dispatch => {
     } catch (error) {
         dispatch({
             type: GET_GAMES_BY_NAME_ERROR,
+            payload: error
+        })
+    }
+}
+
+export const getGamesByCategories = categories => async dispatch => {
+    try {
+        const games = await searchGamesByCategories(categories);
+        dispatch({
+            type: GET_GAMES_BY_CATEGORIES,
+            payload: games
+        })
+    } catch(error) {
+        dispatch({
+            type: GET_GAMES_BY_CATEGORIES_ERROR,
             payload: error
         })
     }

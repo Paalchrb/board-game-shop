@@ -1,6 +1,6 @@
 import React from 'react';
 import { getAllCategories } from '../../actions/categories'
-
+import { getGamesByCategories } from '../../actions/games';
 import List from '@material-ui/core/List';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import ListItem from '@material-ui/core/ListItem';
@@ -27,12 +27,19 @@ class Category extends React.Component {
     this.state = {
       page: 0,
       rowsPerPage: 5,
+      selected: [],
+      count: 0
     }
   }
 
   componentDidMount = async () => {
-    const { getAllCategories } = this.props;
-    await getAllCategories();
+    if(!localStorage.getItem('categories')) {
+      const { getAllCategories } = this.props;
+      const Cats = await getAllCategories();
+      localStorage.setItem('categories', JSON.stringify(Cats))
+    } 
+
+    
     
   }
   handleScrollTopClick () {
@@ -60,24 +67,42 @@ handleChangePage = (value, event) => {
     this.handleScrollTopClick();
   }
 
+  handleClick = async (id) => {
+      const { count } = this.state;
+      const { getGamesByCategories } = this.props;
+      const categories = JSON.parse(localStorage.getItem('categories'))
+      console.log(id)
+      const index = categories.findIndex(category => category.id === id )
+      console.log(index)
+      categories[index].checked = !categories[index].checked
+      localStorage.setItem('categories', JSON.stringify(categories))
+      this.setState({count: count+1})
+      const checked = categories.filter(category => category.checked).map(category => category.id).join(',')
+      localStorage.setItem('Cheked-categories', checked)
+      await getGamesByCategories(checked);
 
+  }
+
+  isSeleceted = name => this.state.selected.indexOf(name) !== -1;
   
 
     render() {
-      const { categories } = this.props.categories;
+      const categories = JSON.parse(localStorage.getItem('categories'));
       const { page, rowsPerPage } = this.state;
       
       const rows = []
       const allCategories = categories.map(category => {
         rows.push(category)
+        const isItemSelected = this.isSeleceted(category)
         return (
           <TableRow>
-              <TableCell>
+              <TableCell >
             <FormGroup column>
 
               <FormControlLabel
+                
                 control ={
-                  <Checkbox color="primary" value={category.id} />
+                  <Checkbox color="primary" checked={category.checked} value={category.id} onClick={this.handleClick.bind(this, category.id)} />
                 }
                 label={category.name}
                 
@@ -135,15 +160,17 @@ handleChangePage = (value, event) => {
 
 Category.propTypes = {
   categories: PropTypes.object.isRequired,
-  getAllCategories: PropTypes.func.isRequired
+  getAllCategories: PropTypes.func.isRequired,
+  getGamesByCategories: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {
   return {
       categories: state.categories,
+      games: state.games
   }
 }
 
-const mapDispatchToProps = {getAllCategories}
+const mapDispatchToProps = {getAllCategories, getGamesByCategories}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Category);

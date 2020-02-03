@@ -40,3 +40,11 @@ export async function searchGamesByName(text,) {
     const games = await response.json()
     return games;
 }
+
+export async function searchGamesByCategories(categories) {
+    const response = await fetch(`${API_URL}/search?categories=${categories}&client_id=${client_id}`, {
+        method: 'GET'
+    });
+    const { games } = await response.json()
+    return games;
+}

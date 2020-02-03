@@ -5,13 +5,14 @@ import {
     GAME_DETAILS_ERROR,
     GET_GAMES_BY_NAME_ERROR,
     GET_GAMES_BY_NAME,
+    GET_GAMES_BY_CATEGORIES,
+    GET_GAMES_BY_CATEGORIES_ERROR,
 } from '../actions/constants';
 
 const initialState = {
     games: [],
     chosenGame: {},
     error: null,
-    loading: true
 }
 
 function getIndex(array, id) {
@@ -25,23 +26,26 @@ export default function(state=initialState, action) {
         case GET_GAMES_BY_NAME:
             return {
                 ...state, 
-                games: payload, 
-                loading: false 
+                games: payload,  
             }
         case GET_ALL_GAMES_ERROR:
         case GAME_DETAILS_ERROR:
         case GET_GAMES_BY_NAME_ERROR:
+        case GET_GAMES_BY_CATEGORIES_ERROR:
             return {
                 ...state,
                 error: payload,
-                loading: false
             }
         case GET_GAME_DETAILS:
             let index = getIndex(state.games, payload);
             return {
                 ...state,
                 chosenGame: state.games[index],
-                loading: false
+            }
+        case GET_GAMES_BY_CATEGORIES:
+            return {
+                ...state,
+                games: payload,
             }
         default:
             return state;

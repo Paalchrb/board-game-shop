@@ -16,7 +16,7 @@ import Badge from '@material-ui/core/Badge';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import { addToCart } from '../actions/shopcart';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import { getAllGames } from '../actions/games';
+import { getAllGames, getGamesByCategories } from '../actions/games';
 import { searchGames } from '../services/sessions'
 import { setLoader, stopLoader } from '../actions/loading'
 import { connect } from 'react-redux'
@@ -111,11 +111,25 @@ class Overview extends React.Component {
                 </Fragment>
             )
         }
+
+        if(loading) {
+            Array.from(new Array(30)).map((element, index) => {
+                return(
+                    <Grid item xs={12} sm={6} md={3} lg={3} className="overviewGrid" key={index}>
+                        <Card className='skeleton-card'>
+                            <Skeleton className='skeleton-image' variant="rect" />   
+                            <Skeleton className='skeleton-text' width='83%' />
+                            <Skeleton className='skeleton-text' width='38%' />
+                            <Skeleton className='skeleton-button' variant='rect' />
+                        </Card>
+                    </Grid>
+                )    
+        })
+        }
        
-        const gameNames = (loading ? Array.from(new Array(30)) : games).map((game, index) => {
+        const gameNames = games.filter(game => game.price > 0).map((game, index) => {
             return (
                 <Grid item xs={12} sm={6} md={3} lg={3} className="overviewGrid" key={index}>
-                    {game ? (
                         <Card
                             className='game-card'
                         >
@@ -142,14 +156,6 @@ class Overview extends React.Component {
                                 Legg i kurv
                             </Button>
                         </Card>
-                    ) : (
-                        <Card className='skeleton-card'>
-                            <Skeleton className='skeleton-image' variant="rect" />   
-                            <Skeleton className='skeleton-text' width='83%' />
-                            <Skeleton className='skeleton-text' width='38%' />
-                            <Skeleton className='skeleton-button' variant='rect' />
-                        </Card>
-                    )}
                 </Grid>
             );
         });
@@ -190,12 +196,14 @@ Overview.propTypes = {
     setLoader: PropTypes.func.isRequired,
     stopLoader: PropTypes.func.isRequired,
     addToCart: PropTypes.func.isRequired,
+    
+    
 }
 
 function mapStateToProps(state) {
     return {
         games: state.games,
-        loading: state.loading.isLoading
+        loading: state.loading.isLoading,
     }
 }
 
@@ -203,7 +211,8 @@ const mapDispatchToProps = {
     getAllGames,
     setLoader, 
     stopLoader,
-    addToCart
+    addToCart,
+    getGamesByCategories
 } 
 
 export default connect(mapStateToProps, mapDispatchToProps)(Overview);
