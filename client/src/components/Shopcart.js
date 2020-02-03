@@ -57,7 +57,6 @@ class Shopcart extends Component {
                 <Typography variant='h3'>Shopping cart:</Typography>
                 <CartItems />
                 <CartSum />
-                
               </div>
             </Fragment>
           ) : (
