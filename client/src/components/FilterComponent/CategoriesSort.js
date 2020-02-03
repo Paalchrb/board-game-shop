@@ -66,6 +66,8 @@ handleChangePage = (value, event) => {
     render() {
       const { categories } = this.props.categories;
       const { page, rowsPerPage } = this.state;
+
+      
       
       const rows = []
       const allCategories = categories.map(category => {

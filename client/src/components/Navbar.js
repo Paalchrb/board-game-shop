@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Sortlist from './Sortlist';
 import Shopcart from './Shopcart';
+import { withRouter } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -71,9 +72,10 @@ class Navbar extends Component {
   async handleEnterPress(event) {
     if (event.keyCode === 13) {
       const { search: { searchText } } = this.props;
-      const { getGamesByName, setLoader, stopLoader } = this.props;
+      const { getGamesByName, setLoader, stopLoader, history } = this.props;
       setLoader();
       await getGamesByName(searchText);
+      history.push('/');
       stopLoader();
     }
   }
@@ -162,4 +164,4 @@ const mapDispatchToProps = {
   stopLoader
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Navbar);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Navbar));

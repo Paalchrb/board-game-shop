@@ -37,11 +37,13 @@ class Overview extends React.Component {
     }
 
     async componentDidMount () {
-        const { getAllGames, setLoader, stopLoader } = this.props;
+        const { getAllGames, setLoader, stopLoader, games } = this.props;
         const { page } = this.state;
-        await setLoader()
-        await getAllGames('popularity', page);
-        await stopLoader();
+        if (!games.games.length) {
+            await setLoader()
+            await getAllGames('popularity', page);
+            await stopLoader();
+        }
         window.addEventListener('scroll', this.handleScroll.bind(this))
     }
 

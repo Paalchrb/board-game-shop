@@ -16,7 +16,7 @@ const CartItems = ({
   if(!cartItems.length) {
     return (
       <Fragment>
-        <Typography variant='body1'>No items in cart!</Typography>
+        <Typography variant='body1' style={{textAlign: "center", marginTop: "1rem"}}>No items in cart!</Typography>
       </Fragment>
     );
   }
