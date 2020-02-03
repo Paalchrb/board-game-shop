@@ -15,7 +15,7 @@ const App = () => {
       <div className="App">
         <Navbar />
         <HashRouter>
-          <Container maxWidth="lg" className='content-area' style={{ marginTop: '8vh', height: '92vh'}}>
+          <Container maxWidth="lg" className='content-area' style={{ marginTop: '6.8vh', height: '92vh'}}>
             <Switch>
               <Route path='/' exact component={Overview} />
               <Route path='/details/:id' component={Details} />
