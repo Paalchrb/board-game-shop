@@ -54,7 +54,7 @@ class Shopcart extends Component {
                   onClick={this.handleCrossClick.bind(this)}
               />
               <div className='shopcart-content'>
-                <Typography variant='h3'>Shopping cart:</Typography>
+                <Typography variant='h3' component="h3">Shopping cart:</Typography>
                 <CartItems />
                 <CartSum />
               </div>

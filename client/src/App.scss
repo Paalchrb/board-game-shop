@@ -284,7 +284,12 @@
 .shopcart-content {
   display: block;
   margin-top: $nav-height;
-  max-width: 400px;
+  min-width: 380px;
+  max-width: 500px;
+  h3 {
+    display: block;
+    margin: 0 25px;
+  }
 }
 
 .shopcart-item {
