@@ -18,13 +18,17 @@ class Players extends React.Component {
   constructor(props) {
     super(props);
 
-   
+    
 
   }
 
   async handlePlayerFilter (event) {
     const { getGamesByCategories } = this.props;
-      await getGamesByCategories('', event.target.value)
+    if(event.target.checked) {
+      await getGamesByCategories('', event.target.value, event.target.value+1)
+    } else {
+      await getGamesByCategories('', 0)
+    } 
     
   }
   
@@ -41,7 +45,7 @@ class Players extends React.Component {
             <FormGroup column>
               <FormControlLabel
                 control ={
-                  <Checkbox color="primary" value={2} onChange={this.handlePlayerFilter.bind(this)} />
+                  <Checkbox color="primary" value={2} onClick={this.handlePlayerFilter.bind(this)} />
                 }
                 label="2"
                 
@@ -57,7 +61,7 @@ class Players extends React.Component {
             <FormGroup column>
               <FormControlLabel
                 control ={
-                  <Checkbox color="primary" value={4} onClick={this.handlePlayerFilter.bind(this)}/>
+                  <Checkbox color="primary" value={4}  onClick={this.handlePlayerFilter.bind(this)}/>
                 }
                 label="4 - 6"
                 
