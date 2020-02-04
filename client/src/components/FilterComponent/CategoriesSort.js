@@ -1,6 +1,7 @@
 import React from 'react';
 import { getAllCategories } from '../../actions/categories'
-import { getGamesByCategories } from '../../actions/games';
+import { getGamesByCategories, getAllGames } from '../../actions/games';
+import { setLoader, stopLoader } from '../../actions/loading';
 import List from '@material-ui/core/List';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import ListItem from '@material-ui/core/ListItem';
@@ -69,19 +70,21 @@ handleChangePage = (value, event) => {
 
   handleClick = async (id) => {
       const { count } = this.state;
-      const { getGamesByCategories } = this.props;
+      const { getGamesByCategories, getAllGames } = this.props;
       const categories = JSON.parse(localStorage.getItem('categories'))
-      console.log(id)
+      
       const index = categories.findIndex(category => category.id === id )
-      console.log(index)
       categories[index].checked = !categories[index].checked
       localStorage.setItem('categories', JSON.stringify(categories))
       this.setState({count: count+1})
       const checked = categories.filter(category => category.checked).map(category => category.id).join(',')
-      localStorage.setItem('Cheked-categories', checked)
-      await getGamesByCategories(checked);
+      console.log(checked)
+        localStorage.setItem('Cheked-categories', checked)
+        await getGamesByCategories(checked);
+      }
+      
 
-  }
+  
 
   isSeleceted = name => this.state.selected.indexOf(name) !== -1;
   
@@ -148,10 +151,10 @@ handleChangePage = (value, event) => {
           </MenuItem>
         </Select>
         </FormControl>
-        <div className="table-arrows">
+        <TableCell className="table-arrows">
           <button onClick={this.handleChangePage.bind(this, -1)}><ArrowBackIos /></button>
           <button onClick={this.handleChangePage.bind(this, 1)}><ArrowForwardIos /></button>
-        </div>
+        </TableCell>
       
       </TableFooter>
       </TableContainer>
@@ -162,15 +165,19 @@ Category.propTypes = {
   categories: PropTypes.object.isRequired,
   getAllCategories: PropTypes.func.isRequired,
   getGamesByCategories: PropTypes.func.isRequired,
+  getAllGames: PropTypes.func.isRequired,
+  setLoader: PropTypes.func.isRequired,
+  stopLoader: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {
   return {
       categories: state.categories,
-      games: state.games
+      games: state.games,
+      loading: state.loading.isLoading
   }
 }
 
-const mapDispatchToProps = {getAllCategories, getGamesByCategories}
+const mapDispatchToProps = {getAllCategories, getGamesByCategories, getAllGames}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Category);

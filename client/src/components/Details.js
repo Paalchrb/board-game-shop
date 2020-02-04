@@ -98,12 +98,12 @@ class Details extends Component {
         <Typography variant="h3" className="title">{name}</Typography>
         <img src={medium} />
         <ul className="VIPDetails">
-          <li>Players: {min_players} - {max_players}</li>
+          <li>Players: { min_players ? min_players + '-' + max_players : 'Unknown'}</li>
           <li> Categories: 
             {' ' + categoryNames.map(category => category.name).join(', ')}
           </li>
-          <li>Playtime: {min_playtime} - {max_playtime} min.</li>
-          <li>Minimum age: {min_age}</li>
+          <li>Playtime: { min_playtime ? min_playtime + '-' + max_playtime : 'Unknown'} min.</li>
+          <li>Minimum age: { min_age ? min_age : 'Unknown' }</li>
         </ul>
         <Button 
           variant="contained" 

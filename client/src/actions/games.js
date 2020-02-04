@@ -12,6 +12,7 @@ import { searchGames, searchGamesByName, searchGamesByCategories } from '../serv
 
 
 export const getAllGames = (orderBy, page) => async dispatch => {
+    console.log(orderBy, page)
     try{
         const games = await searchGames(orderBy, page);
         dispatch({
@@ -55,9 +56,9 @@ export const getGamesByName = text => async dispatch => {
     }
 }
 
-export const getGamesByCategories = categories => async dispatch => {
+export const getGamesByCategories = (categories, minPlayers, maxPlayers) => async dispatch => {
     try {
-        const games = await searchGamesByCategories(categories);
+        const games = await searchGamesByCategories(categories, minPlayers, maxPlayers);
         dispatch({
             type: GET_GAMES_BY_CATEGORIES,
             payload: games

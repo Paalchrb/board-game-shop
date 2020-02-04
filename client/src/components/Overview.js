@@ -32,21 +32,22 @@ class Overview extends React.Component {
         this.state = {
             showScrollButton: 'hideScrollButton',
             page: 0,
+            orderBy: 'popularity'
 
         }
     }
 
     async componentDidMount () {
+        console.log("Component Did Mount")
         const { getAllGames, setLoader, stopLoader } = this.props;
-        const { page } = this.state;
+        const { page, orderBy } = this.state;
         await setLoader()
         await getAllGames('popularity', page);
         await stopLoader();
         window.addEventListener('scroll', this.handleScroll.bind(this))
     }
 
-   
-
+    
    
 
     handleDetailsClick(event, id) {
@@ -78,7 +79,7 @@ class Overview extends React.Component {
 
     handleChangePage = async (value, event) => {
         event.preventDefault()
-        const { page } = this.state;
+        const { page, orderBy } = this.state;
         const newState = page+value;
         if(newState < 0) {
           this.setState({page: 0})
@@ -87,15 +88,24 @@ class Overview extends React.Component {
         }
         const { getAllGames, setLoader, stopLoader } = this.props;
         await setLoader()
-        await getAllGames('popularity', this.state.page);
+        await getAllGames(orderBy, this.state.page);
         await stopLoader();
       }
 
+    //   handleFilterChange = async (event) => {
+    //     const filterProp = event.target.value;
+    //     const { page } = this.state;
+    //     if(filterProp === '') {
+    //         this.setState({orderBy: 'popularity'})
+    //     } else {
+    //         this.setState({orderBy: filterProp})
+    //     }
+    //   }
+
     render() {
-        const {showScrollButton, page} = this.state;
+        const {showScrollButton, page, orderBy} = this.state;
         const { games, error } = this.props.games;
         const { loading } = this.props;
-
         if(!games) {
             return(
                 <div>
@@ -103,7 +113,6 @@ class Overview extends React.Component {
                  </div>
             );
         }
-
         if (error) {
             return (
                 <Fragment>
@@ -113,7 +122,8 @@ class Overview extends React.Component {
         }
 
         if(loading) {
-            Array.from(new Array(30)).map((element, index) => {
+            
+            const Skeletons = Array.from(new Array(30)).map((element, index) => {
                 return(
                     <Grid item xs={12} sm={6} md={3} lg={3} className="overviewGrid" key={index}>
                         <Card className='skeleton-card'>
@@ -124,10 +134,15 @@ class Overview extends React.Component {
                         </Card>
                     </Grid>
                 )    
-        })
+        }) 
+        return(
+            <Grid container spacing={3} className="overviewGridContainer">
+                {Skeletons}
+            </Grid>
+        )
         }
        
-        const gameNames = games.filter(game => game.price > 0).map((game, index) => {
+        const gameNames = games.map((game, index) => {
             return (
                 <Grid item xs={12} sm={6} md={3} lg={3} className="overviewGrid" key={index}>
                         <Card
@@ -162,6 +177,12 @@ class Overview extends React.Component {
         return(
             <div>
                 <Fragment>
+                    {/* <div>
+                        <select onChange={this.handleFilterChange.bind(this)}>
+                            <option value="">Filtrer med:</option>
+                            <option value="name">Navn</option>
+                        </select>
+                    </div> */}
                     <Grid container spacing={3} className="overviewGridContainer">
                         {gameNames}
                     </Grid>
