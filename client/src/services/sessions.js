@@ -1,6 +1,8 @@
+import { validCats } from './validCategories';
 const API_URL = 'https://www.boardgameatlas.com/api';
 const client_id = 'SB1VGnDv7M'
 const limit = 32
+
 
 export async function searchGames( orderBy, page ) {
     const response = await fetch(`${API_URL}/search?limit=${limit}&skip=${page*limit}&order_by=${orderBy}&ascending=false&pretty=true&client_id=${client_id}`, {
@@ -30,6 +32,8 @@ export async function getCategories() {
         }
     })
     const categories = await response.json()
+   /*  const filteredCats = categories.categories.filter(cat => validCats.includes(cat.id));
+    return filteredCats; */
     return categories.categories;
 }
 
