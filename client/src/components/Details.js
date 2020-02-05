@@ -58,7 +58,7 @@ class Details extends Component {
 
   async handleCartClick(id) {
     const { addToCart } = this.props;
-    const cartItem = await addToCart(id);
+    await addToCart(id);
 }
 
 async handleDetailsClick(event, id) {
@@ -87,7 +87,6 @@ async handleDetailsClick(event, id) {
       chosenGame: {
         id,
         name, 
-        year_published, 
         min_players, 
         max_players,
         min_playtime,
@@ -95,7 +94,6 @@ async handleDetailsClick(event, id) {
         min_age,
         categories, 
         description_preview,
-        image_url,
         images: {medium},
         price,
         primary_publisher,
@@ -107,7 +105,7 @@ async handleDetailsClick(event, id) {
     const { loading } = this.props;
     const allCategories = this.props.categories.categories;
     
-    console.log(relatedGames)
+    
     if(error) {
       return (
         <Fragment>
@@ -131,19 +129,20 @@ async handleDetailsClick(event, id) {
     }
 
     const categoryNames = categories.map(category => {
-      return allCategories.find(categoryObj => categoryObj.id == category.id);
+      return allCategories.find(categoryObj => categoryObj.id === category.id);
     })
 
     const otherGames = relatedGames.filter(game => game.id !== id).map(game => {
       return (
         <Card
                             className='game-card'
+                            key={game.id}
                         >
                             <CardActionArea 
                                 className="gameOverview"
                                 onClick={event => this.handleDetailsClick(event, game.id)}
                              >
-                                <img src={game.images.small} />
+                                <img src={game.images.small} alt={game.name}/>
                                 <Typography gutterBottom variant="h6" component="h2">{game.name}</Typography>
                                 <Typography variant="body2" component="p" className="price">{currencyFormatter.format((game.price*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'})}</Typography>
                             </CardActionArea>
@@ -168,7 +167,7 @@ async handleDetailsClick(event, id) {
         
       <div className='details-container'>
         <Typography variant="h3" className="title">{name}</Typography>
-        <img src={medium} className="img"/>
+        <img src={medium} className="img" alt={name}/>
         <ul className="VIPDetails">
           <li>Players: { min_players ? min_players + '-' + max_players : 'Unknown'}</li>
           <li> Categories: 
@@ -187,7 +186,7 @@ async handleDetailsClick(event, id) {
           <ShoppingCartIcon />
           Legg i kurv
         </Button>
-        <Typography variant="p" className="description">{description_preview}</Typography>
+        <Typography variant="body1" className="description">{description_preview}</Typography>
         <p className="price">Price: {price}</p>
         <ul className="extra-details">
           <li>Publisher: {primary_publisher}</li>

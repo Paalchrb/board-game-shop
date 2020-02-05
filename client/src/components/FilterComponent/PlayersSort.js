@@ -33,7 +33,7 @@ class Players extends React.Component {
             </ListSubheader>
           <ListItem>
               
-            <FormGroup column>
+            <FormGroup >
               <FormControlLabel
                 control ={
                   <Checkbox color="primary" value={2} onClick={this.handlePlayerFilter.bind(this)} />
@@ -49,7 +49,7 @@ class Players extends React.Component {
           </ListItem>
           <ListItem>
               
-            <FormGroup column>
+            <FormGroup >
               <FormControlLabel
                 control ={
                   <Checkbox color="primary" value={4}  onClick={this.handlePlayerFilter.bind(this)}/>
@@ -65,7 +65,7 @@ class Players extends React.Component {
           </ListItem>
           <ListItem>
               
-            <FormGroup column>
+            <FormGroup >
               <FormControlLabel
                 control ={
                   <Checkbox color="primary" value="6" />
@@ -86,11 +86,7 @@ class Players extends React.Component {
 
 Players.propTypes = {
   categories: PropTypes.object.isRequired,
-  getAllCategories: PropTypes.func.isRequired,
   getGamesByCategories: PropTypes.func.isRequired,
-  getAllGames: PropTypes.func.isRequired,
-  setLoader: PropTypes.func.isRequired,
-  stopLoader: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {
