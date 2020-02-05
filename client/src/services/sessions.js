@@ -55,7 +55,7 @@ export async function searchGamesByCategories(categories, minPlayers, maxPlayers
     if(maxPlayers === undefined) {
         maxPlayers = 20
     }
-    const response = await fetch(`${API_URL}/search?categories=${categories}&gt_min_players=${minPlayers-1}&lt_max_players=${maxPlayers}&order_by=popularity&&client_id=${client_id}&gt_price=${minPrice}`, {
+    const response = await fetch(`${API_URL}/search?categories=${categories}&gt_min_players=${minPlayers}&lt_max_players=${maxPlayers}&order_by=popularity&&client_id=${client_id}&gt_price=${minPrice}`, {
         method: 'GET'
     });
     const { games } = await response.json()

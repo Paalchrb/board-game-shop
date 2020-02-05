@@ -1,45 +1,76 @@
 import React, { Component, Fragment } from 'react'
-import Grid from '@material-ui/core/Grid';
+import { Link } from 'react-router-dom';
+import Card from '@material-ui/core/Card';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import CardActionArea from '@material-ui/core/CardActionArea';
 import Typography from '@material-ui/core/Typography';
-import Spinner from './Spinner';
-import { getGameDetails, getAllGames } from '../actions/games';
+import Skeleton from '@material-ui/lab/Skeleton';
+import { getGameDetails, getAllGames, getGamesByCategories } from '../actions/games';
+import { setLoader, stopLoader } from '../actions/loading';
 import { addToCart } from '../actions/shopcart';
 import { getAllCategories } from '../actions/categories';
-import { getGameById } from '../services/sessions'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Button } from '@material-ui/core';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+var currencyFormatter = require('currency-formatter');
 
 class Details extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      chosenGame: {},
+      relatedGames: [],
       error: null
     }
   }
   async componentDidMount() {
     try{
-      const { getAllCategories } = this.props;
+      const { getAllCategories, getGamesByCategories, getGameDetails, setLoader, stopLoader } = this.props;
+      await setLoader()
       await getAllCategories();
-      const chosenGame = await getGameById(this.props.match.params.id );
-      this.setState({chosenGame})
-      console.log(chosenGame)
+      const chosenGame = await getGameDetails(this.props.match.params.id );
+      const chosenGameCategories = await chosenGame.categories.map(id => id.id)
+      const catStr = await chosenGameCategories[0]
+      const relatedGames = await getGamesByCategories(catStr)
+      this.setState({chosenGame, relatedGames})
+      await stopLoader();
     } catch (error) {
       this.setState({error})
     }
     
   }
 
+  async componentDidUpdate (prevProp, prevState) {
+    const { getGameDetails } = this.props
+    if(this.props.match.params.id !== prevProp.match.params.id) {
+      await getGameDetails(this.props.match.params.id);
+      await this.handleScrollTop();
+    } 
+  }
+
+  handleScrollTop () {
+    return window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+        block: 'center'
+    })
+}
+
   async handleCartClick(id) {
     const { addToCart } = this.props;
     const cartItem = await addToCart(id);
 }
 
+async handleDetailsClick(event, id) {
+  const { history, getGameDetails } = this.props;
+  const chosenGame = await getGameDetails(id);
+  this.setState({chosenGame})
+  history.push(`/details/${id}`);
+  
+}
+
   render() {
-    if(!this.state.chosenGame.name) {
+    if(!this.props.games.chosenGame.name) {
       return (
         <Fragment>
             <h3>Something went wrong!</h3>
@@ -47,6 +78,11 @@ class Details extends Component {
       )
     }
     
+    const {
+      relatedGames,
+      error
+    } = this.state;
+
     const {
       chosenGame: {
         id,
@@ -65,38 +101,74 @@ class Details extends Component {
         primary_publisher,
         average_user_rating,
         rules_url
-      },
-      loading,
-      error
-    } = this.state;
+      } 
+    } = this.props.games
 
+    const { loading } = this.props;
     const allCategories = this.props.categories.categories;
     
-
+    console.log(relatedGames)
     if(error) {
       return (
         <Fragment>
-            <h3>Something went wrong!</h3>
+            <h3>{error.message}</h3>
         </Fragment>
       )
     }
 
     if(loading) {
-      return (
-        <Fragment>
-            <Spinner />
-        </Fragment>
+      return(
+        <div className="details-container">
+          <Skeleton className="title" height="70px" width="300px" />
+          <Skeleton className="img" height='90%' width="300px" margin="0" />
+          <Skeleton className="VIPDetails" />
+          <Skeleton className="add-to-cart-btn" height="40px" />
+          <Skeleton className="description" height="400px" />
+          <Skeleton className="price" width="80px" />
+          <Skeleton className="extra-details" />
+        </div>
       )
     }
+
     const categoryNames = categories.map(category => {
       return allCategories.find(categoryObj => categoryObj.id == category.id);
     })
-    
-    console.log(categoryNames);
+
+    const otherGames = relatedGames.filter(game => game.id !== id).map(game => {
+      return (
+        <Card
+                            className='game-card'
+                        >
+                            <CardActionArea 
+                                className="gameOverview"
+                                onClick={event => this.handleDetailsClick(event, game.id)}
+                             >
+                                <img src={game.images.small} />
+                                <Typography gutterBottom variant="h6" component="h2">{game.name}</Typography>
+                                <Typography variant="body2" component="p" className="price">{currencyFormatter.format((game.price*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'})}</Typography>
+                            </CardActionArea>
+                            <Button 
+                                variant="contained" 
+                                color='primary' 
+                                className='add-to-cart-btn'
+                                onClick={() => this.handleCartClick(game.id)}
+                            >
+                                
+                                    <ShoppingCartIcon />
+                                Legg i kurv
+                            </Button>
+                        </Card>
+      )
+    }).slice(0, 10)
+
     return (
+      <Fragment>
+        
+          <Link to="/" id="home"><Typography variant="overline">Home</Typography></Link>
+        
       <div className='details-container'>
         <Typography variant="h3" className="title">{name}</Typography>
-        <img src={medium} />
+        <img src={medium} className="img"/>
         <ul className="VIPDetails">
           <li>Players: { min_players ? min_players + '-' + max_players : 'Unknown'}</li>
           <li> Categories: 
@@ -119,10 +191,16 @@ class Details extends Component {
         <p className="price">Price: {price}</p>
         <ul className="extra-details">
           <li>Publisher: {primary_publisher}</li>
-          <li>Rating: {(average_user_rating).toFixed(1)}</li>
-          <li><a href={rules_url} target="blank">Rules</a></li>
+          <li>Rating: {average_user_rating ? (average_user_rating).toFixed(1) : 0}</li>
+          <li><a href={rules_url} target="blank">{rules_url ? 'Rules' : 'No rules found'}</a></li>
         </ul>
+        
       </div>
+      <Typography variant="h4" component="h4" id="related-title">Related games:</Typography>
+      <div className="relatedGames">
+        {otherGames}
+      </div>
+    </Fragment>
     );
   }
 }
@@ -132,18 +210,23 @@ Details.propTypes = {
   getGameDetails: PropTypes.func.isRequired,
   getAllGames: PropTypes.func.isRequired,
   addToCart: PropTypes.func.isRequired,
+  getGamesByCategories: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = state => ({
   games: state.games,
-  categories: state.categories
+  categories: state.categories,
+  loading: state.loading.isLoading
 })
 
 const mapDispatchToProps = {
   getGameDetails,
   getAllGames,
   getAllCategories,
-  addToCart
+  addToCart,
+  getGamesByCategories,
+  setLoader,
+  stopLoader
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Details);
