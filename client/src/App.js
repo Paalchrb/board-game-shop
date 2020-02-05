@@ -13,8 +13,8 @@ const App = () => {
   return (
     <Provider store={store}>
       <div className="App">
-        <Navbar />
         <HashRouter>
+          <Navbar />
           <Container maxWidth="lg" className='content-area' style={{ marginTop: '6.8vh', height: '92vh'}}>
             <Switch>
               <Route path='/' exact component={Overview} />

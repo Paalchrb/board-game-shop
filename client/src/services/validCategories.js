@@ -1,0 +1,1 @@
+export const validCats = ["KUBCKBkGxV", "a8NM5cugJX", "MWoxgHrOJD", "PinhJrhnxU", "eX8uuNlQkQ", "ODWOjWAJj3", "bCBXJy9qDw", "mavSOM8vjH", "N0TkEGfEsF", "v4SfYtS2Lr", "yq6hVlbM2R", "7rV11PKqME", "ZTneo8TaIO", "upXZ8vNfNO", "TYnxiuiI3X", "rrvd68LjOR", "QAYkTHK1Dd", "X8J7RM6dxX", "3B3QpKvXD3", "O0ogzwLUe8", "jX8asGGR6o"];

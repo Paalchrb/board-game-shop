@@ -1,23 +1,16 @@
 import React, { Fragment } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
 import Skeleton from '@material-ui/lab/Skeleton';
-import Zoom from '@material-ui/core/Zoom';
-import Badge from '@material-ui/core/Badge';
-import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import { addToCart } from '../actions/shopcart';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { getAllGames, getGamesByCategories } from '../actions/games';
-import { searchGames } from '../services/sessions'
 import { setLoader, stopLoader } from '../actions/loading'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
@@ -33,14 +26,12 @@ class Overview extends React.Component {
             showScrollButton: 'hideScrollButton',
             page: 0,
             orderBy: 'popularity'
-
         }
     }
 
     async componentDidMount () {
-        console.log("Component Did Mount")
         const { getAllGames, setLoader, stopLoader } = this.props;
-        const { page, orderBy } = this.state;
+        const { page } = this.state;
         await setLoader()
         await getAllGames('popularity', page);
         await stopLoader();
@@ -50,7 +41,7 @@ class Overview extends React.Component {
     
    
 
-    handleDetailsClick(event, id) {
+    handleDetailsClick(id) {
         const { history } = this.props;
         history.push(`details/${id}`);
     }
@@ -103,7 +94,7 @@ class Overview extends React.Component {
     //   }
 
     render() {
-        const {showScrollButton, page, orderBy} = this.state;
+        const { showScrollButton } = this.state;
         const { games, error } = this.props.games;
         const { loading } = this.props;
         if(!games) {
@@ -156,7 +147,7 @@ class Overview extends React.Component {
                                     image={game.images.small}
                                     title={game.name}
                                 />
-                                <img src={game.images.small} />
+                                <img src={game.images.small} alt={game.name} />
                                 <Typography gutterBottom variant="h6" component="h2">{game.name}</Typography>
                                 <Typography variant="body2" component="p" className="price">{currencyFormatter.format((game.price*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'})}</Typography>
                             </CardActionArea>

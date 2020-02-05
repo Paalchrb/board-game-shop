@@ -1,6 +1,7 @@
 import {
     GET_CATEGORIES,
-    GET_CATEGORIES_ERROR
+    GET_CATEGORIES_ERROR,
+    CHECK_CATEGORY
 } from './constants';
 import { getCategories } from '../services/sessions';
 
@@ -18,4 +19,12 @@ export const getAllCategories = () => async dispatch => {
             payload: error
         })
     }
+}
+
+export const toggleCategoryCheck = id => dispatch => {
+    dispatch({
+        type: CHECK_CATEGORY,
+        payload: id
+    })
+    return id;
 }

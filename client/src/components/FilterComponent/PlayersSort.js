@@ -4,23 +4,14 @@ import { getGamesByCategories} from '../../actions/games';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import PeopleIcon from '@material-ui/icons/People';
 
 class Players extends React.Component {
-  constructor(props) {
-    super(props);
-
-    
-
-  }
 
   async handlePlayerFilter (event) {
     const { getGamesByCategories } = this.props;
