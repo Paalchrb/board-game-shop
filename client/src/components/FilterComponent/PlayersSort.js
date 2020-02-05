@@ -1,6 +1,7 @@
 import React from 'react';
 import List from '@material-ui/core/List';
 import { getGamesByCategories} from '../../actions/games';
+import { setLoader, stopLoader} from '../../actions/loading';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -33,7 +34,7 @@ class Players extends React.Component {
             </ListSubheader>
           <ListItem>
               
-            <FormGroup >
+            <FormGroup>
               <FormControlLabel
                 control ={
                   <Checkbox color="primary" value={2} onClick={this.handlePlayerFilter.bind(this)} />
@@ -49,7 +50,7 @@ class Players extends React.Component {
           </ListItem>
           <ListItem>
               
-            <FormGroup >
+            <FormGroup>
               <FormControlLabel
                 control ={
                   <Checkbox color="primary" value={4}  onClick={this.handlePlayerFilter.bind(this)}/>
@@ -65,7 +66,7 @@ class Players extends React.Component {
           </ListItem>
           <ListItem>
               
-            <FormGroup >
+            <FormGroup>
               <FormControlLabel
                 control ={
                   <Checkbox color="primary" value="6" />
@@ -97,6 +98,6 @@ function mapStateToProps(state) {
   }
 }
 
-const mapDispatchToProps = {getGamesByCategories}
+const mapDispatchToProps = {getGamesByCategories, setLoader, stopLoader}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Players);
