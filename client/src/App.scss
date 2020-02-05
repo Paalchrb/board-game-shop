@@ -72,7 +72,11 @@
 }
 
 // Details view
-
+#home {
+  color: blue;
+  font-weight: 800;
+  margin: 0 auto;
+}
 .details-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -88,7 +92,7 @@
     grid-area: 1 / 1 / 4 / 4;
     justify-self: center;
   } 
-  img {
+  .img {
     display: flexbox;
     position: relative;
     flex-direction: column;
@@ -132,8 +136,37 @@
     align-self: flex-end;
     margin: 20px;
   }
+  
+}
+//Related games row
+.relatedGames {
+  grid-area: 4 / 1 / 4 / span 4;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 90%;
+  text-align: center;
+  margin: 0 auto;
+  .game-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 20px;
+    max-width: 200px;
+    max-height: 300px;
+    padding: 5px;
+    h2 {
+      max-width: 200px;
+    }
+  }
+  .add-to-cart-btn {
+    margin: 0 auto;
+  }
 }
 
+#related-title {
+  margin-top: 50px;
+}
 
 
 

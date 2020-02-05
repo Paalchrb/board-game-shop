@@ -37,10 +37,9 @@ export default function(state=initialState, action) {
                 error: payload,
             }
         case GET_GAME_DETAILS:
-            let index = getIndex(state.games, payload);
             return {
                 ...state,
-                chosenGame: state.games[index],
+                chosenGame: payload,
             }
         case GET_GAMES_BY_CATEGORIES:
             return {
