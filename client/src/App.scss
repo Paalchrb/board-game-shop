@@ -31,8 +31,14 @@
   z-index: 1;
 }
 
-.navbar-menu-btn {
+.filter-menu {
   margin-right: 2rem;
+  border-radius: 50%; 
+  font-size: 2rem !important;
+  &:hover {
+    cursor: pointer;
+    background-color: purple;
+  }
 }
 
 .navbar-title {

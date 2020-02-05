@@ -1,24 +1,15 @@
 import React from 'react';
-import { getAllCategories } from '../../actions/categories'
+import { getAllCategories, toggleCategoryCheck } from '../../actions/categories'
 import { getGamesByCategories, getAllGames } from '../../actions/games';
 import { setLoader, stopLoader } from '../../actions/loading';
-import List from '@material-ui/core/List';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import PeopleIcon from '@material-ui/icons/People';
 import TextField from '@material-ui/core/TextField';
-import Divider from '@material-ui/core/Divider';
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
-import { Typography, TableRow, TableCell, Table, TableBody, TablePagination, TableContainer, TableFooter } from '@material-ui/core';
-import { FormControl, InputLabel, MenuItem, FormHelperText, Select} from '@material-ui/core'
+import { TableRow, TableCell, TableBody, TableContainer, TableFooter } from '@material-ui/core';
+import { FormControl, InputLabel, MenuItem, Select} from '@material-ui/core'
 import { ArrowBackIos, ArrowForwardIos  } from '@material-ui/icons';
 
 class Category extends React.Component {
@@ -29,76 +20,74 @@ class Category extends React.Component {
       page: 0,
       rowsPerPage: 5,
       selected: [],
-      count: 0
     }
   }
 
   componentDidMount = async () => {
-    if(!localStorage.getItem('categories')) {
-      const { getAllCategories } = this.props;
-      const Cats = await getAllCategories();
-      localStorage.setItem('categories', JSON.stringify(Cats))
-    } 
+    const { 
+      getAllCategories, 
+      setLoader, 
+      stopLoader, 
+      toggleCategoryCheck 
+    } = this.props;
 
-    
-    
+    setLoader();
+    const Cats = await getAllCategories();
+    const checkedCats = JSON.parse(localStorage.getItem('checked-cats')) || [];
+    if (checkedCats.length) {
+      checkedCats.forEach(catId => toggleCategoryCheck(catId));
+    }
+    stopLoader();
+    localStorage.setItem('categories', JSON.stringify(Cats))
   }
+
   handleScrollTopClick () {
     return window.scrollTo({
         top: 0,
         behavior: 'smooth',
         block: 'center'
-    })
-}
-
-handleChangePage = (value, event) => {
-  event.preventDefault()
-  const { page } = this.state;
-  const newState = page+value;
-  if(newState < 0) {
-    this.setState({page: 0})
-  } else {
-    this.setState({page: page+value})
+    });
   }
-  
-}
+
+  handleChangePage = (value, event) => {
+    event.preventDefault()
+    const { page } = this.state;
+    const newState = page+value;
+    if(newState < 0) {
+      this.setState({page: 0})
+    } else {
+      this.setState({page: page+value})
+    } 
+  }
   
   handleChangeRowsPerPage = event => {
     this.setState({rowsPerPage: event.target.value, page: 0})
     this.handleScrollTopClick();
   }
 
-  handleClick = async (id) => {
-      const { count } = this.state;
-      const { getGamesByCategories, getAllGames } = this.props;
-      const categories = JSON.parse(localStorage.getItem('categories'))
-      
-      const index = categories.findIndex(category => category.id === id )
-      categories[index].checked = !categories[index].checked
-      localStorage.setItem('categories', JSON.stringify(categories))
-      this.setState({count: count+1})
-      const checked = categories.filter(category => category.checked).map(category => category.id).join(',')
-      console.log(checked)
-        localStorage.setItem('Cheked-categories', checked)
-        await getGamesByCategories(checked);
-      }
-      
+  handleClick = async id =>{
+    const { toggleCategoryCheck, getGamesByCategories } = this.props;
+    const checkedId = await toggleCategoryCheck(id);
 
+    const chosenCats = JSON.parse(localStorage.getItem('checked-cats')) || [];
+    const index = chosenCats.indexOf(id);
+    if(index !== -1) {
+      chosenCats.splice(index, 1);
+    } else {
+      chosenCats.push(checkedId);
+    }
+
+    await getGamesByCategories(chosenCats.join(','));
+    localStorage.setItem('checked-cats', JSON.stringify(chosenCats))
+    }
   
-
-  isSeleceted = name => this.state.selected.indexOf(name) !== -1;
-  
-
     render() {
-      const categories = JSON.parse(localStorage.getItem('categories'));
       const { page, rowsPerPage } = this.state;
-
-      
+      const categories = this.props.categories.categories || JSON.parse(localStorage.getItem('categories')) || [];
       
       const rows = []
       const allCategories = categories.map(category => {
         rows.push(category)
-        const isItemSelected = this.isSeleceted(category)
         return (
           <TableRow>
               <TableCell >
@@ -170,6 +159,7 @@ Category.propTypes = {
   getAllGames: PropTypes.func.isRequired,
   setLoader: PropTypes.func.isRequired,
   stopLoader: PropTypes.func.isRequired,
+  toggleCategoryCheck: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {
@@ -180,6 +170,6 @@ function mapStateToProps(state) {
   }
 }
 
-const mapDispatchToProps = {getAllCategories, getGamesByCategories, getAllGames}
+const mapDispatchToProps = {getAllCategories, toggleCategoryCheck, getGamesByCategories, getAllGames, setLoader, stopLoader}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Category);

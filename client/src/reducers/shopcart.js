@@ -2,7 +2,6 @@ import {
   ADD_TO_CART,
   ADD_TO_CART_ERROR,
   REMOVE_FROM_CART,
-  REMOVE_FROM_CART_ERROR,
   TOGGLE_SHOW_CART
 } from '../actions/constants';
 

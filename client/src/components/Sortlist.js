@@ -5,9 +5,6 @@ import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography'
 
 class Sortlist extends React.Component {
-    constructor(props) {
-        super(props);
-    }
     render() {
         return(
             <Fragment>

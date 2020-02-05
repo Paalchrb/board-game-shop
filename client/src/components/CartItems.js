@@ -27,7 +27,7 @@ const CartItems = ({
 
   const itemMarkup = cartItems.map((item, index) => (
     <div className='shopcart-item' key={index}>
-      <img src={item.images.thumb} />
+      <img src={item.images.thumb} alt={item.name} />
       <Typography className="shopcart-name" variant='h5'>{item.name}</Typography>
       <Typography className="shopcart-price" variant='body1'>{currencyFormatter.format((item.price*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'})}</Typography>
       <HighlightOff 

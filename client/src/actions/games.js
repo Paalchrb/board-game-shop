@@ -12,7 +12,6 @@ import { searchGames, searchGamesByName, searchGamesByCategories } from '../serv
 
 
 export const getAllGames = (orderBy, page) => async dispatch => {
-    console.log(orderBy, page)
     try{
         const games = await searchGames(orderBy, page);
         dispatch({

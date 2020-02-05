@@ -6,7 +6,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { ShoppingCart, Search }from '@material-ui/icons';
 import Drawer from '@material-ui/core/Drawer';
@@ -34,7 +33,7 @@ class Navbar extends Component {
     toggleSearchField: PropTypes.func.isRequired,
     updateSearchWord: PropTypes.func.isRequired,
     getGamesByName: PropTypes.func.isRequired,
-    showCart: PropTypes.bool.isRequired,
+    shopcart: PropTypes.object.isRequired,
     search: PropTypes.object.isRequired,
     setLoader: PropTypes.func.isRequired,
     stopLoader: PropTypes.func.isRequired,
@@ -109,12 +108,10 @@ class Navbar extends Component {
       <div className='navbar-container'>
         <AppBar className='navbar-main'>
           <Toolbar>
-            <IconButton edge="start" className='navbar-menu-btn' color="inherit" aria-label="menu">
-              <MenuIcon onClick={this.toggleFilter.bind(this, true)}/>
-              <Drawer anchor="left" open={left} onClose={this.toggleFilter.bind(this, false)}>
-                {sidelist('left')}
-              </Drawer>  
-            </IconButton>
+            <MenuIcon className='filter-menu' onClick={this.toggleFilter.bind(this, true)}/>
+            <Drawer anchor="left" open={left}  onClose={this.toggleFilter.bind(this, false)}>
+              {sidelist('left')}
+            </Drawer>  
             <Typography variant="h6" className='navbar-title'>
               BoardGames
             </Typography>

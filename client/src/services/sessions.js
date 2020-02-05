@@ -6,7 +6,6 @@ const minPrice = 0.01
 
 
 export async function searchGames( orderBy, page ) {
-    console.log(orderBy)
     const response = await fetch(`${API_URL}/search/?limit=${limit}&skip=${page*limit}&ascending=false&order_by=${orderBy}&gt_price=${minPrice}&client_id=${client_id}`, {
         method: 'GET',
         headers: {
@@ -34,9 +33,8 @@ export async function getCategories() {
         }
     })
     const categories = await response.json()
-   /*  const filteredCats = categories.categories.filter(cat => validCats.includes(cat.id));
-    return filteredCats; */
-    return categories.categories;
+    const filteredCats = categories.categories.filter(cat => validCats.includes(cat.id));
+    return filteredCats;
 }
 
 export async function searchGamesByName(text,) {
@@ -55,11 +53,10 @@ export async function searchGamesByCategories(categories, minPlayers, maxPlayers
     if(minPlayers === 4) {
         maxPlayers = 6
     }
-    console.log(minPlayers, maxPlayers)
     const response = await fetch(`${API_URL}/search?categories=${categories}&gt_min_players=${minPlayers-1}&order_by=popularity&&client_id=${client_id}&gt_price=${minPrice}`, {
         method: 'GET'
     });
-    console.log(minPlayers, maxPlayers)
+
     const { games } = await response.json()
     return games;
 }
