@@ -141,7 +141,7 @@ class Overview extends React.Component {
                         >
                             <CardActionArea 
                                 className="gameOverview"
-                                onClick={event => this.handleDetailsClick(game.id)}
+                                onClick={ () => this.handleDetailsClick(game.id)}
                              >
                                 <CardMedia
                                     image={game.images.small}

@@ -37,7 +37,6 @@ class Details extends Component {
     } catch (error) {
       this.setState({error})
     }
-    
   }
 
   async componentDidUpdate (prevProp, prevState) {
@@ -128,9 +127,10 @@ async handleDetailsClick(event, id) {
       )
     }
 
-    const categoryNames = categories.map(category => {
+    const categoryNames = categories.filter(category => {
       return allCategories.find(categoryObj => categoryObj.id === category.id);
     })
+
 
     const otherGames = relatedGames.filter(game => game.id !== id).map(game => {
       return (
