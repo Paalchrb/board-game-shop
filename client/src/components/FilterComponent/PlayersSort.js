@@ -88,8 +88,6 @@ class Players extends React.Component {
 Players.propTypes = {
   categories: PropTypes.object.isRequired,
   getGamesByCategories: PropTypes.func.isRequired,
-  setLoader: PropTypes.func.isRequired,
-  stopLoader: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {

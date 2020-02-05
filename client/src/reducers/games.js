@@ -15,10 +15,6 @@ const initialState = {
     error: null,
 }
 
-function getIndex(array, id) {
-    return array.findIndex(game => game.id === id);
-}
-
 export default function(state=initialState, action) {
     const { type, payload } = action;
     switch(type) {
