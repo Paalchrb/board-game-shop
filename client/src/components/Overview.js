@@ -38,9 +38,12 @@ class Overview extends React.Component {
         window.addEventListener('scroll', this.handleScroll.bind(this))
     }
 
-    
-   
+    componentWillUnmount() {
+        this.setState({showScrollButton: 'hideScrollButton'});
+        window.removeEventListener('scroll', this.handleScroll.bind(this));
+    }
 
+    
     handleDetailsClick(id) {
         const { history } = this.props;
         history.push(`details/${id}`);

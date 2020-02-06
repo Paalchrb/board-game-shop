@@ -9,7 +9,6 @@ body {
 }
 * {
   box-sizing: border-box;
-  
 }
 
 .bold {
@@ -394,4 +393,23 @@ a {
 .checkbox {
   color: rgba(80, 19, 0, 0.748) !important;
   
+}
+
+
+//landing page
+
+.landing-container {
+  display: grid;
+  grid-gap: 3rem;
+  grid-template-columns: 1.3fr 3fr;
+  width: 80vw;
+  margin: 6.8rem auto 2rem auto;
+  align-items: center;
+  text-align: center;
+}
+
+.landing-image {
+  width: 100%;
+  min-width: 300px;
+  max-width: 500px
 }

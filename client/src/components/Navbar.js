@@ -83,7 +83,7 @@ class Navbar extends Component {
       const { getGamesByName, setLoader, stopLoader, history } = this.props;
       setLoader();
       await getGamesByName(searchText);
-      history.push('/');
+      history.push('/overview');
       stopLoader();
     }
   }
@@ -144,7 +144,7 @@ class Navbar extends Component {
               </Badge>
               Handlekurv
             </Button>
-            <Drawer anchor="right" open={showCart} className='shopcart-container'>
+            <Drawer anchor="right" open={showCart} onClose={this.handleShopcartClick.bind(this)} className='shopcart-container'>
               <Typography variant="h2" className='navbar-title'>
                 <Shopcart />  
               </Typography>
