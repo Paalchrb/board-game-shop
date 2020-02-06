@@ -13,6 +13,7 @@ import Badge from '@material-ui/core/Badge';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { setLoader, stopLoader } from '../actions/loading';
+import { updateCart } from '../actions/shopcart';
 import { toggleShopcart } from '../actions/shopcart';
 import { toggleSearchField, updateSearchWord } from '../actions/search';
 import { getGamesByName } from '../actions/games';
@@ -37,9 +38,17 @@ class Navbar extends Component {
     search: PropTypes.object.isRequired,
     setLoader: PropTypes.func.isRequired,
     stopLoader: PropTypes.func.isRequired,
+    updateCart: PropTypes.func.isRequired,
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    const { setLoader, stopLoader, updateCart } = this.props;
+    setLoader();
+    if(this.props.shopcart.cartItems.length === 0) {
+      const savedItems = await JSON.parse(localStorage.getItem('cart-items')) || [];
+      savedItems.forEach(item => updateCart(item.id));
+    }
+    stopLoader();
     document.addEventListener('keydown', this.handleEnterPress.bind(this));
   }
 
@@ -158,7 +167,8 @@ const mapDispatchToProps = {
   updateSearchWord,
   getGamesByName,
   setLoader,
-  stopLoader
+  stopLoader,
+  updateCart
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Navbar));

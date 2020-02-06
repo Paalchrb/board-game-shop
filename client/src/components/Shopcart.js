@@ -16,17 +16,6 @@ class Shopcart extends Component {
     shopcart: PropTypes.object.isRequired,
     loading: PropTypes.bool.isRequired,
     toggleShopcart: PropTypes.func.isRequired,
-
-  }
-
-  async componentDidMount() {
-    const { setLoader, stopLoader, updateCart } = this.props;
-    setLoader();
-    if(this.props.shopcart.cartItems.length === 0) {
-      const savedItems = await JSON.parse(localStorage.getItem('cart-items')) || [];
-      savedItems.forEach(item => updateCart(item.id));
-    }
-    stopLoader();
   }
 
   handleCrossClick = () => {
