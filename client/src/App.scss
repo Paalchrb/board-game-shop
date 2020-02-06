@@ -59,11 +59,11 @@ body {
 }
 
 .search-field {
-  background-color: rgb(151, 151, 255);
+  background-color: rgba(187, 129, 143, 0.68);
   border-radius: 5px;
   padding: 0.5rem;
   padding-left: 1.5rem;
-  border: solid 1px rgb(153, 153, 238);
+  border: solid 1px rgba(142, 61, 81, 0.68);
   width: 200px;
   color: white;
   font-size: 1.1rem;
@@ -198,9 +198,10 @@ body {
   margin: 20px;
 
   .gameOverview {
-    height: 250px;
+    height: 300px;
     img {
       height: 150px;
+      margin-bottom: 10px;
     }
   }
 }
@@ -272,6 +273,19 @@ body {
   bottom: 5px;
   left: 49%;
   animation: fadeout .2s !important;
+}
+
+.pagenation {
+  display: flex;
+  margin: 40px;
+  float: right;
+  button {
+    border: none;
+    background-color: inherit;
+    svg {
+      fill: rgba(80, 19, 0, 0.993);
+    }
+  }
 }
 
 #outlined-basic {
@@ -354,8 +368,14 @@ body {
     grid-area: 1 / 2;
   }
   .shopcart-price {
-    grid-area: 2 / 2;
+    grid-area: 2 / 2 / 2 / span 2;
     justify-self: end;
+    margin: 0 20px;
+    .percentageSale {
+      color: black;
+      font-size: 0.8rem;
+      
+    }
   }
   .btn {
     grid-area: 1 / 3;
@@ -367,6 +387,7 @@ body {
       fill: rgba(216, 41, 64, 0.952) !important;
     }
   }
+  
 }
 
 .sum-container {
@@ -382,11 +403,6 @@ body {
   margin-right: 0px;
 }
 
-.price-text {
-  font-size: 20px !important;
-  text-decoration: underline;
-}
-
 a {
   color: blue;
 }
@@ -394,4 +410,24 @@ a {
 .checkbox {
   color: rgba(80, 19, 0, 0.748) !important;
   
+}
+
+.originalPrice {
+  text-decoration: line-through;
+  font-style: italic;
+}
+
+.salePrice {
+  color: red;
+  font-size: 1rem;
+}
+
+.sale {
+  float: right;
+  margin-top: -14rem;
+  margin-right: 1.5rem;
+}
+
+.salePrice-details {
+  color: red !important;
 }

@@ -67,7 +67,7 @@ class Navbar extends Component {
   }
 
   handleSeachIconClick = () => {
-    const { toggleSearchField } = this.props;
+    const { toggleSearchField, search: {showSearchField} } = this.props;
     toggleSearchField();
   }
 
@@ -125,7 +125,8 @@ class Navbar extends Component {
               BoardGames
             </Typography>
             {showSearchField && (
-              <input 
+              <input
+                autoFocus 
                 type="text" 
                 placeholder='Search!' 
                 className='search-field' 

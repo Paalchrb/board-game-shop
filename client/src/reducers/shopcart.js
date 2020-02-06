@@ -8,7 +8,7 @@ import {
 const initialState = {
   cartItems: [],
   error: null,
-  showCart: false
+  showCart: true
 };
 
 function getIndex(array, id) {
