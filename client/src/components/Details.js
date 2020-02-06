@@ -24,16 +24,17 @@ class Details extends Component {
       error: null
     }
   }
+
   async componentDidMount() {
     try{
       const { getAllCategories, getGamesByCategories, getGameDetails, setLoader, stopLoader } = this.props;
       await setLoader()
       await getAllCategories();
-      const chosenGame = await getGameDetails(this.props.match.params.id );
+      const chosenGame = await getGameDetails(this.props.match.params.id);
       const chosenGameCategories = await chosenGame.categories.map(id => id.id)
       const catStr = await chosenGameCategories[0]
       const relatedGames = await getGamesByCategories(catStr)
-      this.setState({chosenGame, relatedGames})
+      this.setState({relatedGames})
       await stopLoader();
     } catch (error) {
       this.setState({error})
@@ -44,10 +45,7 @@ class Details extends Component {
     const { getGameDetails, stopLoader } = this.props
     
     if(this.props.match.params.id !== prevProp.match.params.id) {
-      
-      
       await getGameDetails(this.props.match.params.id);
-      
       stopLoader()
     } 
   }
@@ -63,8 +61,6 @@ class Details extends Component {
     const chosenGame = await getGameDetails(id);
     this.setState({chosenGame})
     history.push(`/details/${id}`);
-    
-    
   }
 
   render() {
@@ -135,28 +131,27 @@ class Details extends Component {
     const otherGames = relatedGames.filter(game => game.id !== id).map(game => {
       return (
         <Card
-                            className='game-card'
-                            key={game.id}
-                        >
-                            <CardActionArea 
-                                className="gameOverview"
-                                onClick={event => this.handleDetailsClick(event, game.id)}
-                             >
-                                <img src={game.images.small} alt={game.name}/>
-                                <Typography gutterBottom variant="h6" component="h2">{game.name}</Typography>
-                                <Typography variant="body2" component="p" className="price">{currencyFormatter.format((game.price*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'})}</Typography>
-                            </CardActionArea>
-                            <Button 
-                                variant="contained" 
-                                color='primary' 
-                                className='add-to-cart-btn'
-                                onClick={() => this.handleCartClick(game.id)}
-                            >
-                                
-                                    <ShoppingCartIcon />
-                                Legg i kurv
-                            </Button>
-                        </Card>
+          className='game-card'
+          key={game.id}
+        >
+          <CardActionArea 
+              className="gameOverview"
+              onClick={event => this.handleDetailsClick(event, game.id)}
+          >
+            <img src={game.images.small} alt={game.name}/>
+            <Typography gutterBottom variant="h6" component="h2">{game.name}</Typography>
+            <Typography variant="body2" component="p" className="price">{currencyFormatter.format((game.price*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'})}</Typography>
+          </CardActionArea>
+          <Button 
+              variant="contained" 
+              color='primary' 
+              className='add-to-cart-btn'
+              onClick={() => this.handleCartClick(game.id)}
+          > 
+          <ShoppingCartIcon />
+            Legg i kurv
+          </Button>
+        </Card>
       )
     }).slice(0, 10)
 
@@ -188,15 +183,16 @@ class Details extends Component {
         </Button>
         <Typography variant="body1" className="description">{description_preview}</Typography>
         <Typography variant="h6" className="price">{discount > 0.3 ? (
-                                        <Fragment>
-                                        <span className="originalPrice">{currencyFormatter.format((price*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'}) }</span> 
-                                        <p className="salePrice-details">{currencyFormatter.format(((price*(1-discount))*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'})}</p>
-                                        <Badge className="sale" badgeContent={(discount*100).toFixed(0) + '%'} color="secondary" />
-                                        </Fragment>
-                                    ) : (
-                                        <span>{currencyFormatter.format((price*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'}) }</span>
-                                        )
-                                    }</Typography>
+            <Fragment>
+            <span className="originalPrice">{currencyFormatter.format((price*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'}) }</span> 
+            <p className="salePrice-details">{currencyFormatter.format(((price*(1-discount))*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'})}</p>
+            <Badge className="sale" badgeContent={(discount*100).toFixed(0) + '%'} color="secondary" />
+            </Fragment>
+        ) : (
+            <span>{currencyFormatter.format((price*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'}) }</span>
+            )
+        }
+        </Typography>
         <ul className="extra-details">
           <li><Typography variant="body1" className="bold">Publisher:</Typography> {primary_publisher}</li>
           <li><Typography variant="body1" className="bold">Rating:</Typography> {average_user_rating ? (average_user_rating).toFixed(1) : 0}</li>

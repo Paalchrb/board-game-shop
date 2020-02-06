@@ -9,6 +9,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 
 class Category extends React.Component {
   componentDidMount = async () => {
@@ -39,7 +40,7 @@ class Category extends React.Component {
 
 
   handleClick = async id =>{
-    const { toggleCategoryCheck, getGamesByCategories } = this.props;
+    const { toggleCategoryCheck, getGamesByCategories, history } = this.props;
     const checkedId = await toggleCategoryCheck(id);
 
     const chosenCats = JSON.parse(localStorage.getItem('checked-cats')) || [];
@@ -52,6 +53,7 @@ class Category extends React.Component {
 
     await getGamesByCategories(chosenCats.join(','));
     localStorage.setItem('checked-cats', JSON.stringify(chosenCats))
+    history.push('/overview')
     }
   
   render() {
@@ -105,4 +107,4 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = {getAllCategories, toggleCategoryCheck, getGamesByCategories, getAllGames, setLoader, stopLoader}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Category);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Category));
