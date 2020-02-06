@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { addToCart, removeFromCart, toggleShopcart } from '../actions/shopcart';
+import { updateCart, removeFromCart, toggleShopcart } from '../actions/shopcart';
 import { setLoader, stopLoader } from '../actions/loading';
 import PropTypes from 'prop-types';
 import { HighlightOff} from '@material-ui/icons';
@@ -11,7 +11,7 @@ import CartSum from './CartSum';
 
 class Shopcart extends Component {
   static propTypes = {
-    addToCart: PropTypes.func.isRequired,
+    updateCart: PropTypes.func.isRequired,
     removeFromCart: PropTypes.func.isRequired,
     shopcart: PropTypes.object.isRequired,
     loading: PropTypes.bool.isRequired,
@@ -19,10 +19,13 @@ class Shopcart extends Component {
 
   }
 
-  componentDidMount() {
-    const { setLoader, stopLoader } = this.props;
+  async componentDidMount() {
+    const { setLoader, stopLoader, updateCart } = this.props;
     setLoader();
-    //do asyncronous action
+    if(this.props.shopcart.cartItems.length === 0) {
+      const savedItems = await JSON.parse(localStorage.getItem('cart-items')) || [];
+      savedItems.forEach(item => updateCart(item.id));
+    }
     stopLoader();
   }
 
@@ -74,7 +77,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  addToCart,
+  updateCart,
   removeFromCart,
   setLoader,
   stopLoader,
