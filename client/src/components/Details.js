@@ -5,6 +5,7 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import Typography from '@material-ui/core/Typography';
 import Skeleton from '@material-ui/lab/Skeleton';
+import {Badge} from '@material-ui/core'
 import { getGameDetails, getAllGames, getGamesByCategories } from '../actions/games';
 import { setLoader, stopLoader } from '../actions/loading';
 import { addToCart } from '../actions/shopcart';
@@ -93,6 +94,7 @@ class Details extends Component {
         description_preview,
         images: {medium},
         price,
+        discount,
         primary_publisher,
         average_user_rating,
         rules_url
@@ -185,7 +187,16 @@ class Details extends Component {
           Legg i kurv
         </Button>
         <Typography variant="body1" className="description">{description_preview}</Typography>
-        <Typography variant="h6" className="price">Price: {price} </Typography>
+        <Typography variant="h6" className="price">{discount > 0.3 ? (
+                                        <Fragment>
+                                        <span className="originalPrice">{currencyFormatter.format((price*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'}) }</span> 
+                                        <p className="salePrice-details">{currencyFormatter.format(((price*(1-discount))*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'})}</p>
+                                        <Badge className="sale" badgeContent={(discount*100).toFixed(0) + '%'} color="secondary" />
+                                        </Fragment>
+                                    ) : (
+                                        <span>{currencyFormatter.format((price*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'}) }</span>
+                                        )
+                                    }</Typography>
         <ul className="extra-details">
           <li><Typography variant="body1" className="bold">Publisher:</Typography> {primary_publisher}</li>
           <li><Typography variant="body1" className="bold">Rating:</Typography> {average_user_rating ? (average_user_rating).toFixed(1) : 0}</li>

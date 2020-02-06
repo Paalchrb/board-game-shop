@@ -368,8 +368,14 @@ body {
     grid-area: 1 / 2;
   }
   .shopcart-price {
-    grid-area: 2 / 2;
+    grid-area: 2 / 2 / 2 / span 2;
     justify-self: end;
+    margin: 0 20px;
+    .percentageSale {
+      color: black;
+      font-size: 0.8rem;
+      
+    }
   }
   .btn {
     grid-area: 1 / 3;
@@ -381,6 +387,7 @@ body {
       fill: rgba(216, 41, 64, 0.952) !important;
     }
   }
+  
 }
 
 .sum-container {
@@ -419,4 +426,8 @@ a {
   float: right;
   margin-top: -14rem;
   margin-right: 1.5rem;
+}
+
+.salePrice-details {
+  color: red !important;
 }

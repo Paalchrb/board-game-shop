@@ -164,7 +164,7 @@ class Overview extends React.Component {
                                     {game.discount > 0.3 ? (
                                         <Fragment>
                                         <span className="originalPrice">{currencyFormatter.format((game.price*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'}) }</span> 
-                                        <p className="salePrice">{currencyFormatter.format(((game.price*game.discount)*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'})}</p>
+                                        <p className="salePrice">{currencyFormatter.format(((game.price*(1-game.discount))*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'})}</p>
                                         <Badge className="sale" badgeContent={(game.discount*100).toFixed(0) + '%'} color="secondary" />
                                         </Fragment>
                                     ) : (

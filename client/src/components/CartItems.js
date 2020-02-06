@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { Badge } from '@material-ui/core'
 import { connect } from 'react-redux';
 import { Typography } from '@material-ui/core';
 import { HighlightOff} from '@material-ui/icons';
@@ -29,7 +30,15 @@ const CartItems = ({
     <div className='shopcart-item' key={index}>
       <img src={item.images.thumb} alt={item.name} />
       <Typography className="shopcart-name" variant='h5'>{item.name}</Typography>
-      <Typography className="shopcart-price" variant='body1'>{currencyFormatter.format((item.price*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'})}</Typography>
+      <Typography className="shopcart-price" variant='body1'>{item.discount > 0.3 ? (
+                                        <Fragment> 
+                                        <p className="salePrice-details">{currencyFormatter.format(((item.price*(1-item.discount))*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'})} <span className="percentageSale">{item.discount*100}%</span></p>
+                                        
+                                        </Fragment>
+                                    ) : (
+                                        <span>{currencyFormatter.format((item.price*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'}) }</span>
+                                        )
+                                    }</Typography>
       <HighlightOff 
         className='remove-from-cart-btn btn' 
         onClick={() => handleRemoveClick(item.id)}
