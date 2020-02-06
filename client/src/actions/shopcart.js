@@ -3,7 +3,6 @@ import {
   ADD_TO_CART_ERROR,
   REMOVE_FROM_CART,
   TOGGLE_SHOW_CART,
-  UPDATE_CART
 } from './constants';
 import { getGameById } from '../services/sessions';
 
