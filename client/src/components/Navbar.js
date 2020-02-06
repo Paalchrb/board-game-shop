@@ -106,8 +106,8 @@ class Navbar extends Component {
       <div
         className="list"
         role="presentation"
-        onClick={this.toggleFilter.bind(this, side, false)}
-        onKeyDown={this.toggleFilter.bind(this, side, false)}
+        onClick={this.toggleFilter.bind(this, true)}
+        onKeyDown={this.toggleFilter.bind(this, true)}
       >
         <Sortlist />
       </div>

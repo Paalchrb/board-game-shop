@@ -37,7 +37,7 @@ class Players extends React.Component {
             <FormGroup>
               <FormControlLabel
                 control ={
-                  <Checkbox color="primary" value={2} onClick={this.handlePlayerFilter.bind(this)} />
+                  <Checkbox className="checkbox" value={2} onClick={this.handlePlayerFilter.bind(this)} />
                 }
                 label="2"
                 
@@ -53,7 +53,7 @@ class Players extends React.Component {
             <FormGroup>
               <FormControlLabel
                 control ={
-                  <Checkbox color="primary" value={4}  onClick={this.handlePlayerFilter.bind(this)}/>
+                  <Checkbox className="checkbox" value={4}  onClick={this.handlePlayerFilter.bind(this)}/>
                 }
                 label="4 - 6"
                 
@@ -69,7 +69,7 @@ class Players extends React.Component {
             <FormGroup>
               <FormControlLabel
                 control ={
-                  <Checkbox color="primary" value="6" />
+                  <Checkbox className="checkbox" value="6" />
                 }
                 label="6+"
                 
