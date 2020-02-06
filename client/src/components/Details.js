@@ -40,33 +40,31 @@ class Details extends Component {
   }
 
   async componentDidUpdate (prevProp, prevState) {
-    const { getGameDetails } = this.props
+    const { getGameDetails, stopLoader } = this.props
+    
     if(this.props.match.params.id !== prevProp.match.params.id) {
+      
+      
       await getGameDetails(this.props.match.params.id);
-      await this.handleScrollTop();
+      
+      stopLoader()
     } 
   }
-
-  handleScrollTop () {
-    return window.scrollTo({
-        top: 0,
-        behavior: 'smooth',
-        block: 'center'
-    })
-}
 
   async handleCartClick(id) {
     const { addToCart } = this.props;
     await addToCart(id);
-}
+  }
 
-async handleDetailsClick(event, id) {
-  const { history, getGameDetails } = this.props;
-  const chosenGame = await getGameDetails(id);
-  this.setState({chosenGame})
-  history.push(`/details/${id}`);
-  
-}
+  async handleDetailsClick(event, id) {
+    const { history, getGameDetails, setLoader } = this.props;
+    setLoader()
+    const chosenGame = await getGameDetails(id);
+    this.setState({chosenGame})
+    history.push(`/details/${id}`);
+    
+    
+  }
 
   render() {
     if(!this.props.games.chosenGame.name) {
@@ -100,7 +98,7 @@ async handleDetailsClick(event, id) {
         rules_url
       } 
     } = this.props.games
-
+    
     const { loading } = this.props;
     const allCategories = this.props.categories.categories;
     
@@ -127,11 +125,11 @@ async handleDetailsClick(event, id) {
       )
     }
 
-    const categoryNames = categories.filter(category => {
+    const categoryNames = categories.map(category => {
       return allCategories.find(categoryObj => categoryObj.id === category.id);
-    })
+    }).filter(cat => cat)
 
-
+  
     const otherGames = relatedGames.filter(game => game.id !== id).map(game => {
       return (
         <Card
@@ -169,12 +167,12 @@ async handleDetailsClick(event, id) {
         <Typography variant="h3" className="title">{name}</Typography>
         <img src={medium} className="img" alt={name}/>
         <ul className="VIPDetails">
-          <li>Players: { min_players ? min_players + '-' + max_players : 'Unknown'}</li>
-          <li> Categories: 
+          <li><Typography variant="body1" className="bold">Players:</Typography> { min_players ? min_players + '-' + max_players : 'Unknown'}</li>
+          <li><Typography variant="body1" className="bold"> Categories:</Typography> 
             {' ' + categoryNames.map(category => category.name).join(', ')}
           </li>
-          <li>Playtime: { min_playtime ? min_playtime + '-' + max_playtime : 'Unknown'} min.</li>
-          <li>Minimum age: { min_age ? min_age : 'Unknown' }</li>
+          <li><Typography variant="body1" className="bold">Playtime:</Typography> { min_playtime ? min_playtime + '-' + max_playtime : 'Unknown'} min.</li>
+          <li><Typography variant="body1" className="bold">Minimum age:</Typography> { min_age ? min_age : 'Unknown' }</li>
         </ul>
         <Button 
           variant="contained" 
@@ -187,11 +185,11 @@ async handleDetailsClick(event, id) {
           Legg i kurv
         </Button>
         <Typography variant="body1" className="description">{description_preview}</Typography>
-        <p className="price">Price: {price}</p>
+        <p className="price"><Typography variant="h6" className="price-text">Price: {price} </Typography></p>
         <ul className="extra-details">
-          <li>Publisher: {primary_publisher}</li>
-          <li>Rating: {average_user_rating ? (average_user_rating).toFixed(1) : 0}</li>
-          <li><a href={rules_url} target="blank">{rules_url ? 'Rules' : 'No rules found'}</a></li>
+          <li><Typography variant="body1" className="bold">Publisher:</Typography> {primary_publisher}</li>
+          <li><Typography variant="body1" className="bold">Rating:</Typography> {average_user_rating ? (average_user_rating).toFixed(1) : 0}</li>
+          <li><Typography variant="body1"><a href={rules_url} target="blank">{rules_url ? 'Rules' : 'No rules found'}</a></Typography></li>
         </ul>
         
       </div>

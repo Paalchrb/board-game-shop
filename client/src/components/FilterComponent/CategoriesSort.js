@@ -68,7 +68,7 @@ class Category extends React.Component {
       >
         <ListItemIcon>
           <Checkbox 
-            color="primary" 
+            className="checkbox"
             checked={category.checked} 
             value={category.id} 
           />
