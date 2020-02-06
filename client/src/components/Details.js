@@ -185,7 +185,7 @@ class Details extends Component {
           Legg i kurv
         </Button>
         <Typography variant="body1" className="description">{description_preview}</Typography>
-        <p className="price"><Typography variant="h6" className="price-text">Price: {price} </Typography></p>
+        <Typography variant="h6" className="price">Price: {price} </Typography>
         <ul className="extra-details">
           <li><Typography variant="body1" className="bold">Publisher:</Typography> {primary_publisher}</li>
           <li><Typography variant="body1" className="bold">Rating:</Typography> {average_user_rating ? (average_user_rating).toFixed(1) : 0}</li>

@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
+import Badge from '@material-ui/core/Badge';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { addToCart } from '../actions/shopcart';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
@@ -25,7 +26,9 @@ class Overview extends React.Component {
         this.state = {
             showScrollButton: 'hideScrollButton',
             page: 0,
-            orderBy: 'popularity'
+            maxPages: 478,
+            orderBy: 'popularity',
+            discountPrice: 'noOverline'
         }
     }
 
@@ -63,6 +66,12 @@ class Overview extends React.Component {
         }
     }
 
+    topOfPage() {
+        return window.scrollTo({
+            top: 0
+        })
+    }
+
     async handleCartClick(id) {
         const { addToCart } = this.props;
         await addToCart(id);
@@ -78,6 +87,7 @@ class Overview extends React.Component {
           this.setState({page: (page+value)})
         }
         const { getAllGames, setLoader, stopLoader } = this.props;
+        this.topOfPage()
         await setLoader()
         await getAllGames(orderBy, this.state.page);
         await stopLoader();
@@ -94,7 +104,7 @@ class Overview extends React.Component {
     //   }
 
     render() {
-        const { showScrollButton } = this.state;
+        const { showScrollButton, page, maxPages, discountPrice } = this.state;
         const { games, error } = this.props.games;
         const { loading } = this.props;
         if(!games) {
@@ -134,6 +144,7 @@ class Overview extends React.Component {
         }
        
         const gameNames = games.map((game, index) => {
+            console.log(game)
             return (
                 <Grid item xs={12} sm={6} md={3} lg={3} className="overviewGrid" key={index}>
                         <Card
@@ -149,7 +160,18 @@ class Overview extends React.Component {
                                 />
                                 <img src={game.images.small} alt={game.name} />
                                 <Typography gutterBottom variant="h6" component="h2">{game.name}</Typography>
-                                <Typography variant="body2" component="p" className="price">{currencyFormatter.format((game.price*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'})}</Typography>
+                                <Typography variant="body2" component="p" className="price">
+                                    {game.discount > 0.3 ? (
+                                        <Fragment>
+                                        <span className="originalPrice">{currencyFormatter.format((game.price*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'}) }</span> 
+                                        <p className="salePrice">{currencyFormatter.format(((game.price*game.discount)*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'})}</p>
+                                        <Badge className="sale" badgeContent={(game.discount*100).toFixed(0) + '%'} color="secondary" />
+                                        </Fragment>
+                                    ) : (
+                                        <span>{currencyFormatter.format((game.price*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'}) }</span>
+                                        )
+                                    }
+                                    </Typography>
                             </CardActionArea>
                             <Button 
                                 variant="contained" 
@@ -165,6 +187,7 @@ class Overview extends React.Component {
                 </Grid>
             );
         });
+        
         return(
             <div>
                 <Fragment>
@@ -188,10 +211,11 @@ class Overview extends React.Component {
                         <KeyboardArrowUpIcon />
                     </Fab>
                 </Fragment>
-                <div>
+                <div className="pagenation">
                     <button onClick={this.handleChangePage.bind(this, (-1))}>
                         <ArrowBackIos />
                     </button>
+                    <Typography variant="body2">Page {page +1} of {maxPages} </Typography>
                     <button onClick={this.handleChangePage.bind(this, 1)}>
                     <ArrowForwardIos  />
                     </button>
