@@ -138,6 +138,21 @@ a {
   margin: 30px !important;
 }
 
+.landing-popGames {
+  grid-area: 2 / 1 / 2 / span 2;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  .game-landing {
+    height: 300px;
+    img {
+      height: 150px;
+      margin-bottom: 10px;
+    }
+  }
+}
+
 //<- Landingpage end.
 
 // Game overview ->
