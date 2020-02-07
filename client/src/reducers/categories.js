@@ -6,6 +6,7 @@ import {
 
 const initialState = {
     categories: [],
+    players: [],
     error: null,
 }
 

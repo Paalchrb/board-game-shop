@@ -31,7 +31,13 @@ class LandingPage extends Component {
     return (
       <div className='landing-container'>
         <img src={this.state.gameImage} alt='board game legacy' className='landing-image' />
-        <Typography variant="h2">WELCOME TO BOARDGAMES-HEAVEN-DELUXE-SHOP</Typography>
+        <div>
+          <Typography variant="h2">WELCOME TO BOARDGAMES</Typography>
+          <Typography variant="h5" className=''>
+            Boardgames is one of the largest portals for browsing and buying board games in the world. Start browsing from more than 10.000 games and find your new favorite game!
+          </Typography>
+
+        </div>
       </div>
     )
   }
