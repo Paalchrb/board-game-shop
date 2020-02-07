@@ -10,6 +10,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { Typography } from '@material-ui/core';
 
 class Category extends React.Component {
   componentDidMount = async () => {
@@ -81,6 +82,7 @@ class Category extends React.Component {
 
     return (
       <List className="table-container">
+        <Typography id="kategori-subheader">Sort by category:</Typography>
         {allCategories}
       </List>
     )

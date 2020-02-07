@@ -40,7 +40,7 @@ const CartItems = ({
                                         )
                                     }</Typography>
       <HighlightOff 
-        className='remove-from-cart-btn btn' 
+        className='remove-from-cart-btn' 
         onClick={() => handleRemoveClick(item.id)}
       />
     </div>
