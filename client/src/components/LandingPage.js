@@ -140,9 +140,10 @@ class LandingPage extends Component {
           <Button className="btn landing-btn" onClick={this.handleOverviewClick.bind(this)}>See all games</Button>
         </div>
         <div className="landing-popGames">
-          <ArrowBackIos onClick={this.handleBackwardClick.bind(this)}/>
+          
+          <Button onClick={this.handleBackwardClick.bind(this)}><ArrowBackIos className="arrow" /></Button>
           {popGames}
-          <ArrowForwardIos onClick={this.handleForwardClick.bind(this)}/>
+          <Button onClick={this.handleForwardClick.bind(this)}><ArrowForwardIos className="arrow" /></Button>
         </div>
       </div>
     )

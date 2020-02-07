@@ -144,10 +144,23 @@ a {
   flex-direction: row;
   justify-content: space-between;
 
+  button {
+    margin: auto 5px;
+  }
+  .arrow {
+    height: 100px;
+    
+    font-size: 3rem;
+    fill: rgba(80, 19, 0, 0.993)
+    &:hover {
+      cursor: pointer;
+      fill: rgba(187, 129, 143, 0.68)
+    }
+  }
   .game-landing {
     height: 300px;
     img {
-      height: 150px;
+      
       margin-bottom: 10px;
     }
   }
