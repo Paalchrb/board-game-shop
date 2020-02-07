@@ -147,7 +147,6 @@ class Overview extends React.Component {
         }
        
         const gameNames = games.map((game, index) => {
-            console.log(game)
             return (
                 <Grid item xs={12} sm={6} md={3} lg={3} className="overviewGrid" key={index}>
                         <Card

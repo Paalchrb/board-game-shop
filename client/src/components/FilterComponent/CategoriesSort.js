@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { getAllCategories, toggleCategoryCheck } from '../../actions/categories'
 import { getGamesByCategories, getAllGames } from '../../actions/games';
 import { setLoader, stopLoader } from '../../actions/loading';
@@ -7,6 +7,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
+import { Typography}  from '@material-ui/core';
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
@@ -40,7 +41,7 @@ class Category extends React.Component {
 
 
   handleClick = async id =>{
-    const { toggleCategoryCheck, getGamesByCategories, history } = this.props;
+    const { toggleCategoryCheck, getGamesByCategories, history, categories: { players } } = this.props;
     const checkedId = await toggleCategoryCheck(id);
 
     const chosenCats = JSON.parse(localStorage.getItem('checked-cats')) || [];
@@ -51,7 +52,7 @@ class Category extends React.Component {
       chosenCats.push(checkedId);
     }
 
-    await getGamesByCategories(chosenCats.join(','));
+    await getGamesByCategories(chosenCats.join(','), players[0], players[1]);
     localStorage.setItem('checked-cats', JSON.stringify(chosenCats))
     history.push('/overview')
     }
@@ -80,9 +81,14 @@ class Category extends React.Component {
     ));
 
     return (
-      <List className="table-container">
-        {allCategories}
-      </List>
+      <Fragment>
+        <Typography className='players-heading' variant='body1'>
+          Choose categories:
+        </Typography>
+        <List className="table-container">
+          {allCategories}
+        </List>
+      </Fragment>
     )
   }
 }

@@ -46,18 +46,10 @@ export async function searchGamesByName(text,) {
 }
 
 export async function searchGamesByCategories(categories, minPlayers, maxPlayers) {
-    if(minPlayers === undefined) {
-        minPlayers = 1
-    }
+    const query = `${API_URL}/search?categories=${categories}&min_players=${minPlayers}&max_players=${maxPlayers}&order_by=popularity&&client_id=${client_id}&gt_price=${minPrice}`;
 
-    if(minPlayers === 4) {
-        maxPlayers = 6
-    }
-
-    if(maxPlayers === undefined) {
-        maxPlayers = 20
-    }
-    const response = await fetch(`${API_URL}/search?categories=${categories}&gt_min_players=${minPlayers}&lt_max_players=${maxPlayers}&order_by=popularity&&client_id=${client_id}&gt_price=${minPrice}`, {
+    console.log(query);
+    const response = await fetch(query , {
         method: 'GET'
     });
     const { games } = await response.json()

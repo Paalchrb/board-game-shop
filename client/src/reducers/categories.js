@@ -1,12 +1,13 @@
 import {
     GET_CATEGORIES,
     GET_CATEGORIES_ERROR,
-    CHECK_CATEGORY
+    CHECK_CATEGORY,
+    SET_PLAYER_RANGE
 } from '../actions/constants';
 
 const initialState = {
     categories: [],
-    players: [],
+    players: [1, 6],
     error: null,
 }
 
@@ -43,6 +44,11 @@ export default function(state=initialState, action) {
                 }
             } else {
                 return state;
+            }
+        case SET_PLAYER_RANGE:
+            return {
+                ...state,
+                players: payload
             }
         default:
             return state;

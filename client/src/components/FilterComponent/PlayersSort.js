@@ -1,123 +1,102 @@
-import React, {Fragment} from 'react';
-import List from '@material-ui/core/List';
-import { getGamesByCategories} from '../../actions/games';
-import { setLoader, stopLoader} from '../../actions/loading';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+import React, { Fragment, useEffect } from 'react';
+import { getGamesByCategories } from '../../actions/games';
+import { setPlayerRange } from '../../actions/categories';
 import Slider from '@material-ui/core/Slider';
 import { connect } from 'react-redux'
+import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import PeopleIcon from '@material-ui/icons/People';
+import { Typography } from '@material-ui/core';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+import { withRouter } from 'react-router-dom';
 
-class Players extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      values: [1, 20]
+const muiTheme = createMuiTheme({
+  overrides:{
+    MuiSlider: {
+      thumb:{
+      color: "rgb(142, 61, 81)",
+      },
+      track: {
+        color: 'rgb(80, 19, 0)'
+      },
     }
   }
+});
 
-  async handleChange (event) {
-    const value = event.target.value
-    this.setState({values: value})
-    console.log(value)
+const useStyles = makeStyles({
+  root: {
+    width: 250,
+    padding: '1rem',
+    marginTop: '2rem',
+    marginLeft: '1.4rem',
+    color: 'red'
+  },
+});
+
+const Players = ({
+  setPlayerRange,
+  getGamesByCategories,
+  history,
+  categories: {
+    players
   }
-  async handlePlayerFilter (event) {
-    const { getGamesByCategories } = this.props;
-    if(event.target.checked) {
-      await getGamesByCategories('', event.target.value, event.target.value+1)
-    } else {
-      await getGamesByCategories('', 0)
-    } 
-    
+}) => {
+  const classes = useStyles();
+  const chosenCats = JSON.parse(localStorage.getItem('checked-cats')) || [];
+  const [value, setValue] = React.useState([players[0], players[1]]);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  const handleSubmit = () => {
+    setPlayerRange(value);
+    getGamesByCategories(chosenCats.join(','), players[0], players[1]);
+    if(history.location.pathname !== '/overview') {
+      history.push('/overview');
+    }
   }
   
-    render() {
-        return(
-          <Fragment>
+  return(
+    <Fragment> 
+      <Typography className='players-heading' variant='body1'>
+        <PeopleIcon />   Choose player range:
+      </Typography>
+      <div className={classes.root}>
+        <ThemeProvider theme={muiTheme}>
           <Slider
-            value={this.state.values}
-            onChange={event => this.handleChange.bind(this, event)}
-            valueLabelDisplay="auto"
-            aria-labelledby="range-slider"/>
-            <List
-            aria-labelledby="players-subheader"
-        >
-            <ListSubheader component="div" id="players-subheader">
-                Number Of Players
-            </ListSubheader>
-          <ListItem>
-              
-            <FormGroup>
-              <FormControlLabel
-                control ={
-                  <Checkbox className="checkbox" value={2} onClick={this.handlePlayerFilter.bind(this)} />
-                }
-                label="2"
-                
-                />
-                
-            </FormGroup>
-            <ListItemIcon >
-                  <PeopleIcon />
-              </ListItemIcon>
-          </ListItem>
-          <ListItem>
-              
-            <FormGroup>
-              <FormControlLabel
-                control ={
-                  <Checkbox className="checkbox" value={4}  onClick={this.handlePlayerFilter.bind(this)}/>
-                }
-                label="4 - 6"
-                
-                />
-                
-            </FormGroup>
-            <ListItemIcon >
-                  <PeopleIcon />
-              </ListItemIcon>
-          </ListItem>
-          <ListItem>
-              
-            <FormGroup>
-              <FormControlLabel
-                control ={
-                  <Checkbox className="checkbox" value="6" />
-                }
-                label="6+"
-                
-                />
-                
-            </FormGroup>
-            <ListItemIcon >
-                  <PeopleIcon />
-              </ListItemIcon>
-          </ListItem>
-        </List>
-        </Fragment>
-        )
-    }
+            min={1}
+            max={20}
+            step={1}
+            value={value}
+            onChange={handleChange}
+            onMouseUp={handleSubmit}
+            valueLabelDisplay="on"
+            aria-labelledby="discrete-slider-always"
+          />
+        </ThemeProvider>
+      </div>
+    </Fragment>
+  );
 }
 
 Players.propTypes = {
   categories: PropTypes.object.isRequired,
+  loading: PropTypes.bool.isRequired,
   getGamesByCategories: PropTypes.func.isRequired,
+  setPlayerRange: PropTypes.func.isRequired,
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   return {
-      categories: state.categories,
-      games: state.games,
-      loading: state.loading.isLoading
+    categories: state.categories,
   }
 }
 
-const mapDispatchToProps = {getGamesByCategories, setLoader, stopLoader}
+const mapDispatchToProps = {
+  setPlayerRange,
+  getGamesByCategories
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Players);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Players));

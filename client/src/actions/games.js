@@ -57,7 +57,7 @@ export const getGamesByName = text => async dispatch => {
     }
 }
 
-export const getGamesByCategories = (categories, minPlayers, maxPlayers) => async dispatch => {
+export const getGamesByCategories = (categories, minPlayers=1, maxPlayers=6) => async dispatch => {
     try {
         const games = await searchGamesByCategories(categories, minPlayers, maxPlayers);
         dispatch({

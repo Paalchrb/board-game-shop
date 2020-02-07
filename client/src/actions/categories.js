@@ -1,7 +1,8 @@
 import {
     GET_CATEGORIES,
     GET_CATEGORIES_ERROR,
-    CHECK_CATEGORY
+    CHECK_CATEGORY,
+    SET_PLAYER_RANGE
 } from './constants';
 import { getCategories } from '../services/sessions';
 
@@ -27,4 +28,11 @@ export const toggleCategoryCheck = id => dispatch => {
         payload: id
     })
     return id;
+}
+
+export const setPlayerRange = (rangeArray) => dispatch => {
+    dispatch({
+        type: SET_PLAYER_RANGE,
+        payload: rangeArray
+    });
 }
