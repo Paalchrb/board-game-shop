@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import List from '@material-ui/core/List';
 import { getGamesByCategories} from '../../actions/games';
 import { setLoader, stopLoader} from '../../actions/loading';
@@ -8,12 +8,25 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import Slider from '@material-ui/core/Slider';
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
 import PeopleIcon from '@material-ui/icons/People';
 
 class Players extends React.Component {
+  constructor(props) {
+    super(props);
 
+    this.state = {
+      values: [1, 20]
+    }
+  }
+
+  async handleChange (event) {
+    const value = event.target.value
+    this.setState({values: value})
+    console.log(value)
+  }
   async handlePlayerFilter (event) {
     const { getGamesByCategories } = this.props;
     if(event.target.checked) {
@@ -26,6 +39,12 @@ class Players extends React.Component {
   
     render() {
         return(
+          <Fragment>
+          <Slider
+            value={this.state.values}
+            onChange={event => this.handleChange.bind(this, event)}
+            valueLabelDisplay="auto"
+            aria-labelledby="range-slider"/>
             <List
             aria-labelledby="players-subheader"
         >
@@ -81,6 +100,7 @@ class Players extends React.Component {
               </ListItemIcon>
           </ListItem>
         </List>
+        </Fragment>
         )
     }
 }
