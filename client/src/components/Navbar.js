@@ -104,7 +104,7 @@ class Navbar extends Component {
     const sidelist = side => {
       return (
       <div
-        className="list"
+        className="sortList"
         role="presentation"
         onClick={this.toggleFilter.bind(this, true)}
         onKeyDown={this.toggleFilter.bind(this, true)}

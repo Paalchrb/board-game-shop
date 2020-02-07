@@ -11,6 +11,7 @@ import { Typography}  from '@material-ui/core';
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { Typography } from '@material-ui/core';
 
 class Category extends React.Component {
   componentDidMount = async () => {
