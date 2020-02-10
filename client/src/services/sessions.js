@@ -37,8 +37,16 @@ export async function getCategories() {
     return filteredCats;
 }
 
+export async function searchGamesByName(text) {
+    const response = await fetch(`${API_URL}/search?name=${text}&fuzzy_match=true&client_id=${client_id}&gt_price=${minPrice}`, {
+        method: 'GET'
+    });
+    const games = await response.json()
+    return games;
+}
+
 export async function searchGamesByFilter(categories, search, minPlayers, maxPlayers) {
-    const query = `${API_URL}/search?name=${search}&fuzzy_match=true&categories=${categories}&min_players=${minPlayers}&max_players=${maxPlayers}&order_by=popularity&client_id=${client_id}&gt_price=${minPrice}`;
+    const query = `${API_URL}/search?name=${search}&fuzzy_match=true&limit=${limit}&categories=${categories}&gt_min_players=${minPlayers-1}&lt_max_players=${maxPlayers+1}&order_by=popularity&client_id=${client_id}&gt_price=${minPrice}`;
 
     console.log(query);
     const response = await fetch(query , {

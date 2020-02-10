@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Badge } from '@material-ui/core'
 import { connect } from 'react-redux';
 import { Typography } from '@material-ui/core';
 import { HighlightOff} from '@material-ui/icons';
