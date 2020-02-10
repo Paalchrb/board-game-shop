@@ -13,10 +13,10 @@ import Badge from '@material-ui/core/Badge';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { setLoader, stopLoader } from '../actions/loading';
-import { updateCart } from '../actions/shopcart';
-import { toggleShopcart } from '../actions/shopcart';
+import { updateCart, toggleShopcart } from '../actions/shopcart';
 import { toggleSearchField, updateSearchWord } from '../actions/search';
-import { getGamesByName } from '../actions/games';
+import { getGamesByFilter } from '../actions/games';
+import { setPage } from '../actions/categories'; 
 
 
 
@@ -33,12 +33,13 @@ class Navbar extends Component {
     toggleShopcart: PropTypes.func.isRequired,
     toggleSearchField: PropTypes.func.isRequired,
     updateSearchWord: PropTypes.func.isRequired,
-    getGamesByName: PropTypes.func.isRequired,
+    getGamesByFilter: PropTypes.func.isRequired,
     shopcart: PropTypes.object.isRequired,
     search: PropTypes.object.isRequired,
     setLoader: PropTypes.func.isRequired,
     stopLoader: PropTypes.func.isRequired,
     updateCart: PropTypes.func.isRequired,
+    setPage: PropTypes.func.isRequired,
   }
 
   async componentDidMount() {
@@ -77,12 +78,24 @@ class Navbar extends Component {
 
   async handleEnterPress(event) {
     if (event.keyCode === 13) {
-      const { search: { searchText } } = this.props;
-      const { getGamesByName, setLoader, stopLoader, history } = this.props;
-      setLoader();
-      await getGamesByName(searchText);
-      history.push('/overview');
-      stopLoader();
+      const {
+        history,
+        setPage,
+        getGamesByFilter,
+        search: {
+          searchText,
+        },
+        setLoader,
+        stopLoader
+       } = this.props;
+       if(history.location.pathname !== '/overview') {
+         history.push('/overview');
+       }
+       setLoader();
+       localStorage.removeItem('checked-cats');
+       setPage(0);
+       await getGamesByFilter('', searchText, undefined, undefined, 0);
+       stopLoader();
     }
   }
 
@@ -164,10 +177,11 @@ const mapDispatchToProps = {
   toggleShopcart,
   toggleSearchField,
   updateSearchWord,
-  getGamesByName,
+  getGamesByFilter,
   setLoader,
   stopLoader,
-  updateCart
+  updateCart,
+  setPage
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Navbar));

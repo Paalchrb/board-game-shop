@@ -2,12 +2,14 @@ import {
     GET_CATEGORIES,
     GET_CATEGORIES_ERROR,
     CHECK_CATEGORY,
-    SET_PLAYER_RANGE
+    SET_PLAYER_RANGE,
+    SET_PAGE
 } from '../actions/constants';
 
 const initialState = {
     categories: [],
     players: [1, 6],
+    page: 0,
     error: null,
 }
 
@@ -49,6 +51,11 @@ export default function(state=initialState, action) {
             return {
                 ...state,
                 players: payload
+            }
+        case SET_PAGE:
+            return {
+                ...state,
+                page: payload
             }
         default:
             return state;

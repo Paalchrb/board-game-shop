@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Badge from '@material-ui/core/Badge';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { addToCart } from '../actions/shopcart';
-import { getAllGames, getGamesByCategories, getGameDetails } from '../actions/games';
+import { getGamesByFilter, getGameDetails } from '../actions/games';
 import { setLoader, stopLoader } from '../actions/loading'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
@@ -19,6 +19,11 @@ var currencyFormatter = require('currency-formatter');
 class LandingPage extends Component {
   static propTypes = {
     getGameDetails: PropTypes.func.isRequired, 
+    getGamesByFilter: PropTypes.func.isRequired,
+    setLoader: PropTypes.func.isRequired,
+    stopLoader: PropTypes.func.isRequired,
+    games: PropTypes.object.isRequired,
+    loading: PropTypes.bool.isRequired,
   }
 
   constructor(props) {
@@ -32,10 +37,10 @@ class LandingPage extends Component {
   }
 
   async componentDidMount() {
-    const { getGameDetails, getAllGames, setLoader, stopLoader } = this.props;
-    await setLoader()
+    const { getGameDetails, getGamesByFilter, setLoader, stopLoader } = this.props;
+    setLoader()
     const response = await getGameDetails('mce5HZPnF5');
-    await getAllGames('popularity', 0)
+    await getGamesByFilter();
     const gameImage = response.images.medium;
     this.setState({
       gameImage
@@ -48,6 +53,11 @@ class LandingPage extends Component {
     
     history.push('/overview')
   }
+
+  async handleCartClick(id) {
+    const { addToCart } = this.props;
+    await addToCart(id);
+}
 
   handleDetailsClick(id) {
     const { history } = this.props;
@@ -121,7 +131,7 @@ class LandingPage extends Component {
 
       
       return (
-        <Card
+        <Card key={index}
             className='game-card'>
             <CardActionArea 
                 className="game-landing"
@@ -194,9 +204,10 @@ function mapStateToProps(state) {
 }
 const mapDispatchToProps = {
   getGameDetails,
-  getAllGames,
+  getGamesByFilter,
   setLoader,
-  stopLoader
+  stopLoader,
+  addToCart
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);
