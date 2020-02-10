@@ -5,12 +5,9 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import Fab from '@material-ui/core/Fab';
 import Badge from '@material-ui/core/Badge';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { addToCart } from '../actions/shopcart';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { getAllGames, getGamesByCategories, getGameDetails } from '../actions/games';
 import { setLoader, stopLoader } from '../actions/loading'
 import { connect } from 'react-redux'
@@ -30,19 +27,20 @@ class LandingPage extends Component {
     this.state = {
       gameImage: '',
       startSlide: 0,
-      endSlide: 5
+      endSlide: 4
     }
   }
 
   async componentDidMount() {
     const { getGameDetails, getAllGames } = this.props;
+    setLoader()
     const response = await getGameDetails('mce5HZPnF5');
     await getAllGames('popularity', 0)
     const gameImage = response.images.medium;
     this.setState({
       gameImage
     });
-    console.log(this.props)
+    stopLoader();
   }
 
   handleOverviewClick () {
@@ -51,18 +49,22 @@ class LandingPage extends Component {
     history.push('/overview')
   }
 
+  handleDetailsClick(id) {
+    const { history } = this.props;
+    history.push(`details/${id}`);
+}
+
   handleForwardClick () {
     const { startSlide, endSlide } = this.state;
-    console.log(startSlide, endSlide)
     if(endSlide > 30) {
       this.setState({
         startSlide: 0,
-        endSlide: 5
+        endSlide: 4
       })
     } else {
       this.setState({
-        startSlide: startSlide + 5,
-        endSlide: endSlide+5
+        startSlide: startSlide + 4,
+        endSlide: endSlide+4
       })
     }
     
@@ -70,16 +72,15 @@ class LandingPage extends Component {
 
   handleBackwardClick () {
     const { startSlide, endSlide } = this.state;
-    console.log(startSlide, endSlide)
     if(startSlide === 0) {
       this.setState({
         startSlide: 0,
-        endSlide: 5
+        endSlide: 4
       })
     } else {
       this.setState({
-        startSlide: startSlide - 5,
-        endSlide: endSlide - 5
+        startSlide: startSlide - 4,
+        endSlide: endSlide - 4
       })
     }
     
@@ -88,7 +89,6 @@ class LandingPage extends Component {
   render() {
     const { startSlide, endSlide } = this.state;
     const { games } = this.props.games;
-    console.log(games.length)
     const popGames = games.map((game, index) => {
       return (
         <Card
@@ -139,11 +139,17 @@ class LandingPage extends Component {
           </Typography>
           <Button className="btn landing-btn" onClick={this.handleOverviewClick.bind(this)}>See all games</Button>
         </div>
+        
         <div className="landing-popGames">
-          
+        <Typography variant="h4">Most popular games:</Typography>
+        <div className="slider">
           <Button onClick={this.handleBackwardClick.bind(this)}><ArrowBackIos className="arrow" /></Button>
           {popGames}
           <Button onClick={this.handleForwardClick.bind(this)}><ArrowForwardIos className="arrow" /></Button>
+        </div>
+          <div className="slider-pageDetails">
+            Game {startSlide}-{endSlide} of {games.length}
+          </div>
         </div>
       </div>
     )

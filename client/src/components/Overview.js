@@ -107,7 +107,7 @@ class Overview extends React.Component {
     //   }
 
     render() {
-        const { showScrollButton, page, maxPages, discountPrice } = this.state;
+        const { showScrollButton, page, maxPages } = this.state;
         const { games, error } = this.props.games;
         const { loading } = this.props;
         if(!games) {
@@ -217,7 +217,7 @@ class Overview extends React.Component {
                     <button onClick={this.handleChangePage.bind(this, (-1))}>
                         <ArrowBackIos />
                     </button>
-                    <Typography variant="body2">Page {page +1} of {maxPages} </Typography>
+                    <Typography variant="body2">Page {page +1}</Typography>
                     <button onClick={this.handleChangePage.bind(this, 1)}>
                     <ArrowForwardIos  />
                     </button>

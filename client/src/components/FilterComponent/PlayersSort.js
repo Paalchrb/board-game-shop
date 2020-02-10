@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import { getGamesByCategories } from '../../actions/games';
 import { setPlayerRange } from '../../actions/categories';
 import Slider from '@material-ui/core/Slider';

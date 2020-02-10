@@ -12,7 +12,7 @@ body {
 }
 
 .bold {
-  display: inline;
+  display: inline !important;
   font-weight: 800 !important;
   font-size: 1rem;
   margin-right: 0px;
@@ -23,7 +23,7 @@ a {
 }
 
 .btn {
-  display: block;
+  display: inline-block;
   margin: 1rem auto;
   width: 100%;
   max-width: 165px;
@@ -81,9 +81,22 @@ a {
 }
 
 .navbar-title {
+  
   flex-grow: 1;
   text-align: left;
   padding-left: 1.5rem;
+  a{
+    color: white;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+      color: white;
+    }
+    &:active, &:focus {
+      outline: 0;
+      border: none;
+    }
+  }
 }
 
 .search-field {
@@ -140,10 +153,17 @@ a {
 
 .landing-popGames {
   grid-area: 2 / 1 / 2 / span 2;
-  display: flex;
+  display: grid;
+  grid-template-rows: 40px 1fr 20px;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-evenly;
 
+  .slider {
+    grid-area: 2 / 1;
+    display: flex;
+    justify-content: space-between;
+    min-width: 70vw;
+  }
   button {
     margin: auto 5px;
   }
@@ -151,10 +171,10 @@ a {
     height: 100px;
     
     font-size: 3rem;
-    fill: rgba(80, 19, 0, 0.993)
+    fill: rgba(80, 19, 0, 0.993);
     &:hover {
       cursor: pointer;
-      fill: rgba(187, 129, 143, 0.68)
+      fill: rgba(187, 129, 143, 0.68);
     }
   }
   .game-landing {
@@ -163,6 +183,20 @@ a {
       
       margin-bottom: 10px;
     }
+    h2 {
+      max-width: 170px;
+    }
+   
+  }
+  .game-card {
+    .add-to-cart-btn {
+      margin: 10px auto;
+    }
+  }
+  .slider-pageDetails {
+    align-self: flex-end;
+    font-size: .8rem;
+    margin: 0 auto;
   }
 }
 
@@ -275,12 +309,15 @@ a {
 
 .price {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: center;
+
 }
 
 .originalPrice {
   text-decoration: line-through;
   font-style: italic;
+  margin: 0 10px;
 }
 
 .salePrice {
@@ -290,11 +327,15 @@ a {
 // <- Game overview end.
 
 // Details view ->
-#home {
-  color: blue;
+a {
+  color: rgba(80, 19, 0, 0.993);
   font-weight: 800;
-  margin: 0 auto;
+  margin: 0 20px;
+  &:hover {
+    color: rgba(187, 129, 143, 0.68)
+  }
 }
+
 .details-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -344,7 +385,7 @@ a {
   //Column 3
   .price {
     grid-area: 3 / 3 / 3 / 3;
-    padding: 20px;
+    padding: 50px;
     align-self: flex-end;
   }
   

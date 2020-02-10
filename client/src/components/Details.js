@@ -157,8 +157,9 @@ class Details extends Component {
 
     return (
       <Fragment>
-        
+          
           <Link to="/" id="home"><Typography variant="overline">Home</Typography></Link>
+          <Link to="/overview" id="overview"><Typography variant="overline">Game Overview</Typography></Link>
         
       <div className='details-container'>
         <Typography variant="h3" className="title">{name}</Typography>
@@ -184,9 +185,9 @@ class Details extends Component {
         <Typography variant="body1" className="description">{description_preview}</Typography>
         <Typography variant="h6" className="price">{discount > 0.3 ? (
             <Fragment>
-            <span className="originalPrice">{currencyFormatter.format((price*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'}) }</span> 
-            <p className="salePrice-details">{currencyFormatter.format(((price*(1-discount))*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'})}</p>
-            <Badge className="sale" badgeContent={(discount*100).toFixed(0) + '%'} color="secondary" />
+              <span className="originalPrice">{currencyFormatter.format((price*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'}) }</span> 
+              <span className="salePrice-details">{currencyFormatter.format(((price*(1-discount))*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'})}</span>
+              <Badge className="sale" badgeContent={(discount*100).toFixed(0) + '%'} color="secondary" />
             </Fragment>
         ) : (
             <span>{currencyFormatter.format((price*9.18).toFixed(0), {precision: 0, thousand: '.', code: 'NOK'}) }</span>

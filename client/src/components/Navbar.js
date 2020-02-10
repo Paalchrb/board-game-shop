@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Sortlist from './Sortlist';
 import Shopcart from './Shopcart';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -67,7 +67,7 @@ class Navbar extends Component {
   }
 
   handleSeachIconClick = () => {
-    const { toggleSearchField, search: {showSearchField} } = this.props;
+    const { toggleSearchField } = this.props;
     toggleSearchField();
   }
 
@@ -122,7 +122,7 @@ class Navbar extends Component {
               {sidelist('left')}
             </Drawer>  
             <Typography variant="h6" className='navbar-title'>
-              BoardGames
+              <Link to="/">BoardGames</Link>
             </Typography>
             {showSearchField && (
               <input
