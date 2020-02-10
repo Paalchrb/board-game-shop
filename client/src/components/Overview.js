@@ -11,7 +11,7 @@ import Badge from '@material-ui/core/Badge';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { addToCart } from '../actions/shopcart';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import { getAllGames, getGamesByCategories } from '../actions/games';
+import { getAllGames, getGamesByFilter } from '../actions/games';
 import { setLoader, stopLoader } from '../actions/loading'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
@@ -33,10 +33,19 @@ class Overview extends React.Component {
     }
 
     async componentDidMount () {
-        const { getAllGames, setLoader, stopLoader } = this.props;
+        const { 
+            getAllGames, 
+            setLoader, 
+            stopLoader, 
+            getGamesByFilter ,
+            searchText,
+            categories: { players,  }
+        } = this.props;
         const { page } = this.state;
         await setLoader()
-        await getAllGames('popularity', page);
+        /* await getAllGames('popularity', page); */
+        const chosenCats = JSON.parse(localStorage.getItem('checked-cats')) || [];
+        await getGamesByFilter(chosenCats.join(','), searchText, players[0], players[1]);
         await stopLoader();
         window.addEventListener('scroll', this.handleScroll.bind(this))
     }
@@ -231,6 +240,9 @@ class Overview extends React.Component {
 Overview.propTypes = {
     games: PropTypes.object.isRequired,
     getAllGames: PropTypes.func.isRequired,
+    categories: PropTypes.object.isRequired,
+    searchText: PropTypes.string.isRequired,
+    getGamesByFilter: PropTypes.func.isRequired,
     setLoader: PropTypes.func.isRequired,
     stopLoader: PropTypes.func.isRequired,
     addToCart: PropTypes.func.isRequired,
@@ -242,6 +254,8 @@ function mapStateToProps(state) {
     return {
         games: state.games,
         loading: state.loading.isLoading,
+        searchText: state.search.searchText,
+        categories: state.categories,
     }
 }
 
@@ -250,7 +264,7 @@ const mapDispatchToProps = {
     setLoader, 
     stopLoader,
     addToCart,
-    getGamesByCategories
+    getGamesByFilter
 } 
 
 export default connect(mapStateToProps, mapDispatchToProps)(Overview);

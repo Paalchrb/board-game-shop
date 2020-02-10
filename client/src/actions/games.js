@@ -8,7 +8,7 @@ import {
     GET_GAMES_BY_CATEGORIES,
     GET_GAMES_BY_CATEGORIES_ERROR
 } from './constants';
-import { searchGames, searchGamesByName, searchGamesByCategories, getGameById } from '../services/sessions'
+import { searchGames, searchGamesByName, searchGamesByFilter, getGameById } from '../services/sessions'
 
 
 export const getAllGames = (orderBy, page) => async dispatch => {
@@ -42,7 +42,7 @@ export const getGameDetails = (id) => async dispatch => {
     }
 }
 
-export const getGamesByName = text => async dispatch => {
+/* export const getGamesByName = text => async dispatch => {
     try {
         const games = await searchGamesByName(text);
         dispatch({
@@ -55,11 +55,11 @@ export const getGamesByName = text => async dispatch => {
             payload: error
         })
     }
-}
+} */
 
-export const getGamesByCategories = (categories, minPlayers=1, maxPlayers=6) => async dispatch => {
+export const getGamesByFilter = (categories='', search='', minPlayers=1, maxPlayers=6) => async dispatch => {
     try {
-        const games = await searchGamesByCategories(categories, minPlayers, maxPlayers);
+        const games = await searchGamesByFilter(categories, search, minPlayers, maxPlayers);
         dispatch({
             type: GET_GAMES_BY_CATEGORIES,
             payload: games

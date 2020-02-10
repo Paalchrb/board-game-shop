@@ -16,7 +16,7 @@ import { setLoader, stopLoader } from '../actions/loading';
 import { updateCart } from '../actions/shopcart';
 import { toggleShopcart } from '../actions/shopcart';
 import { toggleSearchField, updateSearchWord } from '../actions/search';
-import { getGamesByName } from '../actions/games';
+import { getGamesByFilter } from '../actions/games';
 
 
 
@@ -33,7 +33,7 @@ class Navbar extends Component {
     toggleShopcart: PropTypes.func.isRequired,
     toggleSearchField: PropTypes.func.isRequired,
     updateSearchWord: PropTypes.func.isRequired,
-    getGamesByName: PropTypes.func.isRequired,
+    getGamesByFilter: PropTypes.func.isRequired,
     shopcart: PropTypes.object.isRequired,
     search: PropTypes.object.isRequired,
     setLoader: PropTypes.func.isRequired,
@@ -67,7 +67,7 @@ class Navbar extends Component {
   }
 
   handleSeachIconClick = () => {
-    const { toggleSearchField, search: {showSearchField} } = this.props;
+    const { toggleSearchField } = this.props;
     toggleSearchField();
   }
 
@@ -79,12 +79,10 @@ class Navbar extends Component {
 
   async handleEnterPress(event) {
     if (event.keyCode === 13) {
-      const { search: { searchText } } = this.props;
-      const { getGamesByName, setLoader, stopLoader, history } = this.props;
-      setLoader();
-      await getGamesByName(searchText);
-      history.push('/overview');
-      stopLoader();
+      const { history } = this.props;
+      if(history.location.pathname !== '/overview') {
+        history.push('/overview');
+      }
     }
   }
 
@@ -166,7 +164,7 @@ const mapDispatchToProps = {
   toggleShopcart,
   toggleSearchField,
   updateSearchWord,
-  getGamesByName,
+  getGamesByFilter,
   setLoader,
   stopLoader,
   updateCart

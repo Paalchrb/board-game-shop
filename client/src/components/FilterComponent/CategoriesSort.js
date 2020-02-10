@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { getAllCategories, toggleCategoryCheck } from '../../actions/categories'
-import { getGamesByCategories, getAllGames } from '../../actions/games';
+import { getGamesByFilter, getAllGames } from '../../actions/games';
 import { setLoader, stopLoader } from '../../actions/loading';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -11,7 +11,6 @@ import { Typography}  from '@material-ui/core';
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Typography } from '@material-ui/core';
 
 class Category extends React.Component {
   componentDidMount = async () => {
@@ -42,7 +41,7 @@ class Category extends React.Component {
 
 
   handleClick = async id =>{
-    const { toggleCategoryCheck, getGamesByCategories, history, categories: { players } } = this.props;
+    const { toggleCategoryCheck, getGamesByFilter, history, categories: { players }, searchText } = this.props;
     const checkedId = await toggleCategoryCheck(id);
 
     const chosenCats = JSON.parse(localStorage.getItem('checked-cats')) || [];
@@ -53,7 +52,7 @@ class Category extends React.Component {
       chosenCats.push(checkedId);
     }
 
-    await getGamesByCategories(chosenCats.join(','), players[0], players[1]);
+    await getGamesByFilter(chosenCats.join(','), searchText, players[0], players[1]);
     localStorage.setItem('checked-cats', JSON.stringify(chosenCats))
     history.push('/overview')
     }
@@ -96,8 +95,9 @@ class Category extends React.Component {
 
 Category.propTypes = {
   categories: PropTypes.object.isRequired,
+  searchText: PropTypes.string.isRequired,
   getAllCategories: PropTypes.func.isRequired,
-  getGamesByCategories: PropTypes.func.isRequired,
+  getGamesByFilter: PropTypes.func.isRequired,
   getAllGames: PropTypes.func.isRequired,
   setLoader: PropTypes.func.isRequired,
   stopLoader: PropTypes.func.isRequired,
@@ -108,10 +108,11 @@ function mapStateToProps(state) {
   return {
       categories: state.categories,
       games: state.games,
-      loading: state.loading.isLoading
+      loading: state.loading.isLoading,
+      searchText: state.search.searchText
   }
 }
 
-const mapDispatchToProps = {getAllCategories, toggleCategoryCheck, getGamesByCategories, getAllGames, setLoader, stopLoader}
+const mapDispatchToProps = {getAllCategories, toggleCategoryCheck, getGamesByFilter, getAllGames, setLoader, stopLoader}
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Category));

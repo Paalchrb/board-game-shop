@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect } from 'react';
-import { getGamesByCategories } from '../../actions/games';
+import { getGamesByFilter } from '../../actions/games';
 import { setPlayerRange } from '../../actions/categories';
 import Slider from '@material-ui/core/Slider';
 import { connect } from 'react-redux'
@@ -36,8 +36,9 @@ const useStyles = makeStyles({
 
 const Players = ({
   setPlayerRange,
-  getGamesByCategories,
+  getGamesByFilter,
   history,
+  searchText,
   categories: {
     players
   }
@@ -52,7 +53,7 @@ const Players = ({
 
   const handleSubmit = () => {
     setPlayerRange(value);
-    getGamesByCategories(chosenCats.join(','), players[0], players[1]);
+    getGamesByFilter(chosenCats.join(','), searchText, players[0], players[1]);
     if(history.location.pathname !== '/overview') {
       history.push('/overview');
     }
@@ -83,20 +84,22 @@ const Players = ({
 
 Players.propTypes = {
   categories: PropTypes.object.isRequired,
+  searchText: PropTypes.string.isRequired,
   loading: PropTypes.bool.isRequired,
-  getGamesByCategories: PropTypes.func.isRequired,
+  getGamesByFilter: PropTypes.func.isRequired,
   setPlayerRange: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = state => {
   return {
     categories: state.categories,
+    searchText: state.search.searchText,
   }
 }
 
 const mapDispatchToProps = {
   setPlayerRange,
-  getGamesByCategories
+  getGamesByFilter
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Players));

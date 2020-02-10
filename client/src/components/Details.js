@@ -6,7 +6,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import Typography from '@material-ui/core/Typography';
 import Skeleton from '@material-ui/lab/Skeleton';
 import {Badge} from '@material-ui/core'
-import { getGameDetails, getAllGames, getGamesByCategories } from '../actions/games';
+import { getGameDetails, getAllGames, getGamesByFilter } from '../actions/games';
 import { setLoader, stopLoader } from '../actions/loading';
 import { addToCart } from '../actions/shopcart';
 import { getAllCategories } from '../actions/categories';
@@ -27,13 +27,13 @@ class Details extends Component {
 
   async componentDidMount() {
     try{
-      const { getAllCategories, getGamesByCategories, getGameDetails, setLoader, stopLoader } = this.props;
+      const { getAllCategories, getGamesByFilter, getGameDetails, setLoader, stopLoader } = this.props;
       await setLoader()
       await getAllCategories();
       const chosenGame = await getGameDetails(this.props.match.params.id);
       const chosenGameCategories = await chosenGame.categories.map(id => id.id)
       const catStr = await chosenGameCategories[0]
-      const relatedGames = await getGamesByCategories(catStr)
+      const relatedGames = await getGamesByFilter(catStr)
       this.setState({relatedGames})
       await stopLoader();
     } catch (error) {
@@ -214,7 +214,7 @@ Details.propTypes = {
   getGameDetails: PropTypes.func.isRequired,
   getAllGames: PropTypes.func.isRequired,
   addToCart: PropTypes.func.isRequired,
-  getGamesByCategories: PropTypes.func.isRequired,
+  getGamesByFilter: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = state => ({
@@ -228,7 +228,7 @@ const mapDispatchToProps = {
   getAllGames,
   getAllCategories,
   addToCart,
-  getGamesByCategories,
+  getGamesByFilter,
   setLoader,
   stopLoader
 }
