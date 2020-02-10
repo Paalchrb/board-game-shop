@@ -1,6 +1,6 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import { getGamesByFilter } from '../../actions/games';
-import { setPlayerRange } from '../../actions/categories';
+import { setPlayerRange, setPage } from '../../actions/categories';
 import Slider from '@material-ui/core/Slider';
 import { connect } from 'react-redux'
 import { makeStyles } from '@material-ui/core/styles';
@@ -41,7 +41,8 @@ const Players = ({
   searchText,
   categories: {
     players
-  }
+  },
+  setPage
 }) => {
   const classes = useStyles();
   const chosenCats = JSON.parse(localStorage.getItem('checked-cats')) || [];
@@ -53,7 +54,8 @@ const Players = ({
 
   const handleSubmit = () => {
     setPlayerRange(value);
-    getGamesByFilter(chosenCats.join(','), searchText, players[0], players[1]);
+    setPage(0);
+    getGamesByFilter(chosenCats.join(','), searchText, value[0], value[1], 0);
     if(history.location.pathname !== '/overview') {
       history.push('/overview');
     }
@@ -85,9 +87,9 @@ const Players = ({
 Players.propTypes = {
   categories: PropTypes.object.isRequired,
   searchText: PropTypes.string.isRequired,
-  loading: PropTypes.bool.isRequired,
   getGamesByFilter: PropTypes.func.isRequired,
   setPlayerRange: PropTypes.func.isRequired,
+  setPage: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = state => {
@@ -99,7 +101,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   setPlayerRange,
-  getGamesByFilter
+  getGamesByFilter,
+  setPage
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Players));

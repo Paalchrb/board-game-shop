@@ -13,10 +13,10 @@ import Badge from '@material-ui/core/Badge';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { setLoader, stopLoader } from '../actions/loading';
-import { updateCart } from '../actions/shopcart';
-import { toggleShopcart } from '../actions/shopcart';
+import { updateCart, toggleShopcart } from '../actions/shopcart';
 import { toggleSearchField, updateSearchWord } from '../actions/search';
 import { getGamesByFilter } from '../actions/games';
+import { setPage } from '../actions/categories'; 
 
 
 
@@ -39,6 +39,7 @@ class Navbar extends Component {
     setLoader: PropTypes.func.isRequired,
     stopLoader: PropTypes.func.isRequired,
     updateCart: PropTypes.func.isRequired,
+    setPage: PropTypes.func.isRequired,
   }
 
   async componentDidMount() {
@@ -79,10 +80,24 @@ class Navbar extends Component {
 
   async handleEnterPress(event) {
     if (event.keyCode === 13) {
-      const { history } = this.props;
-      if(history.location.pathname !== '/overview') {
-        history.push('/overview');
-      }
+      const {
+        history,
+        setPage,
+        getGamesByFilter,
+        search: {
+          searchText,
+        },
+        setLoader,
+        stopLoader
+       } = this.props;
+       if(history.location.pathname !== '/overview') {
+         history.push('/overview');
+       }
+       setLoader();
+       localStorage.removeItem('checked-cats');
+       setPage(0);
+       await getGamesByFilter('', searchText, undefined, undefined, 0);
+       stopLoader();
     }
   }
 
@@ -167,7 +182,8 @@ const mapDispatchToProps = {
   getGamesByFilter,
   setLoader,
   stopLoader,
-  updateCart
+  updateCart,
+  setPage
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Navbar));

@@ -2,7 +2,8 @@ import {
     GET_CATEGORIES,
     GET_CATEGORIES_ERROR,
     CHECK_CATEGORY,
-    SET_PLAYER_RANGE
+    SET_PLAYER_RANGE,
+    SET_PAGE
 } from './constants';
 import { getCategories } from '../services/sessions';
 
@@ -35,4 +36,11 @@ export const setPlayerRange = (rangeArray) => dispatch => {
         type: SET_PLAYER_RANGE,
         payload: rangeArray
     });
+}
+
+export const setPage = page => dispatch => {
+    dispatch({
+        type: SET_PAGE,
+        payload: page
+    })
 }

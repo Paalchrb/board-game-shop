@@ -6,7 +6,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import Typography from '@material-ui/core/Typography';
 import Skeleton from '@material-ui/lab/Skeleton';
 import {Badge} from '@material-ui/core'
-import { getGameDetails, getAllGames, getGamesByFilter } from '../actions/games';
+import { getGameDetails, getGamesByFilter } from '../actions/games';
 import { setLoader, stopLoader } from '../actions/loading';
 import { addToCart } from '../actions/shopcart';
 import { getAllCategories } from '../actions/categories';
@@ -213,7 +213,6 @@ class Details extends Component {
 Details.propTypes = {
   games: PropTypes.object.isRequired,
   getGameDetails: PropTypes.func.isRequired,
-  getAllGames: PropTypes.func.isRequired,
   addToCart: PropTypes.func.isRequired,
   getGamesByFilter: PropTypes.func.isRequired,
 }
@@ -226,7 +225,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   getGameDetails,
-  getAllGames,
   getAllCategories,
   addToCart,
   getGamesByFilter,

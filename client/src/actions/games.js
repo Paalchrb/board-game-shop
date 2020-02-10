@@ -1,30 +1,10 @@
 import {
-    GET_ALL_GAMES,
-    GET_ALL_GAMES_ERROR,
     GET_GAME_DETAILS,
     GAME_DETAILS_ERROR,
-    GET_GAMES_BY_NAME,
-    GET_GAMES_BY_NAME_ERROR,
     GET_GAMES_BY_CATEGORIES,
     GET_GAMES_BY_CATEGORIES_ERROR
 } from './constants';
-import { searchGames, searchGamesByName, searchGamesByFilter, getGameById } from '../services/sessions'
-
-
-export const getAllGames = (orderBy, page) => async dispatch => {
-    try{
-        const games = await searchGames(orderBy, page);
-        dispatch({
-            type: GET_ALL_GAMES,
-            payload: games
-        })
-    } catch(error) {
-        dispatch({ 
-            type: GET_ALL_GAMES_ERROR,
-            payload: error,
-         })
-    }
-} 
+import { searchGamesByFilter, getGameById } from '../services/sessions'
 
 export const getGameDetails = (id) => async dispatch => {
     try {
@@ -42,24 +22,9 @@ export const getGameDetails = (id) => async dispatch => {
     }
 }
 
-/* export const getGamesByName = text => async dispatch => {
+export const getGamesByFilter = (categories='', search='', minPlayers=1, maxPlayers=6, page=0) => async dispatch => {
     try {
-        const games = await searchGamesByName(text);
-        dispatch({
-            type: GET_GAMES_BY_NAME,
-            payload: games.games
-        })
-    } catch (error) {
-        dispatch({
-            type: GET_GAMES_BY_NAME_ERROR,
-            payload: error
-        })
-    }
-} */
-
-export const getGamesByFilter = (categories='', search='', minPlayers=1, maxPlayers=6) => async dispatch => {
-    try {
-        const games = await searchGamesByFilter(categories, search, minPlayers, maxPlayers);
+        const games = await searchGamesByFilter(categories, search, minPlayers, maxPlayers, page);
         dispatch({
             type: GET_GAMES_BY_CATEGORIES,
             payload: games

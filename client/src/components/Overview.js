@@ -11,8 +11,9 @@ import Badge from '@material-ui/core/Badge';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { addToCart } from '../actions/shopcart';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import { getAllGames, getGamesByFilter } from '../actions/games';
-import { setLoader, stopLoader } from '../actions/loading'
+import { getGamesByFilter } from '../actions/games';
+import { setLoader, stopLoader } from '../actions/loading';
+import { setPage } from '../actions/categories';
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { ArrowBackIos, ArrowForwardIos } from '@material-ui/icons';
@@ -26,26 +27,21 @@ class Overview extends React.Component {
         this.state = {
             showScrollButton: 'hideScrollButton',
             page: 0,
-            maxPages: 478,
-            orderBy: 'popularity',
             discountPrice: 'noOverline'
         }
     }
 
     async componentDidMount () {
         const { 
-            getAllGames, 
             setLoader, 
             stopLoader, 
             getGamesByFilter ,
             searchText,
-            categories: { players,  }
+            categories: { players, page }
         } = this.props;
-        const { page } = this.state;
         await setLoader()
-        /* await getAllGames('popularity', page); */
         const chosenCats = JSON.parse(localStorage.getItem('checked-cats')) || [];
-        await getGamesByFilter(chosenCats.join(','), searchText, players[0], players[1]);
+        await getGamesByFilter(chosenCats.join(','), searchText, players[0], players[1], page);
         await stopLoader();
         window.addEventListener('scroll', this.handleScroll.bind(this))
     }
@@ -91,34 +87,29 @@ class Overview extends React.Component {
 
     handleChangePage = async (value, event) => {
         event.preventDefault()
-        const { page, orderBy } = this.state;
+        const { categories: { page }, setPage } = this.props;
         const newState = page+value;
         if(newState < 0) {
-          this.setState({page: 0})
+          setPage(0);
         } else {
-          this.setState({page: (page+value)})
+          setPage(page+value);
         }
-        const { getAllGames, setLoader, stopLoader } = this.props;
+        const { getGamesByFilter, setLoader, stopLoader, searchText } = this.props;
         this.topOfPage()
         await setLoader()
-        await getAllGames(orderBy, this.state.page);
+        let chosenCats = JSON.parse(localStorage.getItem('checked-cats')) || '';
+        if(chosenCats) {
+            chosenCats = chosenCats.join(',');
+        }
+        const search = searchText || undefined;
+        await getGamesByFilter(chosenCats, search, undefined, undefined, newState);
         await stopLoader();
       }
 
-    //   handleFilterChange = async (event) => {
-    //     const filterProp = event.target.value;
-    //     const { page } = this.state;
-    //     if(filterProp === '') {
-    //         this.setState({orderBy: 'popularity'})
-    //     } else {
-    //         this.setState({orderBy: filterProp})
-    //     }
-    //   }
-
     render() {
-        const { showScrollButton, page, maxPages } = this.state;
+        const { showScrollButton } = this.state;
         const { games, error } = this.props.games;
-        const { loading } = this.props;
+        const { loading, categories: { page } } = this.props;
         if(!games) {
             return(
                 <div>
@@ -135,7 +126,6 @@ class Overview extends React.Component {
         }
 
         if(loading) {
-            
             const Skeletons = Array.from(new Array(30)).map((element, index) => {
                 return(
                     <Grid item xs={12} sm={6} md={3} lg={3} className="overviewGrid" key={index}>
@@ -223,13 +213,21 @@ class Overview extends React.Component {
                     </Fab>
                 </Fragment>
                 <div className="pagenation">
+                    {
+                    page !== 0 && (
                     <button onClick={this.handleChangePage.bind(this, (-1))}>
                         <ArrowBackIos />
                     </button>
+                    )
+                    }
                     <Typography variant="body2">Page {page +1}</Typography>
+                    {
+                    games.length === 32 && (
                     <button onClick={this.handleChangePage.bind(this, 1)}>
-                    <ArrowForwardIos  />
+                        <ArrowForwardIos  />
                     </button>
+                    )
+                    }
                 </div>
             </div>
 
@@ -239,13 +237,13 @@ class Overview extends React.Component {
 
 Overview.propTypes = {
     games: PropTypes.object.isRequired,
-    getAllGames: PropTypes.func.isRequired,
     categories: PropTypes.object.isRequired,
     searchText: PropTypes.string.isRequired,
     getGamesByFilter: PropTypes.func.isRequired,
     setLoader: PropTypes.func.isRequired,
     stopLoader: PropTypes.func.isRequired,
     addToCart: PropTypes.func.isRequired,
+    setPage: PropTypes.func.isRequired,
     
     
 }
@@ -260,11 +258,11 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-    getAllGames,
     setLoader, 
     stopLoader,
     addToCart,
-    getGamesByFilter
+    getGamesByFilter,
+    setPage
 } 
 
 export default connect(mapStateToProps, mapDispatchToProps)(Overview);
