@@ -46,13 +46,11 @@ export async function searchGamesByName(text) {
 }
 
 export async function searchGamesByFilter(categories, search, minPlayers, maxPlayers, page) {
-    console.log('cat:' + categories, 'search:' + search, 'minP:' + minPlayers, 'maxP:' + maxPlayers, 'page:' + page)
     const query = `${API_URL}/search?name=${search}&fuzzy_match=true&limit=${limit}&categories=${categories}&skip=${page*limit}&ascending=false&gt_min_players=${minPlayers-1}&lt_max_players=${maxPlayers+1}&order_by=popularity&client_id=${client_id}&gt_price=${minPrice}`;
 
     const response = await fetch(query , {
         method: 'GET'
     });
     const { games } = await response.json()
-    console.log(games);
     return games;
 }
