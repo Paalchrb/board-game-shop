@@ -132,35 +132,101 @@ a {
   grid-template-columns: 1.3fr 3fr;
   width: 100%;
   text-align: center;
-  margin-top: 6.8rem
+  margin-top: 6.8rem;
+  .landing-image {
+    grid-area: 1 / 1;
+    width: 100%;
+    min-width: 300px;
+    max-width: 500px
+  }
+  
+  .skeletonImg {
+    grid-area: 1 / 1;
+    width: 100%;
+    height: 250px;
+    min-width: 300px;
+    max-width: 500px
+  }
+
+  .landing-text {
+    grid-area: 1 / 2;
+    margin: 30px 0 !important;
+    
+  }
+
+  .skeletonText {
+    grid-area: 1 / 2;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    text-align: start;
+    max-height: 300px;  
+    .skeletonTitle {
+      height: 10rem;
+    }
+    .skeletonDesc {
+      height: 15rem;
+    }
+    .skeletonBtn {
+      width: 165px;
+      margin-top: 3rem;
+      height: 3rem !important;
+      margin: 0 auto;
+    }
+  }
+  
+
+  
+  .landing-btn {
+    margin: 30px !important;
+  }
 }
 
-.landing-image {
-  grid-area: 1 / 1;
-  width: 100%;
-  min-width: 300px;
-  max-width: 500px
+.skeleton-slider {
+  grid-area: 2 / 1 / 2 / span 2;
+  display: flex;
+  justify-content: space-evenly;
+  .game-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      margin: 20px;
+      width: 200px;
+      height: 300px;
+      padding: 5px;
+      
+      .skeleton-image {
+        height: 100px;
+        margin: 5px;
+      }
+      .skeleton-text {
+        max-width: 200px;
+        margin: 0 auto;
+      }
+      .skeleton-button {
+        height: 2rem !important;
+        margin: 5px;
+      }
+    
+    .add-to-cart-btn {
+      margin: 0 auto;
+    }
+  }
 }
 
-.landing-text {
-  grid-area: 1 / 2;
-  margin: 30px 0 !important;
-}
 
-.landing-btn {
-  margin: 30px !important;
-}
+
+
 
 .landing-popGames {
   grid-area: 2 / 1 / 2 / span 2;
   display: grid;
   grid-template-rows: 40px 1fr 20px;
-  flex-direction: row;
-  justify-content: space-evenly;
 
   .slider {
     grid-area: 2 / 1;
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
     min-width: 70vw;
   }
@@ -519,14 +585,6 @@ a {
 }
 // <- SortList end 
 
-
-
-
-.landing-image {
-  width: 100%;
-  min-width: 300px;
-  max-width: 500px
-}
 
 
 // playersfilter

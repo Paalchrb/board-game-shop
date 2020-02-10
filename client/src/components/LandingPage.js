@@ -32,8 +32,8 @@ class LandingPage extends Component {
   }
 
   async componentDidMount() {
-    const { getGameDetails, getAllGames } = this.props;
-    setLoader()
+    const { getGameDetails, getAllGames, setLoader, stopLoader } = this.props;
+    await setLoader()
     const response = await getGameDetails('mce5HZPnF5');
     await getAllGames('popularity', 0)
     const gameImage = response.images.medium;
@@ -89,7 +89,37 @@ class LandingPage extends Component {
   render() {
     const { startSlide, endSlide } = this.state;
     const { games } = this.props.games;
+    const { loading } = this.props;
+
+    if(loading) {
+      const sliderSkeleton = Array.from(new Array(4)).map((index) => {
+        return (
+          <Card className="game-card" key={index} >
+            <Skeleton className='skeleton-image' variant="rect" />   
+            <Skeleton className='skeleton-text' width='83%' />
+            <Skeleton className='skeleton-text' width='38%' />
+            <Skeleton className='skeleton-button' variant='rect' />
+          </Card>
+        )
+      }).slice(startSlide, endSlide)
+      return(
+        <div className="landing-container">
+          <Skeleton className="skeletonImg" variant="rect" />
+          <div className="skeletonText">
+            <Skeleton className="skeletonTitle" />
+            <Skeleton className="skeletonDesc" />
+            <Skeleton className="skeletonBtn" variant="rect" />
+          </div>
+          
+          <div className="skeleton-slider">
+            {sliderSkeleton}
+          </div>
+        </div>
+      )
+    }
     const popGames = games.map((game, index) => {
+
+      
       return (
         <Card
             className='game-card'>
@@ -148,7 +178,7 @@ class LandingPage extends Component {
           <Button onClick={this.handleForwardClick.bind(this)}><ArrowForwardIos className="arrow" /></Button>
         </div>
           <div className="slider-pageDetails">
-            Game {startSlide}-{endSlide} of {games.length}
+            Game {startSlide+1}-{endSlide} of {games.length}
           </div>
         </div>
       </div>
@@ -164,7 +194,9 @@ function mapStateToProps(state) {
 }
 const mapDispatchToProps = {
   getGameDetails,
-  getAllGames
+  getAllGames,
+  setLoader,
+  stopLoader
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LandingPage);

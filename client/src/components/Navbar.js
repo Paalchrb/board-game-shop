@@ -42,13 +42,11 @@ class Navbar extends Component {
   }
 
   async componentDidMount() {
-    const { setLoader, stopLoader, updateCart } = this.props;
-    setLoader();
+    const { updateCart } = this.props;
     if(this.props.shopcart.cartItems.length === 0) {
       const savedItems = await JSON.parse(localStorage.getItem('cart-items')) || [];
       savedItems.forEach(item => updateCart(item.id));
     }
-    stopLoader();
     document.addEventListener('keydown', this.handleEnterPress.bind(this));
   }
 
