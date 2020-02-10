@@ -17,7 +17,7 @@
     "postgres",
     "mongodb"
   ],
-  "author": "Pål-Christian By & Aske Djupnes Ammentorp",
+  "author": "Aske Djupnes Ammentorp & Pål-Christian By",
   "license": "MIT",
   "dependencies": {
     "concurrently": "^5.0.2",
