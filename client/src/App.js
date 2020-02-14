@@ -16,7 +16,7 @@ const App = () => {
       <div className="App">
         <HashRouter>
           <Navbar />
-          <Container maxWidth="lg" className='content-area' >
+          <Container className='content-area'>
             <Switch>
               <Route path='/' exact component={LandingPage} />
               <Route path='/overview' component={Overview} />

@@ -46,7 +46,7 @@ a {
 
 .content-area {
   margin-top: 64px !important;
-  
+  max-width: 1700px;
 }
 
 // Navbar
@@ -143,7 +143,7 @@ a {
   display: grid;
   grid-gap: 3rem;
   grid-template-columns: 1.3fr 3fr;
-  width: 100%;
+  min-width:  100%;
   text-align: center;
   margin-top: 6.8rem;
   .landing-image {
@@ -241,7 +241,6 @@ a {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    min-width: 70vw;
   }
   button {
     margin: auto 5px;
