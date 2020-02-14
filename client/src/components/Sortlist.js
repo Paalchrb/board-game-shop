@@ -8,7 +8,7 @@ class Sortlist extends React.Component {
     render() {
         return(
             <Fragment>
-                    <Typography align="center" gutterBottom color="textPrimary" variant='overline' component="h3">Sorter:</Typography>
+                    <Typography align="center" gutterBottom color="textPrimary" variant='overline' component="h3">Filter:</Typography>
                 <Divider />
                     <Players />
                 <Divider />

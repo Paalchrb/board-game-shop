@@ -182,7 +182,7 @@ class Overview extends React.Component {
                             >
                                 
                                     <ShoppingCartIcon />
-                                Legg i kurv
+                                Add to cart
                             </Button>
                         </Card>
                 </Grid>

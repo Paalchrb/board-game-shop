@@ -102,7 +102,7 @@ class LandingPage extends Component {
     const { loading } = this.props;
 
     if(loading) {
-      const sliderSkeleton = Array.from(new Array(4)).map((index) => {
+      const sliderSkeleton = Array.from(new Array(4)).map((el, index) => {
         return (
           <Card className="game-card" key={index} >
             <Skeleton className='skeleton-image' variant="rect" />   
@@ -128,8 +128,6 @@ class LandingPage extends Component {
       )
     }
     const popGames = games.map((game, index) => {
-
-      
       return (
         <Card key={index}
             className='game-card'>
@@ -164,7 +162,7 @@ class LandingPage extends Component {
             >
                 
                     <ShoppingCartIcon />
-                Legg i kurv
+                Add to cart
             </Button>
         </Card>
       )
@@ -173,7 +171,7 @@ class LandingPage extends Component {
       <div className='landing-container'>
         <img src={this.state.gameImage} alt='board game legacy' className='landing-image' />
         <div className="landing-text">
-          <Typography variant="h2">WELCOME TO BOARDGAMES</Typography>
+          <Typography variant="h2">WELCOME TO GAME STORE</Typography>
           <Typography variant="h5" className='landing-text'>
             Boardgames is one of the largest portals for browsing and buying board games in the world. Start browsing from more than 10.000 games and find your new favorite game!
           </Typography>

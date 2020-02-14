@@ -149,7 +149,7 @@ class Details extends Component {
               onClick={() => this.handleCartClick(game.id)}
           > 
           <ShoppingCartIcon />
-            Legg i kurv
+            Add to cart
           </Button>
         </Card>
       )
@@ -180,7 +180,7 @@ class Details extends Component {
         >
           
           <ShoppingCartIcon />
-          Legg i kurv
+          Add to cart
         </Button>
         <Typography variant="body1" className="description">{description_preview}</Typography>
         <Typography variant="h6" className="price">{discount > 0.3 ? (
