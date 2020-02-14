@@ -2,6 +2,7 @@
 
 # dependencies
 node_modules/
+build/
 config/default.json
 /.pnp
 .pnp.js
