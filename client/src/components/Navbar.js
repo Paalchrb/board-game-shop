@@ -132,8 +132,9 @@ class Navbar extends Component {
             <Drawer anchor="left" open={left}  onClose={this.toggleFilter.bind(this, false)}>
               {sidelist('left')}
             </Drawer>  
-            <Typography variant="h6" className='navbar-title'>
-              <Link to="/">BoardGames</Link>
+            <Typography variant="h4" className='navbar-title'>
+              <Link to="/">Game Store</Link>
+              <img className='header-logo' src='./Logo2.png' alt='logo game store' />
             </Typography>
             {showSearchField && (
               <input
@@ -152,9 +153,9 @@ class Navbar extends Component {
               onClick={this.handleShopcartClick.bind(this)}
             >
               <Badge badgeContent={cartItems.length} color="secondary">
-                <ShoppingCart />
+                <ShoppingCart className='shopcart-icon'/>
               </Badge>
-              Handlekurv
+              Shopcart
             </Button>
             <Drawer anchor="right" open={showCart} onClose={this.handleShopcartClick.bind(this)} className='shopcart-container'>
               <Typography variant="h2" className='navbar-title'>

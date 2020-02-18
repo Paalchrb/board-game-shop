@@ -45,7 +45,7 @@ a {
 
 .content-area {
   margin-top: 64px !important;
-  
+  max-width: 1700px;
 }
 
 // Navbar
@@ -58,6 +58,7 @@ a {
   flex-grow: 1;
   
 }
+
 
 .navbar-main {
   height: 64px;
@@ -84,8 +85,16 @@ a {
   flex-grow: 1;
   text-align: left;
   padding-left: 1.5rem;
+  .header-logo {
+    height: 50px;
+    width: 50px;
+    margin-left: -0.7rem;
+  }
   a{
+    margin-left: 0.7rem;
     color: white;
+    font-weight:600;
+    letter-spacing: 0.3rem;
     text-decoration: none;
     &:hover {
       text-decoration: underline;
@@ -121,6 +130,10 @@ a {
 .search-icon {
   color: white;
 }
+
+.shopcart-icon {
+  margin-right: 0.3rem;
+}
 // <- Navbar end
 
 //Landing page ->
@@ -129,7 +142,7 @@ a {
   display: grid;
   grid-gap: 3rem;
   grid-template-columns: 1.3fr 3fr;
-  width: 100%;
+  min-width:  100%;
   text-align: center;
   margin-top: 6.8rem;
   .landing-image {
@@ -227,7 +240,6 @@ a {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    min-width: 70vw;
   }
   button {
     margin: auto 5px;
